@@ -18,7 +18,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('phoneNumber', 'firstName', 'lastName', 'middleName', 'birthDate', 'email', 'role')
+        fields = ('phone_number', 'first_name', 'last_name', 'middle_name', 'birth_date', 'email', 'role')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -47,7 +47,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('firstName', 'lastName', 'middleName', 'birthDate', 'phoneNumber', 'email', 'role')
+        fields = ('first_name', 'last_name', 'middle_name', 'birth_date', 'phone_number', 'email', 'role')
 
 
 class UserAdmin(BaseUserAdmin):
@@ -58,23 +58,23 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('phoneNumber', 'firstName', 'lastName', 'role', 'email', 'is_superuser')
+    list_display = ('phone_number', 'first_name', 'last_name', 'role', 'email', 'is_superuser')
     list_filter = ('is_superuser',)
     fieldsets = (
-        (None, {'fields': ('phoneNumber', )}),
-        ('Personal info', {'fields': ('firstName', 'lastName', 'middleName', 'birthDate', 'email')}),
-        ('Permissions', {'fields': ('is_superuser', 'role')}),
+        (None, {'fields': ('phone_number', )}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email')}),
+        ('Permissions', {'fields': ('role', )}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('firstName', 'lastName', 'phoneNumber', 'email', 'role', 'password1', 'password2'),
+            'fields': ('first_name', 'last_name', 'phone_number', 'email', 'role', 'password1', 'password2'),
         }),
     )
-    search_fields = ('phoneNumber',)
-    ordering = ('phoneNumber',)
+    search_fields = ('phone_number',)
+    ordering = ('phone_number',)
     filter_horizontal = ()
 
 

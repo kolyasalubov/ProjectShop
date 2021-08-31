@@ -18,22 +18,22 @@ class User(AbstractBaseUser, PermissionsMixin):
         =======================================
         Attributes:
 
-        firstName: Describes user`s first name
+        first_name: Describes user`s first name
         type: str, max_length: 40, required field
 
-        lastName: Describes user`s last name
+        last_name: Describes user`s last name
         type: str, max_length: 40, required field
 
-        middleName: Describes user`s middle name
+        middle_name: Describes user`s middle name
         type: str, max_length: 40
 
-        birthDate: Describes user`s birth date
+        birth_date: Describes user`s birth date
         type: datetime.date
 
-        registerDate: Describes the date of user`s registration, auto-filled with the date user has been created
+        register_date: Describes the date of user`s registration, auto-filled with the date user has been created
         type: datetime.date, CAN`T BE CHANGED
 
-        phoneNumber: Describes user`s phone number in international format(like +380 00 000 00 00)
+        phone_number: Describes user`s phone number in international format(like +380 00 000 00 00)
         type: PhoneNumber, used as a username field, required field, unique field
         more about phoneNumber: https://github.com/stefanfoulis/django-phonenumber-field
 
@@ -43,22 +43,22 @@ class User(AbstractBaseUser, PermissionsMixin):
         role: Describes user`s role, admin(1) is an administrator
         type: int, default value = 0, required field
     """
-    firstName = models.CharField(verbose_name='first name', blank=False, null=False, max_length=40)
-    lastName = models.CharField(verbose_name='last name', blank=False, null=False, max_length=40)
-    middleName = models.CharField(verbose_name='middle name', blank=True, null=False, max_length=40)
+    first_name = models.CharField(verbose_name='first name', blank=False, null=False, max_length=40)
+    last_name = models.CharField(verbose_name='last name', blank=False, null=False, max_length=40)
+    middle_name = models.CharField(verbose_name='middle name', blank=True, null=False, max_length=40)
 
-    birthDate = models.DateField(verbose_name='date of birth', blank=True, null=True, auto_now=False, auto_now_add=False)
-    registerDate = models.DateField(verbose_name='date of registration', blank=False, null=False, \
-                                    auto_now=False, auto_now_add=True, editable=False)
+    birth_date = models.DateField(verbose_name='date of birth', blank=True, null=True, auto_now=False, auto_now_add=False)
+    register_date = models.DateField(verbose_name='date of registration', blank=False, null=False,
+                                     auto_now=False, auto_now_add=True, editable=False)
 
-    phoneNumber = PhoneNumberField(verbose_name='phone number', blank=False, null=False, unique=True)
+    phone_number = PhoneNumberField(verbose_name='phone number', blank=False, null=False, unique=True)
     email = models.EmailField(verbose_name='email', blank=False, null=False, unique=True)
     role = models.IntegerField(verbose_name='role', default=0, choices=ROLE_CHOICES)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'phoneNumber'
-    REQUIRED_FIELDS = ['firstName', 'lastName', 'email']
+    USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
 
     def __str__(self) -> str:
         return self.email
