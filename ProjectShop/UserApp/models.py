@@ -2,6 +2,7 @@ from django.db import models
 
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.utils.translation import ugettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
 from .managers import UserManager
@@ -43,22 +44,27 @@ class User(AbstractBaseUser, PermissionsMixin):
         role: Describes user`s role, admin(1) is an administrator
         type: int, default value = 0, required field
     """
-    first_name = models.CharField(verbose_name='first name', blank=False, null=False, max_length=40)
-    last_name = models.CharField(verbose_name='last name', blank=False, null=False, max_length=40)
-    middle_name = models.CharField(verbose_name='middle name', blank=True, null=False, max_length=40)
+    first_name = models.CharField(verbose_name=_('first name'), blank=False, null=False, max_length=40)
+    last_name = models.CharField(verbose_name=_('last name'), blank=False, null=False, max_length=40)
+    middle_name = models.CharField(verbose_name=_('middle name'), blank=True, null=False, max_length=40)
 
-    birth_date = models.DateField(verbose_name='date of birth', blank=True, null=True, auto_now=False, auto_now_add=False)
-    register_date = models.DateField(verbose_name='date of registration', blank=False, null=False,
+    birth_date = models.DateField(verbose_name=_('date of birth'), blank=True, null=True, auto_now=False,
+                                  auto_now_add=False)
+    register_date = models.DateField(verbose_name=_('date of registration'), blank=False, null=False,
                                      auto_now=False, auto_now_add=True, editable=False)
 
-    phone_number = PhoneNumberField(verbose_name='phone number', blank=False, null=False, unique=True)
-    email = models.EmailField(verbose_name='email', blank=False, null=False, unique=True)
-    role = models.IntegerField(verbose_name='role', default=0, choices=ROLE_CHOICES)
+    phone_number = PhoneNumberField(verbose_name=_('phone number'), blank=False, null=False, unique=True)
+    email = models.EmailField(verbose_name=_('email'), blank=False, null=False, unique=True)
+    role = models.IntegerField(verbose_name=_('role'), default=0, choices=ROLE_CHOICES)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
 
     def __str__(self) -> str:
         return self.email
