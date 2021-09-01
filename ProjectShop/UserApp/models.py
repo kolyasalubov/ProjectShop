@@ -56,7 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = PhoneNumberField(verbose_name=_('phone number'), blank=False, null=False, unique=True)
     email = models.EmailField(verbose_name=_('email'), blank=False, null=False, unique=True)
     role = models.IntegerField(verbose_name=_('role'), default=0, choices=ROLE_CHOICES)
-    is_active = models.BooleanField(verbose_name='is active', default=True)
+    is_active = models.BooleanField(verbose_name=_('is active'), default=True)
 
     objects = UserManager()
 
