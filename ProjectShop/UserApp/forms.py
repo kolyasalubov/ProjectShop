@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from django import forms
+from django.utils.translation import ugettext as _
 
 
 class RegisterForm(UserCreationForm):
@@ -10,7 +11,7 @@ class RegisterForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Email / Phone Number')
+    username = forms.CharField(label=_('Email / Phone Number'))
 
 
 class EditForm(UserChangeForm):
