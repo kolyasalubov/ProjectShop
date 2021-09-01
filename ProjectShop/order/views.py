@@ -8,7 +8,7 @@ from order.serializers import OrderListSerializer
 class OrderCreateView(generics.CreateAPIView):
     serializer_class = OrderDetailSerializer
 
-class OrderListView(generics.CreateAPIView):
+class OrderListView(generics.ListAPIView):
     serializer_class = OrderListSerializer
     queryset = Order.objects.all()
 
