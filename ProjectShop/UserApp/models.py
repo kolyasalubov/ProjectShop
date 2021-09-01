@@ -5,7 +5,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
-from .managers import UserManager
+from UserApp.managers import UserManager
 
 ROLE_CHOICES = (
     (0, 'user'),

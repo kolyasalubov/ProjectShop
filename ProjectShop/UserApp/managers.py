@@ -13,11 +13,9 @@ class UserManager(BaseUserManager):
         if not phone_number:
             raise ValueError('Users must have an phone number')
 
-        email = self.normalize_email(email)
-
         user = self.model(
             phone_number=phone_number,
-            email=email,
+            email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
         )
@@ -35,10 +33,11 @@ class UserManager(BaseUserManager):
             phone_number=phone_number,
             first_name=first_name,
             last_name=last_name,
-            email=email,
+            email=self.normalize_email(email),
             password=password,
         )
         user.role = 1
+        user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
 
