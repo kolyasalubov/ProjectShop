@@ -56,6 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = PhoneNumberField(verbose_name=_('phone number'), blank=False, null=False, unique=True)
     email = models.EmailField(verbose_name=_('email'), blank=False, null=False, unique=True)
     role = models.IntegerField(verbose_name=_('role'), default=0, choices=ROLE_CHOICES)
+    is_active = models.BooleanField(verbose_name='is active', default=True)
 
     objects = UserManager()
 
@@ -68,6 +69,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return self.email
+
+    def has_perm(self, perm, obj=None):
+        return self.role
+
+    def has_module_perms(self, app_label):
+        return self.role
 
     @property
     def is_staff(self) -> int:

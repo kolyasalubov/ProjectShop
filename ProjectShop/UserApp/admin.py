@@ -55,15 +55,23 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        is_superuser = request.user.is_superuser
+        if not is_superuser:
+            for f in form.base_fields:
+                form.base_fields[f].disabled = True
+        return form
+
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('phone_number', 'first_name', 'last_name', 'role', 'email', 'is_superuser')
+    list_display = ('phone_number', 'first_name', 'last_name', 'role', 'email', 'is_superuser', 'is_active')
     list_filter = ('is_superuser',)
     fieldsets = (
         (None, {'fields': ('phone_number', )}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email')}),
-        ('Permissions', {'fields': ('role', )}),
+        ('Permissions', {'fields': ('role', 'is_active')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
