@@ -9,3 +9,6 @@ class Order(models.Model):
         (2, "Cash")
     )
     payment_method = models.IntegerField(verbose_name="Payment Method", choices=PAYMENT_METHODS)
+    user = models.ForeignKey("User", om_delete=models.CASCADE)
+    shippingAddress_id = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE)
+
