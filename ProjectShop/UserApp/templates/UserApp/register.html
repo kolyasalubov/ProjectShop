@@ -1,7 +1,17 @@
-<h1>Register</h1>
+{% extends "UserApp/_base.html" %}
 
-<form action="{% url 'register' %}" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" id="submit">Register</button>
-</form>
+
+{% block content %}
+
+  <h1>Join Today!</h1>
+  <h1>Register (Sign Up)</h1>
+
+  <form action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" id="submit">Register (Sign Up)</button>
+  </form>
+
+  <h4>Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a></h4>
+
+{% endblock %}

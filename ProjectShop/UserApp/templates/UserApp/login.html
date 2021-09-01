@@ -1,7 +1,16 @@
-<h1>Login</h1>
+{% extends "UserApp/_base.html" %}
 
-<form action="{% url 'login' %}" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" id="submit">Login</button>
-</form>
+
+{% block content %}
+
+  <h1>Login (Sign In)</h1>
+
+  <form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" id="submit">Login (Sign In)</button>
+  </form>
+
+  <h4>Need An Account? <a href="{% url 'register' %}">Sign Up Now</a></h4>
+
+{% endblock %}
