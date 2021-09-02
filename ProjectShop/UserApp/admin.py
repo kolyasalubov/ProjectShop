@@ -16,7 +16,7 @@ class UserAdmin(BaseUserAdmin):
         return request.user.is_superuser
 
     def has_change_permission(self, request, obj=None) -> bool:
-        """Allow changing for superusers and for admin ot change users"""
+        """Allow changing for superusers and for admin to change users"""
         return request.user.role
 
     def get_form(self, request, obj=None, **kwargs):
@@ -25,20 +25,23 @@ class UserAdmin(BaseUserAdmin):
         is_superuser = request.user.is_superuser
         enabled_fields = set()  # type: Set[str]
 
-        if not is_superuser and obj != request.user and obj and not obj.role:
-            enabled_fields |= {'is_active'}
-        elif is_superuser:
+        if is_superuser:
             enabled_fields |= set(form.base_fields.keys())  # going to enable all fields except 'role'
-            enabled_fields.remove('role')
-            if request.user == obj:
-                enabled_fields.remove('is_active')
-        elif obj == request.user:
-            enabled_fields |= {'middle_name', 'birth_date'}
+            if obj:
+                enabled_fields.remove('role')  # enable to choose role if creating new User
+            if obj == request.user:
+                enabled_fields.remove('is_active')  # disable to change is_active
 
-        for f in form.base_fields:
-            if f in enabled_fields:
+        elif request.user.role and obj and not obj.role:
+            enabled_fields |= {'is_active'}  # enable for admin to change is_active for user
+
+        elif obj == request.user:
+            enabled_fields |= {'middle_name', 'birth_date'}  # enable for admin to change middle_name and birth_date
+
+        for field in form.base_fields:
+            if field in enabled_fields:
                 continue
-            form.base_fields[f].disabled = True  # disable form fields except enabled fields
+            form.base_fields[field].disabled = True  # disable form fields except enabled fields
         return form
 
     # The fields to be used in displaying the User model.
