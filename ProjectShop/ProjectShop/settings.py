@@ -41,12 +41,12 @@ INSTALLED_APPS = [
 
     # 3rd party apps
     'rest_framework',
-    "order",
-    'OrderItems',
     'phonenumber_field',
 
     # local apps
     'UserApp',
+    'order',
+    'OrderItems',
     ]
 
 
