@@ -28,7 +28,7 @@ class UserAdmin(BaseUserAdmin):
         if is_superuser:
             enabled_fields |= set(form.base_fields.keys())  # going to enable all fields except 'role'
             if obj:
-                enabled_fields.remove('role')  # enable to choose role if creating new User
+                enabled_fields.remove('role')  # disable to choose role if changing any User
             if obj == request.user:
                 enabled_fields.remove('is_active')  # disable to change is_active
 
