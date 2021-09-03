@@ -3,6 +3,7 @@ from order.models import Order
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Order
         fields = "__all__"
