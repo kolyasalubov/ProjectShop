@@ -12,7 +12,7 @@ class EmailBackend(ModelBackend):
             user = UserModel.objects.get(Q(phone_number__iexact=username) | Q(email__iexact=username))
         except UserModel.DoesNotExist:
             UserModel().set_password(password)
-            return
+            return None
         except UserModel.MultipleObjectsReturned:
             user = UserModel.objects.filter(Q(username__iexact=username) | Q(email__iexact=username)).order_by('id').first()
 
