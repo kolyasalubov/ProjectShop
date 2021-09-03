@@ -10,7 +10,7 @@ class Order(models.Model):
         (1, "Card"),
         (2, "Cash")
     )
-    payment_method = models.IntegerField(verbose_name="Payment Method", choices=PAYMENT_METHODS)
+    payment_method = models.IntegerField(verbose_name="Payment Method", choices=PAYMENT_METHODS, default=2)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     # shippingAddress_id = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE)
     SHIPPING_STATUSES = (
@@ -23,4 +23,4 @@ class Order(models.Model):
         (1, "Pending"),
         (2, "Paid")
     )
-    payment_status = models.IntegerField(verbose_name="Payment Method", choices=PAYMENT_STATUSES, default=1)
+    payment_status = models.IntegerField(verbose_name="Payment Status", choices=PAYMENT_STATUSES, default=1)
