@@ -24,3 +24,5 @@ class Order(models.Model):
         (2, "Paid")
     )
     payment_status = models.IntegerField(verbose_name="Payment Status", choices=PAYMENT_STATUSES, default=1)
+
+
