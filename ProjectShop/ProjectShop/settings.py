@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 3rd party apps
+    'django.contrib.sites',
+    'django.contrib.flatpages',
+
+    # 3rd-party apps
     'rest_framework',
     'phonenumber_field',
 
@@ -138,3 +141,5 @@ AUTHENTICATION_BACKENDS = ['UserApp.backends.EmailBackend']
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
+
+SITE_ID = 1

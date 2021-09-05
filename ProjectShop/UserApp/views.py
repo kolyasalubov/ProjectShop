@@ -19,5 +19,5 @@ class RegisterView(SuccessMessageMixin, generic.CreateView):
     success_message = "Congratulations! Your account has been created. You may sign in!"
 
 
-class AboutView(TemplateView):
+class TemporalHomePageView(TemplateView):
     template_name = 'UserApp/home.html'

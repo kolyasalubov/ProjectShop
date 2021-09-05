@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from UserApp.views import AboutView
+from UserApp.views import TemporalHomePageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('UserApp.urls')),
-    path('', AboutView.as_view(), name='home')
+    path('users/', include('UserApp.urls')),
+    path('pages/', include('django.contrib.flatpages.urls')),
+    path('', TemporalHomePageView.as_view(), name='home')
 ]

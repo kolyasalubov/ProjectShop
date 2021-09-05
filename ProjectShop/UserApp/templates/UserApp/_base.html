@@ -31,6 +31,15 @@
         <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'register' %}">Register</a>
     {% endif %}
+
+    <!--  Flatpages  -->
+    {% load flatpages %}
+    {% get_flatpages as flatpages %}
+    <ul>
+      {% for page in flatpages %}
+        <li><a href="/pages{{ page.url }}">{{ page.title }}</a></li>
+      {% endfor %}
+    </ul>
     <!--  Navbar ends here  -->
 
 
