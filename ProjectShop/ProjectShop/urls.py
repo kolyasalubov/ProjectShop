@@ -21,3 +21,4 @@ urlpatterns = [
     path('users/', include('UserApp.urls')),
     path("order/", include("order.urls"))
 ]
+
