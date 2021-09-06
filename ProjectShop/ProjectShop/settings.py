@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'phonenumber_field',
 
     # local apps
-    'UserApp'
+    'UserApp',
+    "Shipping",
+    "django_countries",
 ]
 
 MIDDLEWARE = [
