@@ -11,12 +11,12 @@ class UserRestView(generics.RetrieveAPIView, generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_url_kwarg = 'user_id'
-    permission_classes = {IsAuthenticated, IsAdminUser}
+    permission_classes = (IsAuthenticated, IsAdminUser)
 
 
 class UserRestListView(generics.ListAPIView):
     """View list of all user model objects"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = {IsAuthenticated, IsAdminUser}
+    permission_classes = (IsAuthenticated, IsAdminUser)
 
