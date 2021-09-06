@@ -8,7 +8,11 @@ from datetime import datetime
 
 class RegisterForm(UserCreationForm):
     birth_date = forms.DateField(required=False,
-                                 widget=forms.SelectDateWidget(years=range(datetime.now().year, 1900, -1)))
+                                 widget=forms.SelectDateWidget(years=range(datetime.now().year,
+                                                                           datetime.now().year - 120,
+                                                                           -1)
+                                                               )
+                                 )
 
     class Meta:
         model = get_user_model()
