@@ -1,0 +1,9 @@
+<div class="main">
+    <form method="POST">
+        {% csrf_token %}
+
+        Are you sure you want to delete this shipping address?<br>
+        <input type="submit" value="Yes" />
+        <a href="/">Cancel </a>
+    </form>
+</div>
