@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # 3rd-party apps
     'rest_framework',
     'phonenumber_field',
+    'crispy_forms',
 
     # local apps
     'UserApp'
