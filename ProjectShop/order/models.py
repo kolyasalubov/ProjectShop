@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 
 
 from UserApp.models import User
@@ -28,23 +29,38 @@ class Order(models.Model):
 
     """
     order_date = models.DateTimeField(auto_now_add=True)
-    PAYMENT_METHODS = (
-        (1, "Card"),
-        (2, "Cash")
-    )
-    payment_method = models.IntegerField(verbose_name="Payment Method", choices=PAYMENT_METHODS, default=2)
+
+
+    class PaymentMethod(models.TextChoices):
+        CASH = "Cash", _("Cash")
+        CARD = "Card", _("Card")
+
+    payment_method = models.CharField(
+                     max_length=4,
+                     choices=PaymentMethod.choices,
+                     default=PaymentMethod.CASH)
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     # shippingAddress_id = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE)
-    SHIPPING_STATUSES = (
-        (1, "Planning"),
-        (2, "Shipping"),
-        (3, "Complete")
-    )
-    shipping_status = models.IntegerField(verbose_name="Shipping status", choices=SHIPPING_STATUSES, default=1)
-    PAYMENT_STATUSES = (
-        (1, "Pending"),
-        (2, "Paid")
-    )
-    payment_status = models.IntegerField(verbose_name="Payment Status", choices=PAYMENT_STATUSES, default=1)
+
+
+    class ShippingStatus(models.TextChoices):
+        PLANNING = "Planning", _("Planning")
+        SHIPPING = "Shipping", _("Shipping")
+        COMPLETED = "Completed", _("Completed")
+
+    shipping_status = models.CharField(max_length=9,
+                     choices=ShippingStatus.choices,
+                     default=ShippingStatus.PLANNING)
+
+    class PaymentStatus(models.TextChoices):
+        PENDING = "Pending", _("Pending")
+        PAID = "Paid", _("Paid")
+
+
+    payment_status = models.CharField(max_length=7,
+                     choices=PaymentStatus.choices,
+                     default=PaymentStatus.PENDING)
+
 
 
