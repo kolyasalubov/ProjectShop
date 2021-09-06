@@ -1,6 +1,11 @@
 {% extends "UserApp/_base.html" %}
 
 
+{% block title %}
+  <title>Logout</title>
+{% endblock title %}
+
+
 {% block content %}
     <h2>You have been logged out</h2>
     <a href="{% url 'login' %}">Log In Again</a>

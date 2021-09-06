@@ -1,9 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>{{ flatpage.title }}</title>
-</head>
-<body>
+{% extends "UserApp/_base.html" %}
+
+
+{% block title %}
+    <title>{{ flatpage.title }}</title>
+{% endblock title %}
+
+
+{% block content %}
 {{ flatpage.content }}
-</body>
-</html>
+{% endblock %}
