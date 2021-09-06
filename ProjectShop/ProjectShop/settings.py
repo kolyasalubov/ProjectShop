@@ -41,11 +41,13 @@ INSTALLED_APPS = [
 
     # 3rd party apps
     'rest_framework',
+    "order",
     'phonenumber_field',
 
     # local apps
-    'UserApp'
-]
+    'UserApp',
+    ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -113,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
