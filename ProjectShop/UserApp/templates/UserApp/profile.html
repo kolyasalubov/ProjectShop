@@ -1,0 +1,17 @@
+{% extends "UserApp/_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  <title>Profile</title>
+{% endblock title %}
+
+
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Profile Info</h2>
+        {{ form|crispy }}
+
+        <button class="btn btn-outline-info" type="submit">Update</button>
+    </form>
+{% endblock content %}
