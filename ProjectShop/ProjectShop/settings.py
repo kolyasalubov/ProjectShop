@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
     # local apps
     'UserApp',
-     "order",
+     'order',
     ]
 
 

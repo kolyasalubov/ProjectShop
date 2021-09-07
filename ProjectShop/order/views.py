@@ -3,8 +3,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from order.models import Order
-from order.serializers import OrderDetailSerializer
-from order.serializers import OrderListSerializer
+from order.serializers import OrderDetailSerializer, OrderListSerializer
 
 
 class OrderCreateView(generics.CreateAPIView):
