@@ -1,3 +1,5 @@
+{% load flatpages %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -39,7 +41,6 @@
     {% endif %}
 
     <!--  Flatpages  -->
-    {% load flatpages %}
     {% get_flatpages as flatpages %}
     <ul>
       {% for page in flatpages %}
