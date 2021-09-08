@@ -86,7 +86,11 @@ class ProductMedia(models.Model):
     """
     A database object that represents media bound to the product, like pictures or video links.
 
-    UNFINISHED, WORK IN PROGRESS.
+    Attributes:
+        media_type: indicates whether media is a picture or a video iframe.
+        image: reference to image saved in django 'media' file.
+        video_link: link to data that iframe is using.
+        product: reference to target product.
     """
 
     MEDIA_TYPES = [
