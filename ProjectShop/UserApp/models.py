@@ -57,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name=_('email'), blank=False, null=False, unique=True)
     role = models.IntegerField(verbose_name=_('role'), default=0, choices=ROLE_CHOICES)
     is_active = models.BooleanField(verbose_name=_('is active'), default=True)
+    is_bot = models.BooleanField(verbose_name=_('is bot'), default=False)
 
     objects = UserManager()
 
@@ -74,8 +75,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.role
 
     def has_module_perms(self, app_label):
+        if app_label == 'token_blacklist':
+            return self.is_superuser
         return self.role
 
     @property
     def is_staff(self) -> int:
-        return self.role
+        return not self.is_bot and self.role

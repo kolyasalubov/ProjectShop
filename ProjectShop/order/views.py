@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, permissions
 from order.serializers import OrderDetailSerializer
 from order.models import Order
 from order.serializers import OrderListSerializer
@@ -9,6 +9,7 @@ class OrderCreateView(generics.CreateAPIView):
     serializer_class = OrderDetailSerializer
 
 class OrderListView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = OrderListSerializer
     queryset = Order.objects.all()
 

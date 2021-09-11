@@ -29,6 +29,7 @@ class UserAdmin(BaseUserAdmin):
             enabled_fields |= set(form.base_fields.keys())  # going to enable all fields except 'role'
             if obj:
                 enabled_fields.remove('role')  # disable to choose role if changing any User
+                enabled_fields.remove('is_bot')  # disable to choose is_bot if changing any User
             if obj == request.user:
                 enabled_fields.remove('is_active')  # disable to change is_active
 
@@ -52,14 +53,14 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('phone_number', )}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email', 'role')}),
-        ('Permissions', {'fields': ('is_active',)}),
+        ('Permissions', {'fields': ('is_active', "is_bot")}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'phone_number', 'email', 'role', 'password1', 'password2'),
+            'fields': ('first_name', 'last_name', 'phone_number', 'email', 'role', 'password1', 'password2', 'is_bot'),
         }),
     )
     search_fields = ('phone_number',)
