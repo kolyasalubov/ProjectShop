@@ -1,7 +1,7 @@
-<h1>Register</h1>
+{% load i18n %}
 
 <form action="{% url 'register' %}" method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit" id="submit">Register</button>
+  <button type="submit" id="submit">{% translate "Login" %}</button>
 </form>
