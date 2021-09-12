@@ -1,12 +1,14 @@
 {% extends "UserApp/_base.html" %}
 
+{% load i18n %}
+
 
 {% block title %}
-  <title>Home</title>
+  <title>{% translate "Home" %}</title>
 {% endblock title %}
 
 
 {% block content %}
-    <h1>Home page</h1>
+    <h1>{% translate "Home page" %}</h1>
     <h3>The page is not supposed to be static. It is currently used for redirection after signing in.</h3>
 {% endblock content %}

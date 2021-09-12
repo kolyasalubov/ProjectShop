@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load flatpages %}
 
 <!doctype html>
@@ -7,13 +8,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {% block title %}
-        {% if title %}
-            <title>Shop - {{ title }}</title>
-        {% else %}
-            <title>Shop</title>
-        {% endif %}
-    {% endblock title %}
+    <title>{% translate "Shop" %}</title>
+
 </head>
 <body>
 
@@ -22,7 +18,9 @@
     {% if messages %}
       <ul class="messages">
         {% for message in messages %}
-          <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+          <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+              {% blocktranslate %} {{ message }} {% endblocktranslate %}
+          </li>
         {% endfor %}
       </ul>
     {% endif %}
@@ -31,20 +29,24 @@
 
     <!--  Navbar starts here  -->
     <h3> Navbar: </h3>
-    <a href="{% url 'home' %}">Home page</a>
+    <a href="{% url 'home' %}">{% translate "Home page" %}</a>
 
     {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'logout' %}">{% translate "Logout" %}</a>
       {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'login' %}">{% translate "Login" %}</a>
+        <a href="{% url 'register' %}">{% translate "Register" %}</a>
     {% endif %}
 
     <!--  Flatpages  -->
     {% get_flatpages as flatpages %}
     <ul>
       {% for page in flatpages %}
-        <li><a href="/pages{{ page.url }}">{{ page.title }}</a></li>
+        <li>
+            <a href="/pages{{ page.url }}">
+                {% blocktranslate with flatpage_title=page.title %} {{ flatpage_title }} {% endblocktranslate %}
+            </a>
+        </li>
       {% endfor %}
     </ul>
     <!--  Navbar ends here  -->
