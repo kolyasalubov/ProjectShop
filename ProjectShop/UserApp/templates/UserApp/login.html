@@ -17,7 +17,7 @@
     {{ form|crispy }}
 
     <button type="submit" id="submit">{% translate "Login" %}</button>
-    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+    <a href="{% url 'password_reset' %}">{% translate "Forgot Password?" %}</a>
   </form>
 
   <h4>{% translate "Need An Account?" %}<a href="{% url 'register' %}">{% translate "Sign Up Now" %}</a></h4>
