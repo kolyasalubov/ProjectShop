@@ -28,6 +28,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         middle_name: Describes user`s middle name
         type: str, max_length: 40
 
+        profile_pic: User`s avatar
+        type: ImageField, default path = media/default_profile_pictures/default_pic.svg
+
         birth_date: Describes user`s birth date
         type: datetime.date
 
@@ -48,6 +51,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(verbose_name=_('last name'), blank=False, null=False, max_length=40)
     middle_name = models.CharField(verbose_name=_('middle name'), blank=True, null=False, max_length=40)
 
+    profile_pic = models.ImageField(verbose_name=_('profile picture'), upload_to='profile_pictures/',
+                                    default='default_profile_pictures/default_pic.svg')
     birth_date = models.DateField(verbose_name=_('date of birth'), blank=True, null=True, auto_now=False,
                                   auto_now_add=False)
     register_date = models.DateField(verbose_name=_('date of registration'), blank=False, null=False,
