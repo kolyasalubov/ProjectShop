@@ -55,13 +55,14 @@ class Product(models.Model):
         tags: references to tags that subject is assigned.
     """
 
+    subcategories = models.ManyToManyField(ProductSubcategory)
+    categories = models.ManyToManyField(ProductCategory)
+    tags = models.ManyToManyField(Tag)
+
     name = models.CharField(max_length=100, null=False, blank=False)
     price = models.DecimalField(validators=[MinValueValidator(0)], decimal_places=2, null=False, blank=False)
     description = models.TextField(max_length=5000, null=False, blank=False)
     stock_quantity = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
-    categories = models.ManyToManyField(ProductCategory)
-    subcategories = models.ManyToManyField(ProductSubcategory)
-    tags = models.ManyToManyField(Tag)
 
 
 class Review(models.Model):
@@ -76,10 +77,12 @@ class Review(models.Model):
         user: reference to the user writing a review.
     """
 
-    rating = models.IntegerField(validators=[MinValueValidator[0], MaxValueValidator(5)], null=False, blank=False)
-    comment = models.TextField(max_length=5000, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
+
+    rating = models.IntegerField(validators=[MinValueValidator[0], MaxValueValidator(5)], null=False, blank=False)
+    comment = models.TextField(max_length=5000, null=True, blank=True)
+
 
 
 class ProductMedia(models.Model):
@@ -98,10 +101,11 @@ class ProductMedia(models.Model):
         (1, 'video_link')
     ]
 
+    product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT)
+
     media_type = models.IntegerField(choices=MEDIA_TYPES, null=False, blank=False)
     image = models.ImageField(upload_to="", null=True, blank=True)
     video_link = models.URLField(null=True, blank=True)
-    product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT)
 
 
 
