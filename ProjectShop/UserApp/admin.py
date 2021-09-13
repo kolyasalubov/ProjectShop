@@ -1,69 +1,58 @@
-from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.core.exceptions import ValidationError
 
-from .models import User
-
-
-class UserCreationForm(forms.ModelForm):
-    """
-        A form for creating new users. Includes all the required
-        fields, plus a repeated password.
-    """
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-
-    class Meta:
-        model = User
-        fields = ('phone_number', 'first_name', 'last_name', 'middle_name', 'birth_date', 'email', 'role')
-
-    def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Passwords don't match")
-        return password2
-
-    def save(self, commit=True):
-        # Save the provided password in hashed format
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-
-        return user
-
-
-class UserChangeForm(forms.ModelForm):
-    """
-        A form for updating users. Includes all the fields on
-        the user that are written in Meta.fields
-    """
-    password = ReadOnlyPasswordHashField()
-
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name', 'middle_name', 'birth_date', 'phone_number', 'email', 'role')
+from UserApp.models import User
 
 
 class UserAdmin(BaseUserAdmin):
-    # The forms to add and change user instances
-    form = UserChangeForm
-    add_form = UserCreationForm
+
+    def has_delete_permission(self, request, obj=None) -> bool:
+        """Restrict self deletion and deletion for not superusers"""
+        return request.user != obj and request.user.is_superuser
+
+    def has_add_permission(self, request) -> bool:
+        """Restrict adding for not superusers"""
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None) -> bool:
+        """Allow changing for superusers and for admin to change users"""
+        return request.user.role
+
+    def get_form(self, request, obj=None, **kwargs):
+        """Enable certain fields in form"""
+        form = super().get_form(request, obj, **kwargs)
+        is_superuser = request.user.is_superuser
+        enabled_fields = set()  # type: Set[str]
+
+        if is_superuser:
+            enabled_fields |= set(form.base_fields.keys())  # going to enable all fields except 'role'
+            if obj:
+                enabled_fields.remove('role')  # disable to choose role if changing any User
+            if obj == request.user:
+                enabled_fields.remove('is_active')  # disable to change is_active
+
+        elif request.user.role and obj and not obj.role:
+            enabled_fields |= {'is_active'}  # enable for admin to change is_active for user
+
+        elif obj == request.user:
+            enabled_fields |= {'middle_name', 'birth_date'}  # enable for admin to change middle_name and birth_date
+
+        for field in form.base_fields:
+            if field in enabled_fields:
+                continue
+            form.base_fields[field].disabled = True  # disable form fields except enabled fields
+        return form
 
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('phone_number', 'first_name', 'last_name', 'role', 'email', 'is_superuser')
-    list_filter = ('is_superuser',)
+    list_display = ('phone_number', 'first_name', 'last_name', 'role', 'email', 'is_active', 'register_date', 'is_superuser')
+    list_filter = ('is_superuser', 'is_active', 'role')
     fieldsets = (
         (None, {'fields': ('phone_number', )}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email')}),
-        ('Permissions', {'fields': ('role', )}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email', 'role')}),
+        ('Permissions', {'fields': ('is_active',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
