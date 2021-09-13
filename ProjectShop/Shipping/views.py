@@ -1,55 +1,53 @@
-from django.shortcuts import (get_object_or_404,
-                              render,
-                              HttpResponseRedirect)
+from django.views.generic.edit import CreateView
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
+from django.views.generic.edit import DeleteView
 
 from .models import ShippingModel
-from .forms import ShippingForm
 
 
-def add_shipping_address(request):
-    context = {}
+class AddShippingAddress(CreateView):
+    """
+    class for creating shipping address
+    """
 
-    form = ShippingForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-
-    context['form'] = form
-    return render(request, "add_shipping_address.html", context)
-
-
-def all_shipping_addresses(request):
-    context = {"dataset": ShippingModel.objects.all()}
-    return render(request, "all_shipping_addresses.html", context)
+    model = ShippingModel
+    template_name = "D:/Python/Internship/OnlineShop/ProjectShop/ProjectShop/Shipping/templates/add_shipping_address.html"
+    fields = ["postal_code", "country", "region", "city", "post_office"]
 
 
-def detail_shipping_address(request, id):
-    context = {"data": ShippingModel.objects.get(id=id)}
-    return render(request, "detail_shipping_address.html", context)
+class AllShippingAddresses(ListView):
+    """
+    class for retrieving all shipping addresses
+    """
+    model = ShippingModel
+    template_name = "D:/Python/Internship/OnlineShop/ProjectShop/ProjectShop/Shipping/templates/all_shipping_addresses.html"
 
 
-def update_shipping_address(request, id):
-    context = {}
+class DetailShippingAddress(DetailView):
+    """
+    class for retrieving information for a certain shipping address (get by id)
+    """
 
-    obj = get_object_or_404(ShippingModel, id=id)
-
-    form = ShippingForm(request.POST or None, instance=obj)
-
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect("/shipping/" + id)
-
-    context["form"] = form
-
-    return render(request, "update_shipping_address.html", context)
+    model = ShippingModel
+    template_name = "D:/Python/Internship/OnlineShop/ProjectShop/ProjectShop/Shipping/templates/detail_shipping_address.html"
 
 
-def delete_shipping_address(request, id):
-    context = {}
+class UpdateShippingAddress(UpdateView):
+    """
+    class for updating a certain shipping address
+    """
+    model = ShippingModel
+    fields = ["postal_code", "country", "region", "city", "post_office"]
+    success_url = "/shipping/all/"
+    template_name = "D:/Python/Internship/OnlineShop/ProjectShop/ProjectShop/Shipping/templates/update_shipping_address.html"
 
-    obj = get_object_or_404(ShippingModel, id=id)
 
-    if request.method == "POST":
-        obj.delete()
-        return HttpResponseRedirect("/shipping/all/")
-
-    return render(request, "delete_shipping_address.html", context)
+class DeleteShippingAddress(DeleteView):
+    """
+    class for updating a certain shipping address
+    """
+    model = ShippingModel
+    success_url = "/shipping/all/"
+    template_name = "D:/Python/Internship/OnlineShop/ProjectShop/ProjectShop/Shipping/templates/delete_shipping_address.html"

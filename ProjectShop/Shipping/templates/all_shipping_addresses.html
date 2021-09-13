@@ -1,14 +1,17 @@
-<div class="main">
+<ul>
+    <!-- Iterate over object_list -->
+    {% for object in object_list %}
+    <!-- Display Objects -->
 
-    {% for data in dataset %}
+    <li>{{ object.postal_code }}</li>
+    <li>{{ object.country }}</li>
+    <li>{{ object.region }}</li>
+    <li>{{ object.city }}</li>
+    <li>{{ object.post_office }}</li>
+    <hr>
 
-    {{ data.postal_code }}<br/>
-    {{ data.country }}<br/>
-    {{ data.region }}<br/>
-    {{ data.city }}<br/>
-    {{ data.post_office }}<br/>
-    <hr/>
-
+    <!-- If objet_list is empty  -->
+    {% empty %}
+    <li>No objects yet.</li>
     {% endfor %}
-
-</div>
+</ul>
