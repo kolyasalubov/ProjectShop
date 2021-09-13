@@ -4,8 +4,10 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
+from PIL import Image
 
 from UserApp.managers import UserManager
+
 
 ROLE_CHOICES = (
     (0, 'user'),
@@ -80,6 +82,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return self.role
+
+    def save(self, *args, **kwargs):
+        super().save()
+
+        image_path = self.profile_pic.path
+        img = Image.open(image_path)
+
+        if img.height > 300 or img.width > 300:
+            new_img_size = (300, 300)
+            img.thumbnail(new_img_size)
+            img.save(image_path)
 
     @property
     def is_staff(self) -> int:
