@@ -47,6 +47,7 @@ class Order(models.Model):
         PLANNING = "Planning", _("Planning")
         SHIPPING = "Shipping", _("Shipping")
         COMPLETED = "Completed", _("Completed")
+        CANCELED = "Canceled", _("Canceled")
 
     shipping_status = models.CharField(max_length=9,
                      choices=ShippingStatus.choices,
