@@ -1,8 +1,15 @@
 <div class="main">
-    <form method="POST">
+    <form method="POST" action="">
         {% csrf_token %}
 
-        Are you sure you want to delete this shipping address?<br><br>
+        <h3>Are you sure you want to delete this shipping address?</h3><br>
+
+        <strong>Postal code: </strong> {{ object.postal_code }}<br/>
+        <strong>Country (ISO code): </strong> {{ object.country }}<br/>
+        <strong>Region: </strong> {{ object.region }}<br/>
+        <strong>City: </strong> {{ object.city }}<br/>
+        <strong>Post office №: </strong> {{ object.post_office }}<br/><br/>
+
         <input type="submit" value="Yes" />
         <a href="/shipping/all/">Cancel </a>
     </form>

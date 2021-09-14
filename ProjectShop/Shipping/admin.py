@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ShippingModel
+from Shipping.models import ShippingModel
 
 # register ShippingModel
 admin.site.register(ShippingModel)
