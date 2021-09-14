@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 from UserApp.managers import UserManager
 
@@ -86,13 +86,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         super().save()
 
-        image_path = self.profile_pic.path
-        img = Image.open(image_path)
+        try:
+            # Need this try block because default image is .svg format
+            # Can be replaced with checking if self.profile_pic.name is default
+            image_path = self.profile_pic.path
 
-        if img.height > 300 or img.width > 300:
-            new_img_size = (300, 300)
-            img.thumbnail(new_img_size)
-            img.save(image_path)
+            img = Image.open(image_path)
+
+            if img.height > 300 or img.width > 300:
+                new_img_size = (300, 300)
+                img.thumbnail(new_img_size)
+                img.save(image_path)
+        except UnidentifiedImageError:
+            pass
 
     @property
     def is_staff(self) -> int:
