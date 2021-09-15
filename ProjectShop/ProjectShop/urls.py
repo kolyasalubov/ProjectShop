@@ -19,6 +19,6 @@ from order.router import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("order/", include(router.urls))
+    path('order/', include('order.urls'))
 ]
 
