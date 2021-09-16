@@ -5,12 +5,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 from UserApp.permissions import IsAdminBot
-from UserApp.serializers import RegisterUserSerializer
-
-
-class UserCreate(generics.CreateAPIView):
-    permission_classes = (IsAdminBot, IsAuthenticated)
-    serializer_class = RegisterUserSerializer
 
 
 class BlacklistRefreshViewSet(viewsets.GenericViewSet):
