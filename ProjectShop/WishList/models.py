@@ -4,5 +4,13 @@ from UserApp.models import User
 
 
 class WishList(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    """
+       A database object that represents products that user want to buy in future.
+       Attributes:
+           products: references to category that product belongs to.
+           user_id: reference to the user who make wishlist.
+       """
+
     # products = models.ManyToManyField(Product, related_name='wishlists')
+
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
