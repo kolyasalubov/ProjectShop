@@ -2,7 +2,6 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
-from ProjectShop.settings import BASE_DIR
 from Shipping.models import ShippingModel
 
 
@@ -12,7 +11,7 @@ class AddShippingAddress(CreateView):
     """
 
     model = ShippingModel
-    template_name = str(BASE_DIR) + "/Shipping/templates/add_shipping_address.html"
+    template_name = "Shipping/add_shipping_address.html"
     fields = ["postal_code", "country", "region", "city", "post_office"]
     success_url = "/shipping/all/"
 
@@ -22,7 +21,7 @@ class AllShippingAddresses(ListView):
     class for retrieving all shipping addresses
     """
     model = ShippingModel
-    template_name = str(BASE_DIR) + "/Shipping/templates/all_shipping_addresses.html"
+    template_name = "Shipping/all_shipping_addresses.html"
 
 
 class DetailShippingAddress(DetailView):
@@ -31,7 +30,7 @@ class DetailShippingAddress(DetailView):
     """
 
     model = ShippingModel
-    template_name = str(BASE_DIR) + "/Shipping/templates/detail_shipping_address.html"
+    template_name = "Shipping/detail_shipping_address.html"
 
 
 class UpdateShippingAddress(UpdateView):
@@ -41,7 +40,7 @@ class UpdateShippingAddress(UpdateView):
     model = ShippingModel
     fields = ["postal_code", "country", "region", "city", "post_office"]
     success_url = "/shipping/all/"
-    template_name = str(BASE_DIR) + "/Shipping/templates/update_shipping_address.html"
+    template_name = "Shipping/update_shipping_address.html"
 
 
 class DeleteShippingAddress(DeleteView):
@@ -50,4 +49,4 @@ class DeleteShippingAddress(DeleteView):
     """
     model = ShippingModel
     success_url = "/shipping/all/"
-    template_name = str(BASE_DIR) + "/Shipping/templates/delete_shipping_address.html"
+    template_name = "Shipping/delete_shipping_address.html"
