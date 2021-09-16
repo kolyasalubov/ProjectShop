@@ -39,15 +39,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 3rd party apps
+    'django.contrib.sites',
+    'django.contrib.flatpages',
+
+    # 3rd-party apps
     'rest_framework',
     'phonenumber_field',
+    'crispy_forms',
 
     # local apps
     'UserApp',
     'Shipping',
     'django_countries',
-]
+    'order',
+    'OrderItems',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
@@ -135,3 +141,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'UserApp.User'
+
+AUTHENTICATION_BACKENDS = ['UserApp.backends.EmailBackend']
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
+SITE_ID = 1
