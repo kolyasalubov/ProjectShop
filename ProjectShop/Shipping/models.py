@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from django_countries.fields import CountryField
+from UserApp.models import User
 
 
 class ShippingModel(models.Model):
@@ -23,12 +24,12 @@ class ShippingModel(models.Model):
             type: int
         """
     # shipping_address_id = models.IntegerField(verbose_name="shipping address Id", primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     postal_code = models.CharField(verbose_name=_("postal code"), null=False, blank=False, max_length=20)
     country = CountryField()
     region = models.CharField(verbose_name=_("region"), null=False, blank=False, max_length=50)
     city = models.CharField(verbose_name=_("city"), null=False, blank=False, max_length=50)
     post_office = models.IntegerField(verbose_name=_("post office"), null=False, blank=False)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = _("Shipping address")
