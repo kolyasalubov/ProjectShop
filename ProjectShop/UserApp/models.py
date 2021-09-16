@@ -81,4 +81,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def is_staff(self) -> int:
-        return not self.is_bot and self.role
+        return (not self.is_bot) and self.role
