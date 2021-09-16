@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'Shipping',
     'django_countries',
     'order',
+    'WishList',
     'OrderItems',
     ]
 
