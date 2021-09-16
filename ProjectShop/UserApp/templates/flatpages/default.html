@@ -1,0 +1,12 @@
+{% extends "UserApp/_base.html" %}
+
+{% load i18n %}
+
+{% block title %}
+    <title>{% blocktranslate with title=flatpage.title %} {{ title }} {% endblocktranslate %}</title>
+{% endblock title %}
+
+
+{% block content %}
+    {% blocktranslate with content=flatpage.content %} {{ content }} {% endblocktranslate %}
+{% endblock %}

@@ -1,10 +1,6 @@
 from django.urls import path, include
 from django.contrib import admin
-from order.views import *
+from order.router import router
 
 app_name = "order"
-urlpatterns = [
-    path('create/', OrderCreateView.as_view()),
-    path('all/', OrderListView.as_view()),
-    path('detail/<int:pk>/', OrderDetailView.as_view()),
-]
+urlpatterns = router.urls
