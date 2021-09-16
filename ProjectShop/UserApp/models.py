@@ -1,11 +1,11 @@
 from django.db import models
-
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
-from .managers import UserManager
+
+from UserApp.managers import UserManager
 
 ROLE_CHOICES = (
     (0, 'user'),
@@ -56,6 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = PhoneNumberField(verbose_name=_('phone number'), blank=False, null=False, unique=True)
     email = models.EmailField(verbose_name=_('email'), blank=False, null=False, unique=True)
     role = models.IntegerField(verbose_name=_('role'), default=0, choices=ROLE_CHOICES)
+    is_active = models.BooleanField(verbose_name=_('is active'), default=True)
 
     objects = UserManager()
 
@@ -68,6 +69,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return self.email
+
+    def has_perm(self, perm, obj=None):
+        return self.role
+
+    def has_module_perms(self, app_label):
+        return self.role
 
     @property
     def is_staff(self) -> int:
