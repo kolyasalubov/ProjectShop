@@ -31,6 +31,7 @@ class RestClient:
         'POST': requests.post,
         'PUT': requests.put,
         'DELETE': requests.delete,
+        'PATCH': requests.patch,
     }
 
     def __init__(self, phone_number, password, server_host, token_url, token_refresh_url, logout_url):
