@@ -49,10 +49,11 @@ INSTALLED_APPS = [
 
     # local apps
     'UserApp',
+    'Shipping',
+    'django_countries',
     'order',
     'OrderItems',
     ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
