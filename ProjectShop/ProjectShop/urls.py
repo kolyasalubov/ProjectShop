@@ -27,3 +27,4 @@ urlpatterns = [
     path("order/", include("order.urls")),
     path('', TemporalHomePageView.as_view(), name='home')
 ]
+

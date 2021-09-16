@@ -21,3 +21,4 @@ class RegisterView(SuccessMessageMixin, generic.CreateView):
 
 class TemporalHomePageView(TemplateView):
     template_name = 'UserApp/home.html'
+    
