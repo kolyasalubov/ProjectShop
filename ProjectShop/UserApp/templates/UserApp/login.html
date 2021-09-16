@@ -1,7 +1,23 @@
-{% load i18n %}
+{% extends "UserApp/_base.html" %}
 
-<form action="{% url 'login' %}" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" id="submit">{% translate "Login" %}</button>
-</form>
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  <title>{% translate "Login" %}</title>
+{% endblock title %}
+
+
+{% block content %}
+
+  <h1>{% translate "Login Page" %}</h1>
+
+  <form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" id="submit">{% translate "Login" %}</button>
+  </form>
+
+  <h4>{% translate "Need An Account?" %}<a href="{% url 'register' %}">{% translate "Sign Up Now" %}</a></h4>
+
+{% endblock %}

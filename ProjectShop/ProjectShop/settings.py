@@ -39,10 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 3rd party apps
+    'django.contrib.sites',
+    'django.contrib.flatpages',
+
+    # 3rd-party apps
     'rest_framework',
     "order",
     'phonenumber_field',
+    'crispy_forms',
 
     # local apps
     'UserApp',
@@ -137,3 +141,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'UserApp.User'
 
 AUTHENTICATION_BACKENDS = ['UserApp.backends.EmailBackend']
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
+SITE_ID = 1
