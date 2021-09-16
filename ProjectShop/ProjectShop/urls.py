@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 from order.router import router
-
 from UserApp.views import TemporalHomePageView
 from UserApp.views import LoginView, RegisterView
 
@@ -28,4 +27,3 @@ urlpatterns = [
     path("order/", include("order.urls")),
     path('', TemporalHomePageView.as_view(), name='home')
 ]
-
