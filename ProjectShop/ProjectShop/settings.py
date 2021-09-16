@@ -42,16 +42,23 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 3rd party apps
+    'django.contrib.sites',
+    'django.contrib.flatpages',
+
+    # 3rd-party apps
     'rest_framework',
-    "order",
-    'phonenumber_field',
     'rest_framework_simplejwt.token_blacklist',
+    'django_countries',
+    'phonenumber_field',
+    'crispy_forms',
 
     # local apps
     'UserApp',
+    'Shipping',
+    'order',
+    'WishList',
+    'OrderItems',
     ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -179,3 +186,10 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+AUTHENTICATION_BACKENDS = ['UserApp.backends.EmailBackend']
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
+SITE_ID = 1

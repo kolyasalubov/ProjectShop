@@ -2,9 +2,11 @@ asgiref==3.4.1
 certifi==2021.5.30
 charset-normalizer==2.0.5
 Django==3.2.6
-django-phonenumber-field==5.2.0
+django_countries==7.2.1
+django-crispy-forms==1.12.0
 djangorestframework==3.12.4
 djangorestframework-simplejwt==4.8.0
+django-phonenumber-field==5.2.0
 idna==3.2
 phonenumbers==8.12.31
 PyJWT==2.1.0
