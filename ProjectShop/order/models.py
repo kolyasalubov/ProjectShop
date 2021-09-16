@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from UserApp.models import User
 
 
-# Create your models here.
 class Order(models.Model):
     """Create Order model and take information about order.
 
