@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsBot(permissions.BasePermission):
+class IsAdminBot(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.is_bot
+        return request.user.is_bot and request.user.role
