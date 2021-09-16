@@ -8,9 +8,9 @@ class WishList(models.Model):
        A database object that represents products that user want to buy in future.
        Attributes:
            products: references to category that product belongs to.
-           user_id: reference to the user who make wishlist.
+           user: reference to the user who make wishlist.
        """
 
     # products = models.ManyToManyField(Product, related_name='wishlists')
 
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
