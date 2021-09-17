@@ -19,5 +19,25 @@ class RegisterView(SuccessMessageMixin, generic.CreateView):
     success_message = "Congratulations! Your account has been created. You may sign in!"
 
 
+class LogoutView(auth_views.LogoutView):
+    template_name = 'UserApp/logout.html'
+
+
+class PasswordResetView(auth_views.PasswordResetView):
+    template_name = 'UserApp/password_reset.html'
+
+
+class PasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'UserApp/password_reset_done.html'
+
+
+class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'UserApp/password_reset_confirm.html'
+
+
+class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'UserApp/password_reset_complete.html'
+
+
 class TemporalHomePageView(TemplateView):
     template_name = 'UserApp/home.html'
