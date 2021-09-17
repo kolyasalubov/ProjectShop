@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from UserApp.models import User
+from OrderItems.models import OrderItems
+from Shipping.models import ShippingModel
 
 
 class Order(models.Model):
@@ -27,6 +29,7 @@ class Order(models.Model):
 
     """
     order_date = models.DateTimeField(auto_now_add=True)
+    order_items = models.ForeignKey(OrderItems, on_delete=CASCADE)
 
 
     class PaymentMethod(models.TextChoices):
@@ -39,7 +42,7 @@ class Order(models.Model):
                      default=PaymentMethod.CASH)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    # shippingAddress_id = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE)
+    shippingAddress_id = models.ForeignKey(ShippingModel, on_delete=models.CASCADE)
 
 
     class ShippingStatus(models.TextChoices):
