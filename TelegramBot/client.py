@@ -2,7 +2,7 @@ import requests
 import os
 
 
-PHONE_NUMBER = os.environ.get('BOT_PHONE_NUMBER')      # Crete admin is_bot user and insert his/her phone_number
+PHONE_NUMBER = os.environ.get('BOT_PHONE_NUMBER')     # Crete admin is_bot user and insert his/her phone_number
 PASSWORD = os.environ.get('BOT_PASSWORD')          # Crete admin is_bot user and insert his/her password
 SERVER_HOST = os.environ.get('SERVER_HOST')         # "http://localhost:8000/" insert for local testing
 TOKEN_URL = 'user/token/'
