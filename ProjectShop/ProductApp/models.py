@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import format_html
 from django.core.validators import *
 from UserApp.models import User
 
@@ -65,6 +66,9 @@ class Product(models.Model):
     description = models.TextField(max_length=5000, null=False, blank=False)
     stock_quantity = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
 
+    def __str__(self):
+        return self.name
+
 
 class Review(models.Model):
     """
@@ -85,7 +89,6 @@ class Review(models.Model):
     comment = models.TextField(max_length=5000, null=True, blank=True)
 
 
-
 class ProductMedia(models.Model):
     """
     A database object that represents media bound to the product, like pictures or video links.
@@ -102,11 +105,21 @@ class ProductMedia(models.Model):
         (1, 'video_link')
     ]
 
-    product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT, related_name='media')
 
     media_type = models.IntegerField(choices=MEDIA_TYPES, null=False, blank=False)
-    image = models.ImageField(upload_to="", null=True, blank=True)
+    image = models.ImageField(upload_to="product_media_image", null=True, blank=True)
     video_link = models.URLField(null=True, blank=True)
+
+    def image_tag(self):
+        return format_html('<img href="{0}" src="{0}" width="150" height="150" />'.format(self.image.url))
+
+    image_tag.allow_tags = True
+    image_tag.short_description = 'Image'
+
+    def __str__(self):
+        return f'{self.get_media_type_display()}{self.id}_{self.product}'
+
 
 
 
