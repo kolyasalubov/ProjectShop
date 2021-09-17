@@ -132,6 +132,3 @@ dmypy.json
 .idea/
 .DS_Store
 
-# migrations, FOR NOW
-*/migrations/*
-!*/migrations/__init__.py
