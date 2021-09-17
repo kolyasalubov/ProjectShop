@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from UserApp.models import User
 from OrderItems.models import OrderItems
+from Shipping.models import ShippingModel
 
 
 class Order(models.Model):
@@ -41,7 +42,7 @@ class Order(models.Model):
                      default=PaymentMethod.CASH)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    shippingAddress_id = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE)
+    shippingAddress_id = models.ForeignKey(ShippingModel, on_delete=models.CASCADE)
 
 
     class ShippingStatus(models.TextChoices):
