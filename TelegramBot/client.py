@@ -98,7 +98,7 @@ class RestClient:
         response = requests.post(url, headers=headers, data=data)
         return response
 
-    def send_request(self, method: str, url: str, headers: dict = None, data: dict = None) -> requests.Response:
+    def send_request(self, method: str, url: str, headers: dict = None, data: dict = None, **kwargs) -> requests.Response:
         """
         Provide sending request.
 
@@ -132,7 +132,7 @@ class RestClient:
                 return response
             else:
                 headers['Authorization'] = f"Bearer {self.access}"
-                response = request_method(url, headers=headers, data=data)
+                response = request_method(url, headers=headers, data=data, **kwargs)
         return response
 
 

@@ -42,9 +42,37 @@ class ShippingAddress(Model):
         self.city = city
         self.post_office = post_office
 
+    def add_shipping_address(self, user_id: int) -> bool:
+        data = self._to_dict()
+        response = bot_client.send_request("POST", f"user/{user_id}/shipping-address", data=data)
+        return response.status_code == 201
+
+    @staticmethod
+    def delete(id):
+        response = bot_client.send_request("DELETE", f"/shipping-address?id={id}")
+        return response == 200
+
 
 class Wishlist(Model):
-    pass
+    product_id = IntegerField()
+    product_name = StringField(max_value=100)
+
+    def __init__(self, product_id=None,
+                 product_name=None,
+                 **kwargs):
+        super().__init__(**kwargs)
+        self.product_id = product_id
+        self.product_name = product_name
+
+    def add_wishlist(self, user_id: int) -> bool:
+        data = self._to_dict()
+        response = bot_client.send_request("POST", f"user/{user_id}/wishlist", data=data)
+        return response.status_code == 201
+
+    @staticmethod
+    def delete(id):
+        response = bot_client.send_request("DELETE", f"/wishlist?id={id}")
+        return response == 200
 
 
 class User(Model):
@@ -67,50 +95,65 @@ class User(Model):
         self.phone_number = phone_number
         self.email = email
 
-    @classmethod
-    def is_registered(cls, phone_number: str) -> object:
+    @staticmethod
+    def is_registered(phone_number: str) -> object:
         response = bot_client.send_request("GET", f"/user?phone-number={phone_number}")
         if response.status_code == 200:
-            return cls._from_dict(response.json())
+            return response.json()['id']
 
     def register(self) -> None:
         response = bot_client.send_request("POST", "/user", data=self._to_dict())
         if response.status_code == 201:
-            self.id = response.json(["id"])
+            return response.json()["id"]
 
-    def update(self, data_to_change: dict) -> None:
-        response = bot_client.send_request("PATCH", f"/user?userId={self.id}", data=data_to_change)
+    @staticmethod
+    def update(user_id: int, data_to_change: dict) -> bool:
+        response = bot_client.send_request("PATCH", f"/user?userId={user_id}", data=data_to_change)
+        return response.status_code == 200
+
+    @staticmethod
+    def get_shipping_addresses(user_id: int) -> list:
+        response = bot_client.send_request("GET", f"user/{user_id}/shipping-address")
         if response.status_code == 200:
-            self._update(data_to_change)
+            return [ShippingAddress._from_dict(s) for s in response.json()]
 
-    def add_shipping_address(self, shipping_address):
-        response = bot_client.send_request("POST", f"user/{self.id}/shipping-address", data=shipping_address)
-        return response.status_code == 201
-
-    def get_shipping_addresses(self) -> list:
-        response = bot_client.send_request("GET", f"user/{self.id}/shipping-address")
+    @staticmethod
+    def get_wishlist(user_id: int) -> list:
+        response = bot_client.send_request("GET", f"user/{user_id}/wishlist")
         if response.status_code == 200:
-            return [ShippingAddress._from_dict(s) for s in response.json]
+            return [ShippingAddress._from_dict(s) for s in response.json()]
 
 
 class ProductAttributes(Model):
     name = StringField(max_value=100)
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name=None, **kwargs):
         super().__init__(**kwargs)
         self.name = name
 
 
 class Category(ProductAttributes):
-    pass
+    @classmethod
+    def get(cls):
+        response = bot_client.send_request("GET", "/products/categories")
+        if response.status_code == 200:
+            return [cls._from_dict(c) for c in response.json()]
 
 
 class Subcategory(ProductAttributes):
-    pass
+    @classmethod
+    def get(cls, category_id):
+        response = bot_client.send_request("GET", f"/products/categories/{category_id}/subcategories")
+        if response.status_code == 200:
+            return [cls._from_dict(s) for s in response.json()]
 
 
 class Tag(ProductAttributes):
-    pass
+    @classmethod
+    def get(cls):
+        response = bot_client.send_request("GET", "/products/tags")
+        if response.status_code == 200:
+            return [cls._from_dict(t) for t in response.json()]
 
 
 class Review(Model):
@@ -132,6 +175,23 @@ class Review(Model):
         self.comment = comment
         self.likes = likes
         self.dislikes = dislikes
+
+    @classmethod
+    def view_reviews(cls, product_id):
+        response = bot_client.send_request("GET", f"/products/{product_id}/reviews")
+        return [cls._from_dict(t) for t in response.json()]
+
+    def post(self, product_id):
+        data = self._to_dict()
+        response = bot_client.send_request("POST", f"/products/{product_id}/reviews", data=data)
+        return response.status_code == 201
+
+    @staticmethod
+    def like(self, user_id, review, like=True):
+        data = {"userId": user_id, "reply":like}
+        response = bot_client.send_request("PUT", f"/products/reviews/{review.id}", data=data)
+        if response == 200:
+            return response.json()
 
 
 class Product(Model):
@@ -157,24 +217,39 @@ class Product(Model):
         self.subcategories = [Subcategory._from_dict(s) for s in subcategories]
         self.tags = [Tag._from_dict(t) for t in tags]
 
+    @staticmethod
+    def get(category_id: int, page_size=10, page=1, subcategories=None, tags=None):
+        params = {"category": category_id,
+                  "bodySize": page_size,
+                  "page": page}
+        if subcategories:
+            params.update({"subcategories": subcategories})
+        if tags:
+            params.update({"tags": tags})
+        response = bot_client.send_request("GET", f"/products", params=params)
+        return [Product._from_dict(p) for p in response.json()]
+
 
 class Order(Model):
     paymentMethod = StringField(max_value=10)
     user_id = IntegerField()
+    shipping_address = IntegerField()
 
-    def __init__(self, payment_method=None,
+    def __init__(self, products,
+                 payment_method=None,
                  user_id=None,
                  shipping_address=None,
-                 products=None,
                  **kwargs):
         super().__init__(**kwargs)
         self.paymentMethod = payment_method
         self.user_id = user_id
         self.shipping_address = shipping_address
-        self.products = products
+        self.products = []
 
+    def add_product(self, product_id, quantity):
+        self.products.append({"product":product_id, "quantitu":quantity})
 
-if __name__ == "__main__":
-    x = ShippingAddress()
-    x.country = 3
-    print(x.country)
+    def submit(self):
+        data = self._to_dict()
+        response = bot_client.send_request("POST", "/orders", data=data)
+        return response == 201
