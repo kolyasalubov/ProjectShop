@@ -131,7 +131,3 @@ dmypy.json
 # .idea, and macOS buffer files
 .idea/
 .DS_Store
-
-# migrations, FOR NOW
-*/migrations/*
-!*/migrations/__init__.py
