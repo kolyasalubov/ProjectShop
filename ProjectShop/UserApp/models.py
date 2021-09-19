@@ -77,6 +77,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return self.email
 
+    def get_info(self):
+        return self.profile_pic.path
+
     def has_perm(self, perm, obj=None):
         return self.role
 
@@ -84,11 +87,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.role
 
     def save(self, *args, **kwargs):
-        super().save()
+
+        super().save(*args, **kwargs)
 
         try:
             # Need this try block because default image is .svg format
-            # Can be replaced with checking if self.profile_pic.name is default
+            # Can be replaced with checking if self.profile_pic.name is not default
             image_path = self.profile_pic.path
 
             img = Image.open(image_path)
