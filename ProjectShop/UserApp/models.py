@@ -77,9 +77,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return self.email
 
-    def get_info(self):
-        return self.profile_pic.path
-
     def has_perm(self, perm, obj=None):
         return self.role
 
