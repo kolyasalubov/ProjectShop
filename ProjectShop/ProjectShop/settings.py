@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'Shipping',
     'order',
     'WishList',
-    'OrderItems',
+    'ProductApp',
     ]
 
 MIDDLEWARE = [
