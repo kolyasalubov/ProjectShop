@@ -4,14 +4,21 @@ from django.contrib.auth import views as auth_views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
-from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView
+from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView, LogoutView, PasswordResetView, \
+                          PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+
 
 app_name = 'user_app'
+
 
 view_based_urls = [
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='UserApp/logout.html'), name='logout'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('password-reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password-reset-complete/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
 
 token_urls = [
