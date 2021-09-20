@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'UserApp',
     'Shipping',
     'order',
+    'ProductApp',
     'WishList',
     'OrderItems',
     ]
