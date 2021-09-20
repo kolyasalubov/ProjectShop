@@ -1,5 +1,6 @@
 """
-Models are implemented using Pydantic BaseModel and fields. For more info, read https://pydantic-docs.helpmanual.io
+Models and data validation are implemented using Pydantic BaseModel and fields.
+For more info, read https://pydantic-docs.helpmanual.io
 
 Methods in models are facades for all api requests required by telegram bot
 """
@@ -203,7 +204,7 @@ class Review(BaseModel):
         Post a reply for review. If already posted: If reply is the same, supposed to delete it, if another - change it
         """
         data = {"userId": user_id, "reply": like}
-        response = bot_client.send_request("PUT", f"/products/reviews/{self.id}", data=data)
+        response = bot_client.send_request("PUT", f"/products/reviews/{self.id}/replies", data=data)
         if response == 200:
             return response.json()
 
