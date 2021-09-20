@@ -188,7 +188,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-AUTHENTICATION_BACKENDS = ['UserApp.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'UserApp.backends.EmailBackend']
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
