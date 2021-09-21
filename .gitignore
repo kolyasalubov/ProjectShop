@@ -137,6 +137,4 @@ dmypy.json
 sonar-project.properties
 
 # mediafiles
-/ProjectShop/media/*
-# exclude dafault image
-!/ProjectShop/media/dafault_image/
+/ProjectShop/media/product_media_image/*
