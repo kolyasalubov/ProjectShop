@@ -1,0 +1,21 @@
+{% load i18n %}
+
+{% block title %}
+  <title>{% translate "Update shipping address" %}</title>
+{% endblock title %}
+
+<h3>{% translate "Update shipping address:" %}</h3>
+
+<div class="main">
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <form action="/shipping/add">
+            <button type="submit" id="submit">{% translate "Update" %}</button>
+        </form>
+
+    </form>
+
+</div>

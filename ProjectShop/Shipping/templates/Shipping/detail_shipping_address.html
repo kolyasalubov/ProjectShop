@@ -1,0 +1,15 @@
+{% load i18n %}
+
+{% block title %}
+  <title>{% translate "Details about certain shipping address" %}</title>
+{% endblock title %}
+
+<div class="main">
+
+    <strong>{% translate "Postal code:" %} </strong> {{ object.postal_code }}</br>
+    <strong>{% translate "Country (ISO code):" %} </strong> {{ object.country }}</br>
+    <strong>{% translate "Region:" %} </strong> {{ object.region }}</br>
+    <strong>{% translate "City:" %} </strong> {{ object.city }}</br>
+    <strong>{% translate "Post office №:" %} </strong> {{ object.post_office }}</br>
+
+</div>

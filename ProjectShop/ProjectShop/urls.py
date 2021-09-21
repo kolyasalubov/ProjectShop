@@ -18,9 +18,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from order.router import router
+from UserApp.views import TemporalHomePageView
+from UserApp.views import LoginView, RegisterView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("order/", include("order.urls"))
+    path('users/', include('UserApp.urls')),
+    path('pages/', include('django.contrib.flatpages.urls')),
+    path("order/", include("order.urls")),
+    path('', TemporalHomePageView.as_view(), name='home')
 ]
 
 if settings.DEBUG:
