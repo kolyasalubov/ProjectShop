@@ -131,3 +131,12 @@ dmypy.json
 # .idea, and macOS buffer files
 .idea/
 .DS_Store
+
+# sonarqube files
+.scannerwork/
+sonar-project.properties
+
+# mediafiles
+/ProjectShop/media/*
+# exclude dafault image
+!/ProjectShop/media/dafault_image/
