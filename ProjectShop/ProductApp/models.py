@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.html import format_html
 from django.core.validators import *
 from django.utils.translation import ugettext_lazy as _
-from django.template.defaultfilters import truncatechars
+from django.template.defaultfilters import truncatewords
 
 from UserApp.models import User
 from ProductApp.signals import delete_image_when_row_deleted_from_db, delete_image_when_image_changed
@@ -88,7 +88,7 @@ class Product(models.Model):
 
     @property
     def short_description(self):
-        return truncatechars(self.description, 120)
+        return truncatewords(self.description, 20)
 
 
 class Review(models.Model):

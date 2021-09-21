@@ -16,7 +16,6 @@ def delete_image_when_row_deleted_from_db(sender, instance, **kwargs) -> None:
     for field in sender._meta.concrete_fields:
         if isinstance(field, models.ImageField):
             instance_file_field = getattr(instance, field.name)
-            print(sender, instance, field, instance_file_field)
             delete_file_if_unused(sender, instance, field, instance_file_field)
 
 

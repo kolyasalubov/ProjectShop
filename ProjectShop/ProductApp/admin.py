@@ -10,14 +10,14 @@ class IsAvailableProductFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ('True', _('available')),
-            ('False', _('not available')),
+            ('available', _('available')),
+            ('not_available', _('not available')),
         )
 
     def queryset(self, request, queryset):
-        if self.value() == 'True':
+        if self.value() == 'available':
             return queryset.filter(stock_quantity__gt=0)
-        if self.value() == 'False':
+        if self.value() == 'not_available':
             return queryset.filter(stock_quantity__lte=0)
 
 
