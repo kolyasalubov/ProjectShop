@@ -7,7 +7,13 @@ from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from braces.views import AnonymousRequiredMixin
+from rest_framework import generics, status, viewsets
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 
+from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
 
 
@@ -23,6 +29,26 @@ class RegisterView(AnonymousRequiredMixin, SuccessMessageMixin, generic.CreateVi
     success_message = _("Congratulations! Your account has been created. You may sign in!")
 
 
+class LogoutView(auth_views.LogoutView):
+    template_name = 'UserApp/logout.html'
+
+
+class PasswordResetView(auth_views.PasswordResetView):
+    template_name = 'UserApp/password_reset.html'
+
+
+class PasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'UserApp/password_reset_done.html'
+
+
+class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'UserApp/password_reset_confirm.html'
+
+
+class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'UserApp/password_reset_complete.html'
+
+
 class TemporalHomePageView(TemplateView):
     template_name = 'UserApp/home.html'
 
@@ -33,11 +59,11 @@ class CustomUpdateView(generic.edit.SingleObjectTemplateResponseMixin,
 
     def get(self, request, *args, **kwargs):
         self.object = request.user
-        return super().get(request, *args, kwargs)
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.object = request.user
-        return super().post(request, *args, kwargs)
+        return super().post(request, *args, **kwargs)
 
 
 class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, CustomUpdateView):
@@ -46,3 +72,17 @@ class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, CustomUpdateVie
     template_name = 'UserApp/profile.html'
     success_url = reverse_lazy('profile')
     success_message = _("Your account has been updated!")
+=======
+class BlacklistRefreshViewSet(viewsets.GenericViewSet):
+    """
+    A simple ViewSet for creating blacklist token from refresh token.
+    """
+    permission_classes = (IsAdminBot, IsAuthenticated)
+
+    def create(self, request):
+        try:
+            refresh_token = RefreshToken(request.data.get('refresh'))
+            refresh_token.blacklist()
+        except TokenError as error:
+            return Response(str(error), status=status.HTTP_202_ACCEPTED)
+        return Response(status=status.HTTP_200_OK)
