@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from UserApp.models import User
 from Shipping.models import ShippingModel
-# from ProductApp.models import Product
+from ProductApp.models import Product
 
 
 class OrderModel(models.Model):
@@ -42,6 +42,7 @@ class OrderModel(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     shippingAddress_id = models.ForeignKey(ShippingModel, on_delete=models.CASCADE)
+    order_items = models.ForeignKey('OrderItemsModel', on_delete=models.CASCADE)
 
 
     class ShippingStatus(models.TextChoices):
@@ -64,7 +65,10 @@ class OrderModel(models.Model):
                      default=PaymentStatus.PENDING)
 
 
+class OrderItemsModel(models.Model):
+    order = models.ForeignKey(OrderModel, on_delete=models.CASCADE)
     order_items_qantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
-    # product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
 
 
