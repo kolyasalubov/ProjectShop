@@ -72,7 +72,8 @@ class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, CustomUpdateVie
     template_name = 'UserApp/profile.html'
     success_url = reverse_lazy('profile')
     success_message = _("Your account has been updated!")
-=======
+
+
 class BlacklistRefreshViewSet(viewsets.GenericViewSet):
     """
     A simple ViewSet for creating blacklist token from refresh token.
