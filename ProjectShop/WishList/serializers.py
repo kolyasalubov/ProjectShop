@@ -8,6 +8,6 @@ class WishListSerializer(serializers.ModelSerializer):
     wishlist = ProductSerializer(many=True, read_only=True)
 
     class Meta:
-        model: User
-        fields = ['wishlist']
-        read_only_fields = ['wishlist']
+        model = User
+        fields = ['id', 'wishlist']
+        read_only_fields = ['id', 'wishlist']

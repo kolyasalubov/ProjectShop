@@ -5,8 +5,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
 from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView
+from WishList.views import WishListViewSet
 
-app_name = 'user_app'
+# app_name = 'user_app'
 
 view_based_urls = [
     path('login/', LoginView.as_view(), name='login'),
@@ -21,4 +22,5 @@ token_urls = [
 
 router = DefaultRouter()
 router.register(r'token/logout', BlacklistRefreshViewSet, basename='user')
+router.register(r'wishlist', WishListViewSet, basename='wishlist')
 urlpatterns = router.urls + token_urls + view_based_urls

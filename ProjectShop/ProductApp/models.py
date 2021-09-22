@@ -60,7 +60,7 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag)
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    price = models.DecimalField(validators=[MinValueValidator(0)], decimal_places=2, null=False, blank=False)
+    price = models.DecimalField(validators=[MinValueValidator(0)], decimal_places=2, max_digits=9, null=False, blank=False)
     description = models.TextField(max_length=5000, null=False, blank=False)
     stock_quantity = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
 
@@ -80,7 +80,7 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
-    rating = models.IntegerField(validators=[MinValueValidator[0], MaxValueValidator(5)], null=False, blank=False)
+    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], null=False, blank=False)
     comment = models.TextField(max_length=5000, null=True, blank=True)
 
 
