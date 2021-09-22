@@ -2,8 +2,10 @@ from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.db import models
 
+from ProductApp.models import ProductMedia
 
-@receiver(post_delete)
+
+@receiver(post_delete, sender=ProductMedia)
 def delete_image_when_row_deleted_from_db(sender, instance, **kwargs) -> None:
     """
     Delete image if instance is deleted.
@@ -19,7 +21,7 @@ def delete_image_when_row_deleted_from_db(sender, instance, **kwargs) -> None:
             delete_file_if_unused(sender, instance, field, instance_file_field)
 
 
-@receiver(pre_save)
+@receiver(pre_save, sender=ProductMedia)
 def delete_image_when_image_changed(sender, instance, **kwargs) -> None:
     """
     Delete image if it was switched.
@@ -43,8 +45,6 @@ def delete_image_when_image_changed(sender, instance, **kwargs) -> None:
             instance_in_db_file_field = getattr(instance_in_db, field.name)
             instance_file_field = getattr(instance, field.name)
             if instance_in_db_file_field.name != instance_file_field.name:
-                print(field, type(field))
-                print(instance_in_db_file_field, type(instance_in_db_file_field))
                 delete_file_if_unused(sender, instance, field, instance_in_db_file_field)
 
 

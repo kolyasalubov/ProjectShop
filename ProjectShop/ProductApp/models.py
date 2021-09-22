@@ -1,11 +1,10 @@
 from django.db import models
 from django.utils.html import format_html
-from django.core.validators import *
+from django.core import validators
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import truncatewords
 
 from UserApp.models import User
-from ProductApp.signals import delete_image_when_row_deleted_from_db, delete_image_when_image_changed
 
 
 class ProductCategory(models.Model):
@@ -52,6 +51,7 @@ class Tag(models.Model):
     Attributes:
         name: the name of the tag.
     """
+
     name = models.CharField(max_length=100, null=False, blank=False)
 
     def __str__(self):
@@ -78,10 +78,10 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag)
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    price = models.DecimalField(validators=[MinValueValidator(0)], decimal_places=2, max_digits=9,
+    price = models.DecimalField(validators=[validators.MinValueValidator(0)], decimal_places=2, max_digits=9,
                                 null=False, blank=False)
     description = models.TextField(max_length=5000, null=False, blank=False)
-    stock_quantity = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
+    stock_quantity = models.IntegerField(validators=[validators.MinValueValidator(0)], null=False, blank=False)
 
     def __str__(self):
         return self.name
@@ -106,7 +106,8 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
-    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], null=False, blank=False)
+    rating = models.IntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(5)],
+                                 null=False, blank=False)
     comment = models.TextField(max_length=5000, null=True, blank=True)
     is_active = models.BooleanField(default=True)
 

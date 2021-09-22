@@ -43,6 +43,7 @@ class ProductMediaAdmin(admin.ModelAdmin):
     list_display = ('name', 'media_type', 'video_link', 'image', 'small_image_tag')
     list_filter = ('media_type',)
     search_fields = ('product__name',)
+    raw_id_fields = ('product',)
 
 
 class ReviewAdmin(admin.ModelAdmin):
