@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import *
+from django.core.validators import MinValueValidator, MaxValueValidator
 from UserApp.models import User
 
 
@@ -97,7 +97,8 @@ class ProductMedia(models.Model):
 
     MEDIA_TYPES = [
         (0, 'picture'),
-        (1, 'video_link')
+        (1, 'video_link'),
+        (2, 'picture and video_link'),
     ]
 
     product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT)
