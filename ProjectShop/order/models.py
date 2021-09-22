@@ -44,7 +44,6 @@ class OrderModel(models.Model):
     shippingAddress_id = models.ForeignKey(ShippingModel, on_delete=models.CASCADE)
     order_items = models.ForeignKey('OrderItemsModel', on_delete=models.CASCADE)
 
-
     class ShippingStatus(models.TextChoices):
         PLANNING = "Planning", _("Planning")
         SHIPPING = "Shipping", _("Shipping")
@@ -58,7 +57,6 @@ class OrderModel(models.Model):
     class PaymentStatus(models.TextChoices):
         PENDING = "Pending", _("Pending")
         PAID = "Paid", _("Paid")
-
 
     payment_status = models.CharField(max_length=7,
                      choices=PaymentStatus.choices,
