@@ -28,7 +28,14 @@ class LoginForm(AuthenticationForm):
     }
 
 
-class EditForm(UserChangeForm):
+class EditForm(forms.ModelForm):
+    birth_date = forms.DateField(required=False,
+                                 widget=forms.SelectDateWidget(years=range(datetime.now().year,
+                                                                           datetime.now().year - 120,
+                                                                           -1)
+                                                               )
+                                 )
+
     class Meta:
         model = get_user_model()
-        fields = ('email', 'password', 'phone_number', 'first_name', 'last_name', 'birth_date')
+        fields = ('phone_number', 'first_name', 'last_name', 'birth_date')

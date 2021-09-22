@@ -2,12 +2,12 @@ import requests
 import os
 
 
-PHONE_NUMBER = os.environ.get('BOT_PHONE_NUMBER')     # Crete admin is_bot user and insert his/her phone_number
+PHONE_NUMBER = os.environ.get('BOT_PHONE_NUMBER')      # Crete admin is_bot user and insert his/her phone_number
 PASSWORD = os.environ.get('BOT_PASSWORD')          # Crete admin is_bot user and insert his/her password
 SERVER_HOST = os.environ.get('SERVER_HOST')         # "http://localhost:8000/" insert for local testing
-TOKEN_URL = 'user/token/'
-TOKEN_REFRESH_URL = 'user/token/refresh/'
-LOGOUT_URL = 'user/token/logout/'
+TOKEN_URL = 'users/token/'
+TOKEN_REFRESH_URL = 'users/token/refresh/'
+LOGOUT_URL = 'users/token/logout/'
 
 
 class RestClient:
@@ -98,7 +98,8 @@ class RestClient:
         response = requests.post(url, headers=headers, data=data)
         return response
 
-    def send_request(self, method: str, url: str, headers: dict = None, data: dict = None, **kwargs) -> requests.Response:
+    def send_request(self, method: str, url: str, headers: dict = None, data: dict = None,
+                     params: dict = None) -> requests.Response:
         """
         Provide sending request.
 
@@ -107,6 +108,7 @@ class RestClient:
             url (str): request's url
             headers (dict, None): additional request's headers
             data (dict, None): request's body
+            params (dict, None): additional data to send via URL
 
         Return: request.Response object
         """
@@ -122,7 +124,7 @@ class RestClient:
             return response
 
         url = self.server_host + url
-        response = request_method(url, headers=headers, data=data)
+        response = request_method(url, headers=headers, data=data, params=params)
 
         if response.status_code == 401:
             auth_status = self._authenticate()
@@ -132,8 +134,9 @@ class RestClient:
                 return response
             else:
                 headers['Authorization'] = f"Bearer {self.access}"
-                response = request_method(url, headers=headers, data=data, **kwargs)
+                response = request_method(url, headers=headers, data=data, params=params)
         return response
+
 
 
 bot_client = RestClient(PHONE_NUMBER, PASSWORD, SERVER_HOST, TOKEN_URL, TOKEN_REFRESH_URL, LOGOUT_URL)
