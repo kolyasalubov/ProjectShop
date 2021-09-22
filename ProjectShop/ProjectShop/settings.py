@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_countries',
     'phonenumber_field',
     'crispy_forms',
+    'drf_yasg',
 
     # local apps
     'UserApp',
