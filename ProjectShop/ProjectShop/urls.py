@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from order.router import router
 from UserApp.views import TemporalHomePageView
@@ -28,3 +30,7 @@ urlpatterns = [
     path('api/v1/products/', include('ProductApp.api.urls')),
     path('', TemporalHomePageView.as_view(), name='home')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
