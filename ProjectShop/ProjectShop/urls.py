@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('UserApp.urls')),
     path('pages/', include('django.contrib.flatpages.urls')),
+<<<<<<< HEAD
     path("api/", include("order.urls")),
     path('', TemporalHomePageView.as_view(), name='home')
 ]
