@@ -38,4 +38,4 @@ class EditForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('phone_number', 'first_name', 'last_name', 'birth_date')
+        fields = ('profile_pic', 'phone_number', 'first_name', 'last_name', 'birth_date')
