@@ -75,7 +75,7 @@ class Product(models.Model):
 
     subcategories = models.ManyToManyField(ProductSubcategory)
     categories = models.ManyToManyField(ProductCategory)
-    tags = models.ManyToManyField(Tag, related_name='products')
+    tags = models.ManyToManyField(Tag)
 
     name = models.CharField(max_length=100, null=False, blank=False)
     price = models.DecimalField(validators=[MinValueValidator(0)], decimal_places=2, max_digits=9,
