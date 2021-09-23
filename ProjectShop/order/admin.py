@@ -31,7 +31,7 @@ def export_to_csv(modeladmin, request, queryset):
             product_list.append(f'{product}:{quantity}')
 
         order_list = [order['payment_method'], order['payment_status'], shipping_address,
-                      user_data, '\n'.join(product_list)]
+                      user_data, ' ; '.join(product_list)]
         writer.writerow(order_list)
 
     return response
