@@ -12,7 +12,7 @@
     --microtitle-text-size: 32px;
     --default-text-size: 20px;
     --default-text-font-weight: 300;
-    --small-text-size: 10px;
+    --small-text-size: 12px;
 }
 
 body, html {
@@ -26,4 +26,9 @@ header {
     width: 100%;
     background-color: var(--side-background-color);
     height: 100px;
+}
+
+header > h1 {
+    margin: 0;
+    padding: 0;
 }

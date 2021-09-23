@@ -1,8 +1,4 @@
 #main-div {
-    background-color: var(--forced-background-color);
-    width: 500px;
-    height: 500px;
-    border-radius: 25px;
     margin-left: auto;
     margin-right: auto;
     margin-top: calc((100vh - 600px) / 2);
@@ -16,6 +12,7 @@
 #main-div > form {
     position: relative;
     display: inline-block;
+    text-align: center;
     max-width: 700px;
     min-width: 500px;
     box-sizing: border-box;
@@ -30,19 +27,21 @@
     transform: translate(-50%, 0);
 }
 #main-div > form h1 {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
     color: var(--main-element-color);
     font-size: var(--subtitle-text-size);
     font-weight: var(--title-text-font-weight);
-    margin: auto;
 }
 #main-div > form a {
     color: var(--side-background-color);
     font-size: var(--small-text-size);
     font-weight: var(--default-text-font-weight);
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 #main-div > form button {
-    margin-left: auto;
     margin-top: 35px;
     background-color: var(--forced-background-color);
     border: 1px solid var(--side-background-color);
@@ -130,4 +129,8 @@
     -ms-transform: translate(5px, -35px) scale(0.6);
     -webkit-transform: translate(5px, -35px) scale(0.6);
     transform: translate(5px, -35px) scale(0.6);
+}
+
+header > h1 {
+    margin: auto;
 }

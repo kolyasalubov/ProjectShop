@@ -20,40 +20,27 @@
     <script type="text/javascript" src="{% static 'js/login.js' %}"></script>
 {% endblock %}
 
+{% block header_content %}
+    <h1>Log In</h1>
+{% endblock %}
 
 {% block main_content %}
     <div id="main-div">
 {#        <form action="{% url 'login' %}" method="post">#}
 {#            {% csrf_token %}#}
+{#            <h1>Welcome!</h1>#}
 {#            <div class="question">#}
-{#                <label for="username">Username</label>#}
-{#                <input type="text" id="username" required>#}
+{#                <input type="text" id="username" required/>#}
+{#                <label for="username">Email</label>#}
 {#            </div>#}
 {#            <div class="question">#}
+{#                <input type="password" id="password" required/>#}
 {#                <label for="password">Password</label>#}
-{#                <input type="text" id="password" required>#}
 {#            </div>#}
-{#            <button type="submit" id="submit">Login</button>#}
-{#            <a href="{% url 'password_reset' %}">{% translate "Forgot Password?" %}</a>#}
+{#            <button type="submit">Log In</button>#}
+{#            <br>#}
+{#            <a href="../password-reset">Forgot password?</a>#}
+{#            <a href="../register">Sign up!</a>#}
 {#        </form>#}
-{#        <h4>{% translate "Need An Account?" %}<a href="{% url 'register' %}">{% translate "Sign Up Now" %}</a></h4>#}
-
-
-        <form>
-            <h1>Welcome!</h1>
-            <div class="question">
-                <input type="text" id="username" required/>
-                <label for="username">Username</label>
-            </div>
-            <div class="question">
-                <input type="password" id="password" required/>
-                <label for="password">Password</label>
-            </div>
-            <button type="submit">Log In</button>
-            <br>
-            <a>Forgot password?</a>
-            <br>
-            <a>First time here? Sign up!</a>
-        </form>
     </div>
 {%endblock %}
