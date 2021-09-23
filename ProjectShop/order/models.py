@@ -58,10 +58,12 @@ class OrderModel(models.Model):
         PENDING = "Pending", _("Pending")
         PAID = "Paid", _("Paid")
 
-
     payment_status = models.CharField(max_length=7,
                      choices=PaymentStatus.choices,
                      default=PaymentStatus.PENDING)
+
+    def __str__(self):
+        return f'{self.user}; Payment status - {self.payment_status}'
 
 
 class OrderItemsModel(models.Model):

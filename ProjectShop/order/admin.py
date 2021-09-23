@@ -59,6 +59,14 @@ class OrderAdmin(admin.ModelAdmin):
         return self.readonly_fields
 
 
+class OrderItemsAdmin(admin.ModelAdmin):
+    fields = ('order_items_qantity', 'order', 'product')
+    readonly_fields = ('product', 'order_items_qantity', 'order')
+    list_display = ('product', 'order_items_qantity', 'order')
+    list_filter = ('product', )
+    ordering = ('product', 'order', )
+
+
 admin.site.register(OrderModel, OrderAdmin)
-admin.site.register(OrderItemsModel)
+admin.site.register(OrderItemsModel, OrderItemsAdmin)
 
