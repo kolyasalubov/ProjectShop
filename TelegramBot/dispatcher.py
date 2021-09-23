@@ -6,9 +6,11 @@ from telegram.ext import (
 
 from TOKEN import TELEGRAM_TOKEN
 
+
 def start_command(update, context):
     ''' This is start command for user '''
     update.message.reply_text("This is your shopping bot")
+
 
 def setup_dispatcher(dp):
     ''' Setupping dispatcher and adding all handlers '''
@@ -29,5 +31,6 @@ def run_pooling():
     print(f"Pooling of '{bot_link}' started")
     updater.start_polling()
     updater.idle()
+
 
 run_pooling()
