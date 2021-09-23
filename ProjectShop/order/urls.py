@@ -1,6 +1,5 @@
-from django.urls import path, include
-from django.contrib import admin
-from order.router import router
+from order.router import orderRouter
 
 app_name = "order"
-urlpatterns = router.urls
+
+urlpatterns = orderRouter.urls

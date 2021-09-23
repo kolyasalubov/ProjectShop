@@ -18,16 +18,19 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from order.router import router
+from order.router import orderRouter
+from ProductApp.router import productRouter
 from UserApp.views import TemporalHomePageView
 from UserApp.views import LoginView, RegisterView
+
+
+api_urls = orderRouter.urls + productRouter.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('UserApp.urls')),
     path('pages/', include('django.contrib.flatpages.urls')),
-    path('api/', include('order.urls')),
-    path('product/', include('ProductApp.urls')),
+    path('api/v1/', include(api_urls)),
     path('', TemporalHomePageView.as_view(), name='home')
 ]
 

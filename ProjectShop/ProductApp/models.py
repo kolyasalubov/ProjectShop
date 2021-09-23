@@ -98,7 +98,6 @@ class ProductMedia(models.Model):
     MEDIA_TYPES = [
         (0, 'picture'),
         (1, 'video_link'),
-        (2, 'picture and video_link'),
     ]
 
     product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT)
