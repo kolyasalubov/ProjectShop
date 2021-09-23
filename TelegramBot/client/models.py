@@ -154,7 +154,7 @@ class Subcategory(BaseModel):
         """
         Get subcategory list by category
         """
-        response = bot_client.send_request("GET", f"/products/categories/{category_id}/subcategories")
+        response = bot_client.send_request("GET", f"/products/subcategories")
         if response.status_code == 200:
             return [cls(**s) for s in response.json()]
 
