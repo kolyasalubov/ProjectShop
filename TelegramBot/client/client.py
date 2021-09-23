@@ -138,6 +138,5 @@ class RestClient:
         return response
 
 
-
 bot_client = RestClient(PHONE_NUMBER, PASSWORD, SERVER_HOST, TOKEN_URL, TOKEN_REFRESH_URL, LOGOUT_URL)
 # Use only next methods: logout, send_request
