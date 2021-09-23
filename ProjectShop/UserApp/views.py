@@ -7,13 +7,15 @@ from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from braces.views import AnonymousRequiredMixin
-from rest_framework import generics, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 from UserApp.permissions import IsAdminBot
+from UserApp.models import User
+from UserApp.serializers import UserSerializer, UserIdSerializer
 from UserApp.forms import LoginForm, RegisterForm, EditForm
 
 
@@ -87,3 +89,22 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
         except TokenError as error:
             return Response(str(error), status=status.HTTP_202_ACCEPTED)
         return Response(status=status.HTTP_200_OK)
+
+
+class GetUserIdByTelegramIdViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserIdSerializer
+    lookup_field = 'telegram_id'
+
+
+class GetUserIdByPhoneNumberViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserIdSerializer
+    lookup_field = 'phone_number'
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+

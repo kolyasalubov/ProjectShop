@@ -2,12 +2,15 @@ import requests
 import os
 
 
-PHONE_NUMBER = os.environ.get('BOT_PHONE_NUMBER')      # Crete admin is_bot user and insert his/her phone_number
-PASSWORD = os.environ.get('BOT_PASSWORD')          # Crete admin is_bot user and insert his/her password
-SERVER_HOST = os.environ.get('SERVER_HOST')         # "http://localhost:8000/" insert for local testing
+PHONE_NUMBER = "+380966666666"      # Crete admin is_bot user and insert his/her phone_number
+PASSWORD = "android750"          # Crete admin is_bot user and insert his/her password
+SERVER_HOST = "http://localhost:8000/"         # "http://localhost:8000/" insert for local testing
 TOKEN_URL = 'users/token/'
 TOKEN_REFRESH_URL = 'users/token/refresh/'
-LOGOUT_URL = 'users/token/logout/'
+LOGOUT_URL = 'user/token/logout/'
+GET_USER_ID_BY_TELEGRAM_ID_URL = 'users/get_user_id_by_telegram_id/'
+GET_USER_ID_BY_PHONE_NUMBER_URL = 'users/get_user_id_by_phone_number/'
+USER_URL = 'users/user/'
 
 
 class RestClient:
@@ -22,6 +25,9 @@ class RestClient:
         self.token_url (str): The url for obtaining tokens
         self.token_refresh_url (str): The url for refreshing tokens
         self.logout_url (str): The url for log out
+        self.get_user_ib_by_telegram_id_url (str): The url for retrieving user id by user telegram id
+        self.get_user_ib_by_phone_number_url (str): The url for retrieving user id by user phone number
+        self.user_url (str): The url for manipulating user
         self.access (str): access token
         self.refresh (str): refresh token
     """
@@ -34,13 +40,17 @@ class RestClient:
         'PATCH': requests.patch,
     }
 
-    def __init__(self, phone_number, password, server_host, token_url, token_refresh_url, logout_url):
+    def __init__(self, phone_number, password, server_host, token_url, token_refresh_url, logout_url,
+                 get_user_ib_by_telegram_id_url, get_user_ib_by_phone_number_url, user_url):
         self.phone_number = phone_number
         self.password = password
         self.server_host = server_host
         self.token_url = token_url
         self.token_refresh_url = token_refresh_url
         self.logout_url = logout_url
+        self.get_user_ib_by_telegram_id_url = get_user_ib_by_telegram_id_url
+        self.get_user_ib_by_phone_number_url = get_user_ib_by_phone_number_url
+        self.user_url = user_url
         self.access = ''
         self.refresh = ''
 
@@ -137,7 +147,40 @@ class RestClient:
                 response = request_method(url, headers=headers, data=data, params=params)
         return response
 
+    def get_user_id_by_telegram_id(self, telegram_id):
+        url = self.get_user_ib_by_telegram_id_url + telegram_id + '/'
+        response = self.send_request('GET', url)
+        return response
+
+    def _get_user_id_by_phone_number(self, phone_number):
+        url = self.get_user_ib_by_phone_number_url + str(phone_number) + '/'
+        response = self.send_request('GET', url)
+        return response
+
+    def add_telegram_id_to_user_profile(self,telegram_id, phone_number):
+        response = self._get_user_id_by_phone_number(phone_number)
+        if response.status_code != 200:
+            return response
+        user_id = str(response.json()['id'])
+        url = self.user_url + user_id + '/'
+        data = {'telegram_id': telegram_id}
+        response = self.send_request('PATCH', url, data=data)
+        return response
 
 
-bot_client = RestClient(PHONE_NUMBER, PASSWORD, SERVER_HOST, TOKEN_URL, TOKEN_REFRESH_URL, LOGOUT_URL)
+
+bot_client = RestClient(
+    phone_number=PHONE_NUMBER,
+    password=PASSWORD,
+    server_host=SERVER_HOST,
+    token_url=TOKEN_URL,
+    token_refresh_url=TOKEN_REFRESH_URL,
+    logout_url=LOGOUT_URL,
+    get_user_ib_by_telegram_id_url=GET_USER_ID_BY_TELEGRAM_ID_URL,
+    get_user_ib_by_phone_number_url=GET_USER_ID_BY_PHONE_NUMBER_URL,
+    user_url=USER_URL
+    )
 # Use only next methods: logout, send_request
+
+a = bot_client.add_telegram_id_to_user_profile("asddfg", '+380980589874')
+print(a.content, a.status_code)

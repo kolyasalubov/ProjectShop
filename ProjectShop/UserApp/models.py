@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         role: Describes user`s role, admin(1) is an administrator
         type: int, default value = 0, required field
     """
+    telegram_id = models.CharField(verbose_name=_('telegram id'),null=True, unique=True, max_length=40, default=None)
     first_name = models.CharField(verbose_name=_('first name'), blank=False, null=False, max_length=40)
     last_name = models.CharField(verbose_name=_('last name'), blank=False, null=False, max_length=40)
     middle_name = models.CharField(verbose_name=_('middle name'), blank=True, null=False, max_length=40)
