@@ -1,0 +1,133 @@
+#main-div {
+    background-color: var(--forced-background-color);
+    width: 500px;
+    height: 500px;
+    border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: calc((100vh - 600px) / 2);
+}
+.transition, form button, form .question label, form .question input[type="text"] {
+    -moz-transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
+    -o-transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
+    -webkit-transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
+    transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
+}
+#main-div > form {
+    position: relative;
+    display: inline-block;
+    max-width: 700px;
+    min-width: 500px;
+    box-sizing: border-box;
+    padding: 30px 25px;
+    background-color: var(--forced-background-color);
+    border-radius: 40px;
+    margin: 40px 0;
+    left: 50%;
+    -moz-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+}
+#main-div > form h1 {
+    color: var(--main-element-color);
+    font-size: var(--subtitle-text-size);
+    font-weight: var(--title-text-font-weight);
+    margin: auto;
+}
+#main-div > form a {
+    color: var(--side-background-color);
+    font-size: var(--small-text-size);
+    font-weight: var(--default-text-font-weight);
+    margin: auto;
+}
+#main-div > form button {
+    margin-left: auto;
+    margin-top: 35px;
+    background-color: var(--forced-background-color);
+    border: 1px solid var(--side-background-color);
+    line-height: 0;
+    font-size: 17px;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 20px 15px;
+    border-radius: 60px;
+    color: var(--side-background-color);
+    font-weight: 100;
+    letter-spacing: 0.01em;
+    position: relative;
+    z-index: 1;
+}
+#main-div > form button:hover, form button:focus {
+    color: var(--forced-background-color);
+    background-color: var(--side-background-color);
+}
+#main-div > form .question {
+    position: relative;
+    padding: 10px 0;
+}
+#main-div > form .question:first-of-type {
+    padding-top: 0;
+}
+#main-div > form .question:last-of-type {
+    padding-bottom: 0;
+}
+#main-div > form .question label {
+    transform-origin: left center;
+    color: var(--side-background-color);
+    font-weight: 100;
+    letter-spacing: 0.01em;
+    font-size: 17px;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    display: block;
+    position: absolute;
+    margin-top: -45px;
+    z-index: 2;
+    pointer-events: none;
+}
+#main-div > form .question input[type="text"],
+#main-div > form .question input[type="password"] {
+    appearance: none;
+    background-color: transparent;
+    border: 1px solid var(--side-background-color);
+    line-height: 0;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    border-radius: 60px;
+    color: var(--side-background-color);
+    font-weight: 100;
+    letter-spacing: 0.01em;
+    position: relative;
+    z-index: 1;
+}
+#main-div > form .question input[type="text"]:focus,
+#main-div > form .question input[type="password"]:focus {
+    outline: none;
+    background: var(--side-background-color);
+    color: var(--forced-background-color);
+    margin-top: 30px;
+}
+#main-div > form .question input[type="text"]:valid,
+#main-div > form .question input[type="password"]:valid {
+    margin-top: 30px;
+}
+#main-div > form .question input[type="text"]:focus ~ label,
+#main-div > form .question input[type="password"]:focus ~ label {
+    -moz-transform: translate(0, -35px);
+    -ms-transform: translate(0, -35px);
+    -webkit-transform: translate(0, -35px);
+    transform: translate(0, -35px);
+}
+#main-div > form .question input[type="text"]:valid ~ label,
+#main-div > form .question input[type="password"]:valid ~ label {
+    text-transform: uppercase;
+    font-style: italic;
+    -moz-transform: translate(5px, -35px) scale(0.6);
+    -ms-transform: translate(5px, -35px) scale(0.6);
+    -webkit-transform: translate(5px, -35px) scale(0.6);
+    transform: translate(5px, -35px) scale(0.6);
+}
