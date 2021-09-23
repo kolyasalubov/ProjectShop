@@ -39,7 +39,7 @@ def export_to_csv(modeladmin, request, queryset):
 
 class OrderItemsInline(admin.TabularInline):
     model = OrderItemsModel
-    readonly_fields = ('order_items_qantity',)
+    readonly_fields = ('order_items_qantity', 'product')
     extra = 1
 
 
