@@ -26,21 +26,30 @@
 
 {% block main_content %}
     <div id="main-div">
-{#        <form action="{% url 'login' %}" method="post">#}
-{#            {% csrf_token %}#}
-{#            <h1>Welcome!</h1>#}
-{#            <div class="question">#}
-{#                <input type="text" id="username" required/>#}
-{#                <label for="username">Email</label>#}
-{#            </div>#}
-{#            <div class="question">#}
-{#                <input type="password" id="password" required/>#}
-{#                <label for="password">Password</label>#}
-{#            </div>#}
-{#            <button type="submit">Log In</button>#}
-{#            <br>#}
-{#            <a href="../password-reset">Forgot password?</a>#}
-{#            <a href="../register">Sign up!</a>#}
-{#        </form>#}
+        <form method="post">
+            {% csrf_token %}
+            <h1>Welcome!</h1>
+            <div class="question">
+                <input type="text" name="username" maxlength="128" required="" id="id_username">
+                <label for="id_username">email / phone number</label>
+            </div>
+            <div class="question">
+                <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
+                <label for="id_password">password</label>
+            </div>
+            <ul class="error-list">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>
+                            {{ error }}
+                        </li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+            <button type="submit" id="submit">Log In</button>
+            <br>
+            <a href="../password-reset">Forgot password?</a>
+            <a href="../register">Sign up!</a>
+        </form>
     </div>
 {%endblock %}
