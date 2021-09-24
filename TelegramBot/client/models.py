@@ -51,7 +51,7 @@ class ShippingAddress(BaseModel):
         Delete user's shipping address, specified by user's id and shipping address' id
         """
         response = bot_client.send_request("DELETE", f"/user/shipping-address", params={"id": address_id})
-        return response == 200
+        return response.status_code == 200
 
 
 class Wishlist(BaseModel):
@@ -85,7 +85,7 @@ class Wishlist(BaseModel):
         """
         response = bot_client.send_request("DELETE", f"/user/wishlist", params={"userId": user_id,
                                                                                 "productId": product_id})
-        return response == 200
+        return response.status_code == 200
 
 
 class User(BaseModel):
@@ -154,7 +154,7 @@ class Subcategory(BaseModel):
         """
         Get subcategory list by category
         """
-        response = bot_client.send_request("GET", f"/products/categories/{category_id}/subcategories")
+        response = bot_client.send_request("GET", f"/products/subcategories")
         if response.status_code == 200:
             return [cls(**s) for s in response.json()]
 
@@ -205,7 +205,7 @@ class Review(BaseModel):
         """
         data = {"userId": user_id, "reply": like}
         response = bot_client.send_request("PUT", f"/products/reviews/{self.id}/replies", data=data)
-        if response == 200:
+        if response.status_code == 200:
             return response.json()
 
 
@@ -264,4 +264,4 @@ class Order(BaseModel):
         Post order to api
         """
         response = bot_client.send_request("POST", "/orders", data=self.__dict__)
-        return response == 201
+        return response.status_code == 201
