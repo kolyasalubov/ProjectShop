@@ -12,7 +12,11 @@ from phonenumbers import PhoneNumber
 from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal
 from typing import List, Tuple
 
-from client.client import bot_client
+from client import bot_client
+
+GET_USER_ID_BY_TELEGRAM_ID_URL = 'users/get_user_id_by_telegram_id/'
+GET_USER_ID_BY_PHONE_NUMBER_URL = 'users/get_user_id_by_phone_number/'
+USER_URL = 'users/user/'
 
 
 class ShippingAddress(BaseModel):
@@ -108,19 +112,27 @@ class User(BaseModel):
         arbitrary_types_allowed = True
 
     @staticmethod
-    def is_registered(phone_number: str) -> int:
+    def get_user_id_by_phone_number(phone_number: str) -> int:
         """
-        Check if our user is registered by his phone_number. If he is, return his id for later use
+        Return user id using phone number if user exists.
         """
-        response = bot_client.send_request("GET", f"/user", params={"phone-number", phone_number})
+        url = GET_USER_ID_BY_PHONE_NUMBER_URL + phone_number + '/'
+        response = bot_client.send_request("GET", url)
         if response.status_code == 200:
             return response.json()['id']
 
     def register(self) -> int:
         """
-        Send user to save in database. On success, return his dedicated id
+        Send user to save in database. On success, return his dedicated id.
         """
-        response = bot_client.send_request("POST", "/user", data=self.__dict__)
+        data = {
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'phone_number': '+' + str(self.phone_number.country_code),
+            'email': self.email,
+            'birth_date': self.birth_date
+        }
+        response = bot_client.send_request("POST", USER_URL, data=data)
         if response.status_code == 201:
             return response.json()["id"]
 
