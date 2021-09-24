@@ -5,7 +5,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
 from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView, LogoutView, PasswordResetView, \
-                          PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, UpdateProfileView
+                          PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, \
+                          UpdateProfileView, UserViewSet
 
 
 app_name = 'user_app'
@@ -29,4 +30,5 @@ token_urls = [
 
 router = DefaultRouter()
 router.register(r'token/logout', BlacklistRefreshViewSet, basename='user')
+router.register(r'user', UserViewSet, basename='userviewset')
 urlpatterns = router.urls + token_urls + view_based_urls

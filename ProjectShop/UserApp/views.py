@@ -15,6 +15,8 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
+from UserApp.serializers import UserSerializer, UserIdSerializer
+from UserApp.models import User
 
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
@@ -87,3 +89,14 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
         except TokenError as error:
             return Response(str(error), status=status.HTTP_202_ACCEPTED)
         return Response(status=status.HTTP_200_OK)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+
+    def list(self, request, *args, **kwargs):
+        user = User.objects.filter(phone_number=request.data.get('phone_number'))
+        if not user:
+            return Response(data={'message': 'We haven\'t user with such phone number.'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)

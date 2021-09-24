@@ -10,3 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
                   'email', 'role', 'is_active', ]
         read_only_fields = ('id', 'register_date', 'is_active', 'email')
 
+
+class UserIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id']
+        read_only_fields = ['id']
