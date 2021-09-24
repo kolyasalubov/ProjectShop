@@ -17,4 +17,5 @@ class ReviewViewSet(ModelViewSet):
         return queryset_list
 
     def perform_create(self, serializer):
-        serializer.save(product=Product.objects.get(pk=self.kwargs.get('product_id')))
+        product_id = self.kwargs.get('product_id')
+        serializer.save(product=Product.objects.get(pk=product_id))
