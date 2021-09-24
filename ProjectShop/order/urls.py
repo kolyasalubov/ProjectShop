@@ -1,5 +1,5 @@
-from order.router import orderRouter
+# from order.router import orderRouter
 
 app_name = "order"
 
-urlpatterns = orderRouter.urls
+# urlpatterns = orderRouter.urls
