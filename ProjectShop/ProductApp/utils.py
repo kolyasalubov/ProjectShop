@@ -15,3 +15,4 @@ def delete_file_if_unused(model, instance, field, instance_file_field) -> None:
     other_refs_exist = model.objects.filter(**dynamic_field).exclude(pk=instance.pk).exists()
     if not other_refs_exist:
         instance_file_field.delete(False)
+
