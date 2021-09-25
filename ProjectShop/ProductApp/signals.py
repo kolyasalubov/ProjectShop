@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.db import models
 
 from ProductApp.models import ProductMedia
+from ProductApp.utils import delete_file_if_unused
 
 
 @receiver(post_delete, sender=ProductMedia)
@@ -47,19 +48,3 @@ def delete_image_when_image_changed(sender, instance, **kwargs) -> None:
             if instance_in_db_file_field.name != instance_file_field.name:
                 delete_file_if_unused(sender, instance, field, instance_in_db_file_field)
 
-
-def delete_file_if_unused(model, instance, field, instance_file_field) -> None:
-    """
-    Delete fiel if it has no connection to database.
-
-    :param model: models.Model child class
-    :param instance: model instance
-    :param field: model field instance
-    :param instance_file_field: field file instance
-    :return: None
-    """
-    dynamic_field = dict()
-    dynamic_field[field.name] = instance_file_field.name
-    other_refs_exist = model.objects.filter(**dynamic_field).exclude(pk=instance.pk).exists()
-    if not other_refs_exist:
-        instance_file_field.delete(False)
