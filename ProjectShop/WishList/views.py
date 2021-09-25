@@ -13,14 +13,14 @@ class WishListViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
 
     def update(self, request, *args, **kwargs):
-        product = Product.objects.filter(id=request.data.get('product'))
+        product = Product.objects.filter(id=request.data.get('product_id'))
         if not product:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         self.perform_update(product)
         return Response(data={'message': _('Item updated successfully!')}, status=status.HTTP_201_CREATED)
 
     def destroy(self, request, *args, **kwargs):
-        product = Product.objects.filter(id=request.data.get('product'))
+        product = Product.objects.filter(id=request.data.get('product_id'))
         if not product:
             return Response(data={'message': _('Product with such id doesn\'t exist.')}, status=status.HTTP_204_NO_CONTENT)
         self.perform_destroy(product)
