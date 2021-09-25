@@ -4,8 +4,10 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
+from PIL import Image, UnidentifiedImageError
 
 from UserApp.managers import UserManager
+
 
 ROLE_CHOICES = (
     (0, 'user'),
@@ -28,6 +30,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         middle_name: Describes user`s middle name
         type: str, max_length: 40
 
+        profile_pic: User`s avatar
+        type: ImageField, default path = media/default_profile_pictures/default_pic.svg
+
         birth_date: Describes user`s birth date
         type: datetime.date
 
@@ -48,6 +53,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(verbose_name=_('last name'), blank=False, null=False, max_length=40)
     middle_name = models.CharField(verbose_name=_('middle name'), blank=True, null=False, max_length=40)
 
+    profile_pic = models.ImageField(verbose_name=_('profile picture'), upload_to='profile_pictures/',
+                                    default='default_profile_pictures/default_pic.svg')
     birth_date = models.DateField(verbose_name=_('date of birth'), blank=True, null=True, auto_now=False,
                                   auto_now_add=False)
     register_date = models.DateField(verbose_name=_('date of registration'), blank=False, null=False,
@@ -78,6 +85,29 @@ class User(AbstractBaseUser, PermissionsMixin):
         if app_label == 'token_blacklist':
             return self.is_superuser
         return self.role
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            for user in User.objects.filter(id=self.pk):
+                if user.profile_pic.name != 'default_profile_pictures/default_pic.svg' \
+                        and user.profile_pic.name != self.profile_pic.name:
+                    user.profile_pic.delete(save=False)
+
+        super().save(*args, **kwargs)
+
+        try:
+            # Need this try block because default image is .svg format
+            # Can be replaced with checking if self.profile_pic.name is not default
+            image_path = self.profile_pic.path
+
+            img = Image.open(image_path)
+
+            if img.height > 300 or img.width > 300:
+                new_img_size = (300, 300)
+                img.thumbnail(new_img_size)
+                img.save(image_path)
+        except UnidentifiedImageError:
+            pass
 
     @property
     def is_staff(self) -> int:
