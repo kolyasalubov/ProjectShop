@@ -1,0 +1,31 @@
+#main-div > form {
+    width: 750px;
+}
+#main-div > form table {
+    border-collapse: collapse;
+    width: 100%;
+}
+#main-div > form tr {
+    width: 100%;
+}
+#main-div > form td {
+    border-collapse: collapse;
+    /*height: 75px;*/
+    padding: 10px 0;
+    /*width: 5%;*/
+}
+#main-div > form td:first-of-type {
+    /*border-right: 2px dashed var(--side-background-color);*/
+    border-right: 1px solid var(--side-background-color);
+}
+#main-div > form td:last-of-type .question {
+    float: right;
+}
+#main-div > form td:first-of-type .question {
+    float: left;
+}
+#main-div > form .question {
+    width: 85%;
+    position: relative;
+    padding: 10px 0;
+}

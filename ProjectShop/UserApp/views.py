@@ -16,6 +16,9 @@ from rest_framework_simplejwt.exceptions import TokenError
 from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
 
+from django.template.defaulttags import register
+from typing import Any
+
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     form_class = LoginForm
@@ -87,3 +90,10 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
         except TokenError as error:
             return Response(str(error), status=status.HTTP_202_ACCEPTED)
         return Response(status=status.HTTP_200_OK)
+
+
+@register.filter
+def get_range(_: Any, args: str) -> range:
+    start, end, step = [int(x) for x in args.split(",")]
+    return range(start, end, step)
+

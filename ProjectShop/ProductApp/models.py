@@ -84,7 +84,6 @@ class Review(models.Model):
     comment = models.TextField(max_length=5000, null=True, blank=True)
 
 
-
 class ProductMedia(models.Model):
     """
     A database object that represents media bound to the product, like pictures or video links.

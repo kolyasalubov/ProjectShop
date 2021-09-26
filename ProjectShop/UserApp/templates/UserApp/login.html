@@ -1,23 +1,13 @@
 {% extends "base.html" %}
-
-
 {% load static %}
 {% load i18n %}
-{% load crispy_forms_tags %}
-
 
 {% block title %}
-    {% translate "Login" %}
+    login
 {% endblock title %}
 
-
 {% block css_links %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-{% endblock %}
-
-
-{% block js_links %}
-    <script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
 {% endblock %}
 
 {% block header_content %}
@@ -30,7 +20,7 @@
             {% csrf_token %}
             <h1>Welcome!</h1>
             <div class="question">
-                <input type="text" name="username" maxlength="128" required="" id="id_username">
+                <input type="email" name="username" maxlength="128" required="" id="id_username">
                 <label for="id_username">email / phone number</label>
             </div>
             <div class="question">

@@ -1,27 +1,151 @@
-{% extends "UserApp/_base.html" %}
+{#{% extends "UserApp/_base.html" %}#}
+{##}
+{#{% load i18n %}#}
+{#{% load crispy_forms_tags %}#}
+{##}
+{##}
+{#{% block title %}#}
+{#  <title>{% translate "Register" %}</title>#}
+{#{% endblock title %}#}
+{##}
+{##}
+{#{% block content %}#}
+{##}
+{#  <h1>{% translate "Join Today!" %}</h1>#}
+{#  <h1>{% translate "Register" %}</h1>#}
+{##}
+{#  <form action="{% url 'register' %}" method="post">#}
+{#    {% csrf_token %}#}
+{#    {{ form|crispy }}#}
+{#    <button type="submit" id="submit">{% translate "Register" %}</button>#}
+{#  </form>#}
+{##}
+{#  <h4>#}
+{#    {% translate "Already Have An Account?" %} <a class="ml-2" href="{% url 'login' %}">{% translate "Sign In" %}</a>#}
+{#  </h4>#}
+{##}
+{#{% endblock %}#}
 
+{% extends "base.html" %}
+
+
+{% load static %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
 
 {% block title %}
-  <title>{% translate "Register" %}</title>
+    register
 {% endblock title %}
 
 
-{% block content %}
-
-  <h1>{% translate "Join Today!" %}</h1>
-  <h1>{% translate "Register" %}</h1>
-
-  <form action="{% url 'register' %}" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" id="submit">{% translate "Register" %}</button>
-  </form>
-
-  <h4>
-    {% translate "Already Have An Account?" %} <a class="ml-2" href="{% url 'login' %}">{% translate "Sign In" %}</a>
-  </h4>
-
+{% block css_links %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register-override.css' %}">
 {% endblock %}
+
+{% block header_content %}
+    <h1>Sign Up</h1>
+{% endblock %}
+
+{% block main_content %}
+    <div id="main-div">
+        <form method="post">
+            {% csrf_token %}
+            <h1>Create account!</h1>
+            <table>
+                <tr>
+                    <td>
+                        <div class="question">
+                            <input type="email" name="email" maxlength="254" required="" id="id_email">
+                            <label for="id_email">email</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="question">
+                            <input type="text" name="first_name" maxlength="40" required="" id="id_first_name">
+                            <label for="id_first_name">first name</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="question">
+                            <input type="tel" name="phone_number" maxlength="128" required="" id="id_phone_number">
+                            <label for="id_phone_number">phone number</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="question">
+                            <input type="text" name="last_name" maxlength="40" required="" id="id_last_name">
+                            <label for="id_last_name">last name</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="question">
+                            <input type="password" name="password1" autocomplete="new-password" required="" id="id_password1">
+                            <label for="id_password1">password</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="question">
+                            <select name="birth_date_month" id="id_birth_date_month">
+                                <option value="" selected=""></option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <label for="id_birth_date_month">month</label>
+                            <select name="birth_date_day" id="id_birth_date_day">
+                                <option value="" selected=""></option>
+                                {% for i in ""|get_range:"1,32,1" %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="id_birth_date_day">day</label>
+                            <select name="birth_date_year" id="id_birth_date_year">
+                                <option value="" selected=""></option>
+                                {% for i in ""|get_range:"2021,1900,-1" %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="id_birth_date_year">year</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="question">
+                            <input type="password" name="password2" autocomplete="new-password" required="" id="id_password2">
+                            <label for="id_password2">password confirmation</label>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+            <ul class="error-list">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>
+                            {{ error }}
+                        </li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+            <button type="submit" id="submit">Sign Up</button>
+            <br>
+            <a href="../login">Already have an account?</a>
+        </form>
+    </div>
+{%endblock %}

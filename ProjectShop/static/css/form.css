@@ -1,7 +1,7 @@
 #main-div {
     margin-left: auto;
     margin-right: auto;
-    margin-top: calc((100vh - 600px) / 2);
+    margin-top: 10px;
 }
 .transition, form button, form .question label, form .question input[type="text"] {
     -moz-transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
@@ -28,6 +28,8 @@
     -ms-transform: translate(-50%, 0);
     -webkit-transform: translate(-50%, 0);
     transform: translate(-50%, 0);
+
+    box-shadow: 5px 5px 5px 5px var(--side-background-color);
 }
 #main-div > form h1 {
     width: fit-content;
@@ -89,6 +91,8 @@
     pointer-events: none;
 }
 #main-div > form .question input[type="text"],
+#main-div > form .question input[type="email"],
+#main-div > form .question input[type="tel"],
 #main-div > form .question input[type="password"] {
     appearance: none;
     background-color: transparent;
@@ -107,25 +111,56 @@
     z-index: 1;
 }
 #main-div > form .question input[type="text"]:focus,
+#main-div > form .question input[type="email"]:focus,
+#main-div > form .question input[type="tel"]:focus,
 #main-div > form .question input[type="password"]:focus {
     outline: none;
     background: var(--side-background-color);
     color: var(--forced-background-color);
     margin-top: 30px;
 }
+#main-div > form .question select:focus {
+    outline: none;
+    background: var(--side-background-color);
+    color: var(--forced-background-color);
+    margin-top: 30px;
+}
 #main-div > form .question input[type="text"]:valid,
+#main-div > form .question input[type="email"]:valid,
+#main-div > form .question input[type="tel"]:valid,
 #main-div > form .question input[type="password"]:valid {
     margin-top: 30px;
 }
+#main-div > form .question select:valid {
+    margin-top: 30px;
+}
 #main-div > form .question input[type="text"]:focus ~ label,
+#main-div > form .question input[type="email"]:focus ~ label,
+#main-div > form .question input[type="tel"]:focus ~ label,
 #main-div > form .question input[type="password"]:focus ~ label {
     -moz-transform: translate(0, -35px);
     -ms-transform: translate(0, -35px);
     -webkit-transform: translate(0, -35px);
     transform: translate(0, -35px);
 }
+#main-div > form .question select:focus ~ label {
+    -moz-transform: translate(0, -35px);
+    -ms-transform: translate(0, -35px);
+    -webkit-transform: translate(0, -35px);
+    transform: translate(0, -35px);
+}
 #main-div > form .question input[type="text"]:valid ~ label,
+#main-div > form .question input[type="email"]:valid ~ label,
+#main-div > form .question input[type="tel"]:valid ~ label,
 #main-div > form .question input[type="password"]:valid ~ label {
+    text-transform: uppercase;
+    font-style: italic;
+    -moz-transform: translate(5px, -35px) scale(0.6);
+    -ms-transform: translate(5px, -35px) scale(0.6);
+    -webkit-transform: translate(5px, -35px) scale(0.6);
+    transform: translate(5px, -35px) scale(0.6);
+}
+#main-div > form .question select:valid ~ label {
     text-transform: uppercase;
     font-style: italic;
     -moz-transform: translate(5px, -35px) scale(0.6);
