@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-import csv
-
 from order.models import OrderModel, OrderItemsModel
 from order.export import export_to_csv
 
