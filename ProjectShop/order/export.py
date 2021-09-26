@@ -18,7 +18,7 @@ class EchoCsv:
 
 def order_to_list(order) -> list:
     """
-    Function that returns row for export_to_csv method in order/admin.py
+    Function that returns row for export_to_csv method
     """
     order_object = OrderModel.objects.get(id=order['id'])
     user_object = order_object.user
