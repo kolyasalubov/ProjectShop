@@ -5,7 +5,7 @@ from django.contrib.admin.filters import ChoicesFieldListFilter
 
 
 class DropdownFilter(ChoicesFieldListFilter):
-    template = 'admin/dropdown_filter.html'
+    template = 'admin/custom_filters/dropdown_filter.html'
 
 
 class ShippingModelAdmin(admin.ModelAdmin):

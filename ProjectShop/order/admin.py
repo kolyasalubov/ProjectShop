@@ -1,9 +1,20 @@
 from django.contrib import admin
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 import csv
 
 from order.models import OrderModel, OrderItemsModel
 from order.export import export_to_csv
+from order.list_filters import MultipleChoiceListFilter
+
+
+class ShippingStatusListFilter(MultipleChoiceListFilter):
+    title = 'shipping status'
+    parameter_name = 'shipping_status__in'
+
+    def lookups(self, request, model_admin):
+        return OrderModel.ShippingStatus.choices
 
 
 class OrderItemsInline(admin.TabularInline):
@@ -18,7 +29,7 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = (OrderItemsInline, )
     list_display = ('user', 'payment_status', 'shipping_status', )
     list_editable = ('payment_status', 'shipping_status', )
-    list_filter = ('payment_status', 'shipping_status', )
+    list_filter = ('payment_status', ShippingStatusListFilter, )
     ordering = ('payment_status', 'shipping_status', )
     actions = (export_to_csv, )
 
