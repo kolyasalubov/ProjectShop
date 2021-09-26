@@ -1,37 +1,6 @@
-{#{% extends "UserApp/_base.html" %}#}
-{##}
-{#{% load i18n %}#}
-{#{% load crispy_forms_tags %}#}
-{##}
-{##}
-{#{% block title %}#}
-{#  <title>{% translate "Register" %}</title>#}
-{#{% endblock title %}#}
-{##}
-{##}
-{#{% block content %}#}
-{##}
-{#  <h1>{% translate "Join Today!" %}</h1>#}
-{#  <h1>{% translate "Register" %}</h1>#}
-{##}
-{#  <form action="{% url 'register' %}" method="post">#}
-{#    {% csrf_token %}#}
-{#    {{ form|crispy }}#}
-{#    <button type="submit" id="submit">{% translate "Register" %}</button>#}
-{#  </form>#}
-{##}
-{#  <h4>#}
-{#    {% translate "Already Have An Account?" %} <a class="ml-2" href="{% url 'login' %}">{% translate "Sign In" %}</a>#}
-{#  </h4>#}
-{##}
-{#{% endblock %}#}
-
 {% extends "base.html" %}
-
-
 {% load static %}
 {% load i18n %}
-{% load crispy_forms_tags %}
 
 
 {% block title %}
