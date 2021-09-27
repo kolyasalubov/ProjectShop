@@ -93,10 +93,35 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
+    queryset = User.objects.all()
 
     def list(self, request, *args, **kwargs):
         user = User.objects.filter(phone_number=request.data.get('phone_number'))
         if not user:
-            return Response(data={'message': 'We haven\'t user with such phone number.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'message': 'We haven\'t user with such phone number.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        serializer = UserIdSerializer(user, many=True)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        user = User.objects.get(phone_number=request.data.get('phone_number'))
+        if user is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'message': 'We haven\'t user with such phone number.'})
+        data = request.data
+        user.first_name = data.get('first_name', user.first_name)
+        user.last_name = data.get('last_name', user.last_name)
+        user.middle_name = data.get('middle_name', user.middle_name)
+        user.birth_date = data.get('birth_date', user.birth_date)
+        user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+    def delete(self, request):
+        user = User.objects.filter(phone_number=request.data.get('phone_number'))
+        if not user:
+            return Response(data={'message': 'We haven\'t user with such phone number.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        self.perform_destroy(user)
+        return Response(data={'message': 'User deleted successfully!'},
+                        status=status.HTTP_200_OK)
