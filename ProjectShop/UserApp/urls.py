@@ -4,7 +4,11 @@ from django.contrib.auth import views as auth_views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
-from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView, LogoutView, PasswordResetView, \
+from UserApp.views import from (UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView, 
+                                                       LogoutView, PasswordResetView, \
+                                                       PasswordResetDoneView, PasswordResetConfirmView, 
+                                                       PasswordResetCompleteView, \
+                                                       UpdateProfileView, UserViewSet)
                           PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, \
                           UpdateProfileView, UserViewSet
 
