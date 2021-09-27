@@ -28,10 +28,12 @@ class OrderAdmin(admin.ModelAdmin):
 
 class OrderItemsAdmin(admin.ModelAdmin):
     fields = ('order_items_qantity', 'order', 'product')
-    readonly_fields = ('product', 'order_items_qantity', 'order')
     list_display = ('product', 'order_items_qantity', 'order')
     list_filter = ('product', )
     ordering = ('product', 'order', )
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 
 admin.site.register(OrderModel, OrderAdmin)
