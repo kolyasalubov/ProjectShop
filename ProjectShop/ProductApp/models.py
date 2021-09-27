@@ -1,10 +1,14 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.html import format_html
+from django.core import validators
+from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import truncatewords
+
 from UserApp.models import User
 
 
 class ProductCategory(models.Model):
-
     """
     A database objects that represents a category of items.
     (Like large groups: TVs, phones, tables, etc... SUBJECT TO CHANGE.)
@@ -14,6 +18,12 @@ class ProductCategory(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
+
+    class Meta:
+        verbose_name_plural = _('Product categories')
+
+    def __str__(self):
+        return self.name
 
 
 class ProductSubcategory(models.Model):
@@ -27,6 +37,12 @@ class ProductSubcategory(models.Model):
 
     name = models.CharField(max_length=100, null=False, blank=False)
 
+    class Meta:
+        verbose_name_plural = _('Product subcategories')
+
+    def __str__(self):
+        return self.name
+
 
 class Tag(models.Model):
     """
@@ -38,6 +54,9 @@ class Tag(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -60,9 +79,17 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag)
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    price = models.DecimalField(validators=[MinValueValidator(0)], decimal_places=2, max_digits=9, null=False, blank=False)
+    price = models.DecimalField(validators=[validators.MinValueValidator(0)], decimal_places=2, max_digits=9,
+                                null=False, blank=False)
     description = models.TextField(max_length=5000, null=False, blank=False)
-    stock_quantity = models.IntegerField(validators=[MinValueValidator(0)], null=False, blank=False)
+    stock_quantity = models.IntegerField(validators=[validators.MinValueValidator(0)], null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def short_description(self):
+        return truncatewords(self.description, 20)
 
 
 class Review(models.Model):
@@ -80,9 +107,17 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
-    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], null=False, blank=False)
+    rating = models.IntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(5)],
+                                 null=False, blank=False)
     comment = models.TextField(max_length=5000, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.name
+
+    @property
+    def name(self):
+        return f'{self.user} review of {self.product}'
 
 class ProductMedia(models.Model):
     """
@@ -100,11 +135,30 @@ class ProductMedia(models.Model):
         (1, 'video_link'),
     ]
 
-    product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT, related_name='media')
 
     media_type = models.IntegerField(choices=MEDIA_TYPES, null=False, blank=False)
-    image = models.ImageField(upload_to="", null=True, blank=True)
+    image = models.ImageField(upload_to="product_media_image", default='default_image/default_image.png')
     video_link = models.URLField(null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = _('Product media')
 
+    def small_image_tag(self):
+        return format_html('<img href="{0}" src="{0}" width="50" height="50" />'.format(self.image.url))
 
+    small_image_tag.allow_tags = True
+    small_image_tag.short_description = _('Image')
+
+    def image_tag(self):
+        return format_html('<img href="{0}" src="{0}" width="150" height="150" />'.format(self.image.url))
+
+    image_tag.allow_tags = True
+    image_tag.short_description = _('Image')
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def name(self):
+        return f'{self.product} {self.get_media_type_display()}{self.id}'
