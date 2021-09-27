@@ -1,6 +1,10 @@
 from django.contrib import admin
 
 
+class DropdownChoicesFieldListFilter(admin.filters.ChoicesFieldListFilter):
+    template = 'admin/custom_filters/dropdown_filter.html'
+
+
 class MultipleChoiceListFilter(admin.SimpleListFilter):
     """
     Copied from https://github.com/ctxis/django-admin-multiple-choice-list-filter with a few changes

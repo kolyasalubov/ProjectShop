@@ -6,11 +6,11 @@ import csv
 
 from order.models import OrderModel, OrderItemsModel
 from order.export import export_to_csv
-from order.list_filters import MultipleChoiceListFilter
+from ProjectShop.custom_filters import MultipleChoiceListFilter
 
 
 class ShippingStatusListFilter(MultipleChoiceListFilter):
-    title = 'shipping status'
+    title = _('shipping status')
     parameter_name = 'shipping_status__in'
 
     def lookups(self, request, model_admin):
