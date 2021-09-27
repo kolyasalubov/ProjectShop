@@ -14,20 +14,24 @@ class ProductViewSet(ModelViewSet):
 
 
 class ProductCategoryViewSet(ModelViewSet):
+    """This is viewset for ProductCategory model"""
     serializer_class = ProductCategorySerializer
     queryset = ProductCategory.objects.all()
 
 
 class ProductSubcategoryViewSet(ModelViewSet):
+    """This is viewset for ProductSubcategory model"""
     serializer_class = ProductSubcategorySerializer
     queryset = ProductSubcategory.objects.all()
 
 
 class TagViewSet(ModelViewSet):
+    """This is viewset for Tag model"""
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
 
 
 class ProductMediaViewSet(ModelViewSet):
+    """This is viewset for ProductMedia model"""
     serializer_class = ProductMediaSerializer
     queryset = ProductMedia.objects.all()
