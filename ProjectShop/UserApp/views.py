@@ -94,14 +94,7 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        user = User.objects.filter(phone_number=request.data.get('phone_number'))
-        if not user:
-            return Response(data={'message': 'We haven\'t user with such phone number.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        serializer = UserIdSerializer(user, many=True)
-        return Response(serializer.data)
+    lookup_field = 'phone_number'
 
     def patch(self, request):
         user = User.objects.get(phone_number=request.data.get('phone_number'))
