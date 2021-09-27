@@ -89,7 +89,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         if self.pk:
             for user in User.objects.filter(id=self.pk):
-                if user.profile_pic.name != 'default_profile_pictures/default_pic.svg':
+                if user.profile_pic.name != 'default_profile_pictures/default_pic.svg' \
+                        and user.profile_pic.name != self.profile_pic.name:
                     user.profile_pic.delete(save=False)
 
         super().save(*args, **kwargs)
