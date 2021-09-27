@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+from .router import router
 from UserApp.views import TemporalHomePageView
 
 
@@ -25,6 +26,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('UserApp.urls')),
     path('pages/', include('django.contrib.flatpages.urls')),
-    path('', TemporalHomePageView.as_view(), name='home'),
-    path("api/", include("order.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('api/v1/', include(router.urls)),
+    path('', TemporalHomePageView.as_view(), name='home')
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
