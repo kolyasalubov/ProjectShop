@@ -3,8 +3,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from ProductApp.models import Product, ProductCategory, ProductSubcategory, ProductMedia, Review, Tag
-from ProductApp.serializers import ProductSerializer, ProductCategorySerializer, ProductSubcategorySerializer
-from ProductApp.serializers import ProductMediaSerializer, ReviewSerializer, TagSerializer
+from ProductApp.serializers import (ProductSerializer, ProductCategorySerializer,
+                                    ProductSubcategorySerializer, ProductMediaSerializer,
+                                    ReviewSerializer, TagSerializer)
 
 
 class ProductViewSet(ModelViewSet):
