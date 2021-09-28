@@ -1,9 +1,6 @@
-from rest_framework import viewsets, renderers
-from rest_framework.decorators import action
-from rest_framework.response import Response
+from rest_framework import viewsets
 
 from Shipping.models import ShippingModel
-
 from Shipping.serializers import ShippingSerializer
 
 
