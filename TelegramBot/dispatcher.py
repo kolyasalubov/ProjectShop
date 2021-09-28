@@ -30,4 +30,6 @@ def run_pooling():
     updater.start_polling()
     updater.idle()
 
-run_pooling()
+
+if __name__ == "__main__":
+    run_pooling()
