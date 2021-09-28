@@ -6,9 +6,7 @@ class DropdownChoicesFieldListFilter(admin.filters.ChoicesFieldListFilter):
 
 
 class MultipleChoiceListFilter(admin.SimpleListFilter):
-    """
-    Copied from https://github.com/ctxis/django-admin-multiple-choice-list-filter with a few changes
-    """
+
     template = 'admin/custom_filters/checkboxes_filter.html'
 
     def lookups(self, request, model_admin):
