@@ -12,6 +12,8 @@ pytz==2021.1
 six==1.16.0
 sqlparse==0.4.1
 djangorestframework-simplejwt==4.8.0
+factory-boy==3.2.0
+Faker==8.13.2
 idna==3.2
 phonenumbers==8.12.31
 Pillow==8.3.2

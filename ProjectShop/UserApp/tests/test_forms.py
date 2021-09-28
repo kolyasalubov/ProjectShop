@@ -17,13 +17,11 @@ class TestForms(TestCase):
         })
 
         self.assertTrue(form.is_valid())
-        print(form.errors)
-        print(user.phone_number)
-        print(type(user.phone_number))
-        print(user.email)
-        print(user.password)
-
-
+        # print(form.errors)
+        # print(user.phone_number)
+        # print(user.email)
+        # print(user.password)
+        
     def test_RegisterForm_invalid_data(self):
         form = RegisterForm(data={
             'email' : '',
@@ -52,9 +50,6 @@ class TestForms(TestCase):
 
         })
         self.assertTrue(form.is_valid())
-        print(user.phone_number)
-        print(user.email)
-        print(form.errors)
 
     def test_EditForm_invalid_data(self):
         form = EditForm(data={
@@ -79,9 +74,6 @@ class TestForms(TestCase):
         })
 
         self.assertTrue(form.is_valid())
-        print(form.errors)
-        print(user.email)
-        print(user.password)
 
     def test_LoginForm_valid_phone(self):
         user = UserFactory()
@@ -91,9 +83,6 @@ class TestForms(TestCase):
         })
 
         self.assertTrue(form.is_valid())
-        print(form.errors)
-        print(user.phone_number)
-        print(user.password)
 
     def test_LoginForm_valid_email(self):
         user = UserFactory()
