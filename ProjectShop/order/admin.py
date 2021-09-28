@@ -1,8 +1,5 @@
 from django.contrib import admin
-from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-import csv
 
 from order.models import OrderModel, OrderItemsModel
 from order.export import export_to_csv
