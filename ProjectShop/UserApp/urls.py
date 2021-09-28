@@ -1,5 +1,4 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
@@ -8,7 +7,7 @@ from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView, Logo
                           PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, UpdateProfileView
 
 
-app_name = 'user_app'
+# app_name = 'user_app'
 
 
 view_based_urls = [
