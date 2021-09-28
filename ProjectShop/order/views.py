@@ -13,7 +13,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderDetailSerializer
     http_method_names = ['post', 'get', 'patch', 'put']
 
-class OrderItemsViewSet(viewsets.ReadOnlyModelViewSet):
+class OrderItemsViewSet(viewsets.ModelViewSet):
     """This is viewset for order items model"""
     queryset = OrderItems.objects.all()
     serializer_class = OrderItemsSerializer
