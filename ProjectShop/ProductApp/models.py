@@ -119,6 +119,36 @@ class Review(models.Model):
         return f'{self.user} review of {self.product}'
 
 
+class Reply(models.Model):
+    """
+    A database object that represents a reply to review left by a user,
+    including a like/dislike reaction.
+
+    Attributes:
+        reaction: numeric symbol which represent user reaction, where 1-like, 2-dislike,
+                                                and 0 represents that he change his mind.
+        review: reference to the review.
+        user: reference to the user writing a review.
+    """
+    REACTIONS = [
+        (0, 'none'),
+        (1, 'like'),
+        (2, 'dislike'),
+    ]
+
+    review = models.ForeignKey(Review, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+
+    reaction = models.PositiveSmallIntegerField(choices=REACTIONS, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def name(self):
+        return f'{self.user} reply on {self.review} with reaction: {self.reaction}'
+
+
 class ProductMedia(models.Model):
     """
     A database object that represents media bound to the product, like pictures or video links.
@@ -132,12 +162,12 @@ class ProductMedia(models.Model):
 
     MEDIA_TYPES = [
         (0, 'picture'),
-        (1, 'video_link')
+        (1, 'video_link'),
     ]
 
     product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT, related_name='media')
 
-    media_type = models.IntegerField(choices=MEDIA_TYPES, null=False, blank=False)
+    media_type = models.PositiveSmallIntegerField(choices=MEDIA_TYPES, null=False, blank=False)
     image = models.ImageField(upload_to="product_media_image", default='default_image/default_image.png')
     video_link = models.URLField(null=True, blank=True)
 
