@@ -119,6 +119,36 @@ class Review(models.Model):
         return f'{self.user} review of {self.product}'
 
 
+class Reply(models.Model):
+    """
+    A database object that represents a reply to review left by a user,
+    including a like/dislike reaction.
+
+    Attributes:
+        reaction: numeric symbol which represent user reaction, where 1-like, 2-dislike,
+                                                and 0 represents that he change his mind.
+        review: reference to the review.
+        user: reference to the user writing a review.
+    """
+    REACTIONS = [
+        (0, 'none'),
+        (1, 'like'),
+        (2, 'dislike')
+    ]
+
+    review = models.ForeignKey(Review, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+
+    reaction = models.IntegerField(choices=REACTIONS, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def name(self):
+        return f'{self.user} reply on {self.review} with reaction: {self.reaction}'
+
+
 class ProductMedia(models.Model):
     """
     A database object that represents media bound to the product, like pictures or video links.
