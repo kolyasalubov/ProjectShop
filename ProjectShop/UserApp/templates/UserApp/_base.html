@@ -1,60 +1,108 @@
-{% load i18n %}
-{% load flatpages %}
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% translate "Shop" %}</title>
+  </head>
+  <body>
+  <header>
+    <div class="nav-menu">
+        <!-- burger menu -->
+        <button class="hamburger" type="button">
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+        <nav class="burger-nav disappeared">
 
-</head>
-<body>
+            <div class="burger-categories_section">
+                <h2>Categories</h2>
+                <div class="burger-categories_items">
+                    <input type="text" placeholder="Search" class="search-burger_btn">
+                    <a href="#" class="item-link">All goods</a>
+                    <a href="#" class="item-link">Cameras</a>
+                    <a href="#" class="item-link">Mobile phones</a>
+                    <a href="#" class="item-link">PC</a>
+                    <a href="#" class="item-link">More...</a>
+                </div>
+            </div>
 
+            <div class="burger-profile_section">
+                {% if user.is_authenticated %}
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                <div class="burger-profile_items">
+                    <a href="{% url 'profile' %}" class="item-link">Profile</a>
+                    <a href="#" class="item-link">Cart</a>
+                    <a href="#" class="item-link">Order history</a>
+                    <a href="#" class="item-link">Filter history</a>
+                    <a href="#" class="item-link">My reviews</a>
+                    <a href="#" class="item-link">Settings</a>
+                    <a href="{% url 'logout' %}" class="item-link">Log out</a>
+                </div>
+                {% else %}
 
-    <!--  Messages start here  -->
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
-              {% blocktranslate %} {{ message }} {% endblocktranslate %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-    <!--  Messages end here  -->
+                {% endif %}
 
+            </div>
+        </nav>
 
-    <!--  Navbar starts here  -->
-    <h3> Navbar: </h3>
-    <a href="{% url 'home' %}">{% translate "Home page" %}</a>
+        <!-- navbar -->
 
-    {% if user.is_authenticated %}
-        <a href="{% url 'profile' %}">{% translate "Profile" %}</a>
-        <a href="{% url 'logout' %}">{% translate "Logout" %}</a>
-      {% else %}
-        <a href="{% url 'login' %}">{% translate "Login" %}</a>
-        <a href="{% url 'register' %}">{% translate "Register" %}</a>
-    {% endif %}
+        <a class="site-logo" href="{% url 'home' %}">ProjectShop</a>
+        <div class="nav-menu_actions">
+            <div class="search-container">
+                <form action="">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+            <div class="nav-icons">
+                <a href="" class="nav-link">Cart</a>
+                <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+                <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+            </div>
+        </div>
 
-    <!--  Flatpages  -->
-    {% get_flatpages as flatpages %}
-    <ul>
-      {% for page in flatpages %}
-        <li>
-            <a href="/pages{{ page.url }}">
-                {% blocktranslate with flatpage_title=page.title %} {{ flatpage_title }} {% endblocktranslate %}
-            </a>
-        </li>
-      {% endfor %}
-    </ul>
-    <!--  Navbar ends here  -->
+    </div>
+    </header>
 
+    {% block content %}
 
-    {% block content %}{% endblock %}
+    {% endblock content%}
 
-
-</body>
+    <footer>
+    <div class="footer-main">
+        <div class="footer-main-text">
+            <p>Project<br>Shop</p>
+        </div>
+        <div class="footer-container-second">
+            <div class="footer-text-container">
+                <p class="footer-main-text-second">Our Contacts</p>
+                <br>
+                <div class="footer-second-text">
+                    <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. At quo corporis,
+                        illo expedveniam nisi laboriosam deserunt eos, magni placeat, commodi
+                    </span>
+                </div>
+            </div>
+            <div class="footer-text-container">
+                <p class="footer-main-text-second">Information</p>
+                <br>
+                <div class="footer-second-text" style="font-size: 1rem;">
+                    <span>Sitemap<br>Payment&Delivery Info<br> Privacy Policy <br>Term of Use
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    <!--Custom JS-->
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
 </html>
+
+
