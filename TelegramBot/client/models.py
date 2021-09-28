@@ -9,7 +9,7 @@ import datetime
 from enum import Enum
 
 from phonenumbers import PhoneNumber
-from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal
+from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator
 from typing import List, Tuple
 
 from client import bot_client
@@ -99,17 +99,34 @@ class User(BaseModel):
     More details on phonenmbers: https://github.com/stefanfoulis/django-phonenumber-field
     """
     id: PositiveInt = None
+    telegram_id: constr(max_length=40) = None
     first_name: constr(max_length=40)
     last_name: constr(max_length=40)
-    phone_number: PhoneNumber
+    phone_number: constr(max_length=20)
     email: EmailStr
     birth_date: datetime.date = None
+
+    @validator('phone_number')
+    def name_must_contain_space(cls, v):
+        print(cls, v)
+        if ' ' not in v:
+            raise ValueError('must contain a space')
+        return v.title()
 
     class Config:
         """
         Arbitrary_types_allowed allows us to use non-Pydantic classes without modification for validation
         """
         arbitrary_types_allowed = True
+
+    def to_dict(self):
+        data = {
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'phone_number': '+' + str(self.phone_number.country_code),
+            'email': self.email,
+            'birth_date': self.birth_date
+        }
 
     @staticmethod
     def get_user_id_by_phone_number(phone_number: str) -> int:
@@ -136,8 +153,7 @@ class User(BaseModel):
         if response.status_code == 201:
             return response.json()["id"]
 
-    @staticmethod
-    def update(user_id: int, data_to_change: dict) -> bool:
+    def update(self, data_to_change: dict) -> bool:
         """
         Change user_data via dict. Return true on success
         """
