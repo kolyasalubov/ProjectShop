@@ -71,7 +71,7 @@ class ReviewFactory(factory.django.DjangoModelFactory):
 
 	rating = factory.Faker('random_int', min=0, max=5)
 	comment = factory.Faker('text')
-	is_active = factory.Faker('boolean')
+	is_active = True
 
 	user = factory.SubFactory(UserFactory)
 	product = factory.SubFactory(ProductFactory)

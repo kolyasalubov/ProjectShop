@@ -139,3 +139,38 @@ class ProductMediaTestCase(TestCase):
 		media = ProductMediaFactory()
 		self.assertIn('http', media.video_link)
 		self.assertIn('://', media.video_link)
+
+
+class ReviewTestCase(TestCase):
+	def setUp(self) -> None:
+		pass
+
+	def test_create(self):
+		review = ReviewFactory()
+		self.assertIsNotNone(review)
+
+	def test_str(self):
+		review = ReviewFactory()
+		self.assertEqual(review.name, review.__str__())
+		print(review.name)
+
+	def test_rating(self):
+		review = ReviewFactory()
+		self.assertTrue(0 <= review.rating <= 5)
+		self.assertFalse(type(review.rating) == 'str')
+		try:
+			review.rating = 6
+		except IntegrityError:
+			self.assertTrue(True)
+
+	def test_is_active(self):
+		review = ReviewFactory()
+		self.assertTrue(review.is_active)
+		review.disable()
+		self.assertFalse(review.is_active)
+
+	def test_short_description(self):
+		review = ReviewFactory()
+		self.assertEqual(review.short_description, truncatewords(review.comment, 20))
+		review.comment = 'Hello world' + review.comment
+		self.assertEqual(review.short_description[:11], 'Hello world')

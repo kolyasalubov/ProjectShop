@@ -116,7 +116,14 @@ class Review(models.Model):
 
     @property
     def name(self):
-        return f'{self.user} review of {self.product}'
+        return f'{self.user.first_name} {self.user.last_name} review of {self.product.name}'
+
+    @property
+    def short_description(self):
+        return truncatewords(self.comment, 20)
+
+    def disable(self):
+        self.is_active = False
 
 
 class ProductMedia(models.Model):

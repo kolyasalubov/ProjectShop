@@ -1,6 +1,7 @@
 from django.db import models
 
 from UserApp.models import User
+from ProductApp.models import Product
 
 
 class WishList(models.Model):
@@ -11,6 +12,6 @@ class WishList(models.Model):
            user: reference to the user who make wishlist.
        """
 
-    # products = models.ManyToManyField(Product, related_name='wishlists')
+    products = models.ManyToManyField(Product, related_name='wishlists')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
