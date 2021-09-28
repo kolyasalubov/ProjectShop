@@ -132,7 +132,7 @@ class ProductMedia(models.Model):
 
     MEDIA_TYPES = [
         (0, 'picture'),
-        (1, 'video_link')
+        (1, 'video_link'),
     ]
 
     product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.PROTECT, related_name='media')
@@ -161,4 +161,5 @@ class ProductMedia(models.Model):
 
     @property
     def name(self):
-        return f'{self.product} {self.get_media_type_display()}{self.id}'
+        return f'Media id: {self.id}, media_type: {self.media_type}, ' \
+               f'Product id: {self.product.id}, Product name: {self.product.name}'

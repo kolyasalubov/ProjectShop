@@ -1,9 +1,8 @@
 import factory
-from factory import fuzzy
 import random
 
-from ProductApp.models import (Product, ProductCategory, ProductSubcategory,
-							   ProductMedia, Tag, Review)
+from ProductApp.models import *
+from UserApp.tests.factories import UserFactory
 
 
 class TagFactory(factory.django.DjangoModelFactory):
@@ -35,52 +34,44 @@ class ProductFactory(factory.django.DjangoModelFactory):
 	price = factory.Faker('random_int', min=100, max=5000)
 	description = factory.Faker('text')
 	stock_quantity = factory.Faker('random_int', min=0, max=100)
-	#categories = set(['one', 'two'])
-	#subcategories = ['three', 'four']
-	#tags = ['five', 'six']
 
 	@factory.post_generation
 	def categories(self, create, extracted, **kwargs):
-		if not create:
-			self.categories.add(['one', 'two'])
-			# Simple build, do nothing.
-			return
-
-		if extracted:
-			# A list of groups were passed in, use them
-			for category in extracted:
-				self.categories.add(category)
+		categories = extracted if extracted is not None else ProductCategoryFactory.create_batch(random.randint(1, 5))
+		for category in categories:
+			self.categories.add(category)
 
 	@factory.post_generation
 	def subcategories(self, create, extracted, **kwargs):
-		if not create:
-			self.subcategories.add(['three', 'four'])
-			return
-
-		if extracted:
-			# A list of groups were passed in, use them
-			for subcategory in extracted:
-				self.subcategories.add(subcategory)
+		subcategories = extracted if extracted is not None else ProductSubcategoryFactory.create_batch(random.randint(1, 5))
+		for subcategory in subcategories:
+			self.subcategories.add(subcategory)
 
 	@factory.post_generation
 	def tags(self, create, extracted, **kwargs):
-		if not create:
-			self.tags.add(['five', 'six'])
-			return
-
-		if extracted:
-			# A list of groups were passed in, use them
-			for tag in extracted:
-				self.tags.add(tag)
+		tags = extracted if extracted is not None else TagFactory.create_batch(random.randint(1, 5))
+		for tag in tags:
+			self.tags.add(tag)
 
 
 class ProductMediaFactory(factory.django.DjangoModelFactory):
 	class Meta:
 		model = ProductMedia
 
+	media_type = factory.Faker('random_int', min=0, max=1)
+	# image = factory.Faker('image', size=(256, 256), image_format='png')
+	video_link = factory.Faker('url')
+
+	product = factory.SubFactory(ProductFactory)
+
 
 class ReviewFactory(factory.django.DjangoModelFactory):
 	class Meta:
 		model = Review
 
+	rating = factory.Faker('random_int', min=0, max=5)
+	comment = factory.Faker('text')
+	is_active = factory.Faker('boolean')
 
+	user = factory.SubFactory(UserFactory)
+	product = factory.SubFactory(ProductFactory)
