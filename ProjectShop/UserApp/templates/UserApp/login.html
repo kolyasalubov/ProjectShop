@@ -20,12 +20,12 @@
             {% csrf_token %}
             <h1>Welcome!</h1>
             <div class="question">
-                <input type="email" name="username" maxlength="128" required="" id="id_username">
-                <label for="id_username">email / phone number</label>
+                <input type="email" name="username" maxlength="128" required id="id_username">
+                <label class="override-form-label" for="id_username">email / phone number</label>
             </div>
             <div class="question">
-                <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
-                <label for="id_password">password</label>
+                <input type="password" name="password" autocomplete="current-password" required id="id_password">
+                <label class="override-form-label" for="id_password">password</label>
             </div>
             <ul class="error-list">
                 {% for field, errors in form.errors.items %}

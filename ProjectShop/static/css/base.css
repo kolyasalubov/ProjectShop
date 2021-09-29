@@ -11,23 +11,23 @@
     --subtitle-text-size: 64px;
     --microtitle-text-size: 32px;
     --default-text-size: 20px;
-    --default-text-font-weight: 300;
+    --default-text-font-weight: 100;
     --small-text-size: 12px;
 }
-
 body, html {
     margin: 0;
     padding: 0;
     background-color: var(--main-background-color);
     font-family: 'Open Sans', sans-serif;
 }
-
+button, label, option, select, a, p, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Open Sans', sans-serif;
+}
 header {
     width: 100%;
     background-color: var(--side-background-color);
     height: 100px;
 }
-
 header > h1 {
     margin: 0;
     padding: 0;

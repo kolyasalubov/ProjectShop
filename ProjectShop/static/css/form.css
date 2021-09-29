@@ -3,7 +3,11 @@
     margin-right: auto;
     margin-top: 10px;
 }
-.transition, form button, form .question label, form .question input[type="text"] {
+.transition, form button, form .question label,
+form .question input[type="text"],
+form .question input[type="email"],
+form .question input[type="tel"],
+form .question input[type="password"] {
     -moz-transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
     -o-transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
     -webkit-transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
@@ -13,11 +17,7 @@
     position: relative;
     display: inline-block;
     text-align: center;
-    /*max-width: 700px;*/
-    /*min-width: 500px;*/
-
     width: 500px;
-
     box-sizing: border-box;
     padding: 30px 25px;
     background-color: var(--forced-background-color);
@@ -57,7 +57,7 @@
     padding: 20px 15px;
     border-radius: 60px;
     color: var(--side-background-color);
-    font-weight: 100;
+    font-weight: var(--default-text-font-weight);
     letter-spacing: 0.01em;
     position: relative;
     z-index: 1;
@@ -79,7 +79,7 @@
 #main-div > form .question label {
     transform-origin: left center;
     color: var(--side-background-color);
-    font-weight: 100;
+    font-weight: var(--default-text-font-weight);
     letter-spacing: 0.01em;
     font-size: 17px;
     box-sizing: border-box;
@@ -93,7 +93,8 @@
 #main-div > form .question input[type="text"],
 #main-div > form .question input[type="email"],
 #main-div > form .question input[type="tel"],
-#main-div > form .question input[type="password"] {
+#main-div > form .question input[type="password"]
+/*#main-div > form .question select*/ {
     appearance: none;
     background-color: transparent;
     border: 1px solid var(--side-background-color);
@@ -105,7 +106,7 @@
     padding: 10px 15px;
     border-radius: 60px;
     color: var(--side-background-color);
-    font-weight: 100;
+    font-weight: var(--default-text-font-weight);
     letter-spacing: 0.01em;
     position: relative;
     z-index: 1;
@@ -134,10 +135,10 @@
 #main-div > form .question select:valid {
     margin-top: 30px;
 }
-#main-div > form .question input[type="text"]:focus ~ label,
-#main-div > form .question input[type="email"]:focus ~ label,
-#main-div > form .question input[type="tel"]:focus ~ label,
-#main-div > form .question input[type="password"]:focus ~ label {
+#main-div > form .question input[type="text"]:focus ~ label.override-form-label,
+#main-div > form .question input[type="email"]:focus ~ label.override-form-label,
+#main-div > form .question input[type="tel"]:focus ~ label.override-form-label,
+#main-div > form .question input[type="password"]:focus ~ label.override-form-label {
     -moz-transform: translate(0, -35px);
     -ms-transform: translate(0, -35px);
     -webkit-transform: translate(0, -35px);
@@ -149,10 +150,10 @@
     -webkit-transform: translate(0, -35px);
     transform: translate(0, -35px);
 }
-#main-div > form .question input[type="text"]:valid ~ label,
-#main-div > form .question input[type="email"]:valid ~ label,
-#main-div > form .question input[type="tel"]:valid ~ label,
-#main-div > form .question input[type="password"]:valid ~ label {
+#main-div > form .question input[type="text"]:valid ~ label.override-form-label,
+#main-div > form .question input[type="email"]:valid ~ label.override-form-label,
+#main-div > form .question input[type="tel"]:valid ~ label.override-form-label,
+#main-div > form .question input[type="password"]:valid ~ label.override-form-label {
     text-transform: uppercase;
     font-style: italic;
     -moz-transform: translate(5px, -35px) scale(0.6);
@@ -176,6 +177,64 @@
     list-style-type: none;
     color: red;
 }
+
+
+
+
+
+#main-div .select{
+    position: relative;
+    height: 40px;
+    border-radius: 60px;
+    border: 1px solid var(--side-background-color);
+    text-transform: capitalize;
+    color: var(--side-background-color);
+    background-color: transparent;
+    text-align: left;
+    padding: 0 15px;
+    /*font-size: 16px;*/
+    cursor: pointer;
+}
+#main-div .select .year {
+    width: 100px;
+}
+#main-div .select .month {
+    width: 200px;
+}
+#main-div .select .day {
+    width: 50px;
+}
+#main-div .options{
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--side-background-color);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+    display: none;
+}
+#main-div .options.active{
+    display: block;
+}
+#main-div .options .item{
+    color: var(--forced-background-color);
+    text-transform: capitalize;
+    width: 100%;
+    height: 30px;
+    padding: 0 15px;
+    line-height: 30px;
+    cursor: pointer;
+}
+#main-div .options .item.active{
+    background: var(--side-background-color);
+}
+
+
+
+
 
 
 header {

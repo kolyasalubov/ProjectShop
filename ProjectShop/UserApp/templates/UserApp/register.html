@@ -26,78 +26,82 @@
                 <tr>
                     <td>
                         <div class="question">
-                            <input type="email" name="email" maxlength="254" required="" id="id_email">
-                            <label for="id_email">email</label>
+                            <input type="email" name="email" maxlength="254" required  autofocus id="id_email">
+                            <label class="override-form-label" for="id_email">email</label>
                         </div>
                     </td>
                     <td>
                         <div class="question">
-                            <input type="text" name="first_name" maxlength="40" required="" id="id_first_name">
-                            <label for="id_first_name">first name</label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="question">
-                            <input type="tel" name="phone_number" maxlength="128" required="" id="id_phone_number">
-                            <label for="id_phone_number">phone number</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="question">
-                            <input type="text" name="last_name" maxlength="40" required="" id="id_last_name">
-                            <label for="id_last_name">last name</label>
+                            <input type="text" name="first_name" maxlength="40" required id="id_first_name">
+                            <label class="override-form-label" for="id_first_name">first name</label>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <div class="question">
-                            <input type="password" name="password1" autocomplete="new-password" required="" id="id_password1">
-                            <label for="id_password1">password</label>
+                            <input type="tel" name="phone_number" maxlength="128" required id="id_phone_number">
+                            <label class="override-form-label" for="id_phone_number">phone number</label>
                         </div>
                     </td>
                     <td>
                         <div class="question">
-                            <select name="birth_date_month" id="id_birth_date_month">
-                                <option value="" selected=""></option>
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
-                            <label for="id_birth_date_month">month</label>
-                            <select name="birth_date_day" id="id_birth_date_day">
-                                <option value="" selected=""></option>
-                                {% for i in ""|get_range:"1,32,1" %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                            <label for="id_birth_date_day">day</label>
-                            <select name="birth_date_year" id="id_birth_date_year">
-                                <option value="" selected=""></option>
-                                {% for i in ""|get_range:"2021,1900,-1" %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                            <label for="id_birth_date_year">year</label>
+                            <input type="text" name="last_name" maxlength="40" required id="id_last_name">
+                            <label class="override-form-label" for="id_last_name">last name</label>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <div class="question">
-                            <input type="password" name="password2" autocomplete="new-password" required="" id="id_password2">
-                            <label for="id_password2">password confirmation</label>
+                            <input type="password" name="password1" autocomplete="new-password" required id="id_password1">
+                            <label class="override-form-label" for="id_password1">password</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="question">
+                            <select class="select month" name="birth_date_month" id="id_birth_date_month">
+                                <div class="options">
+                                    <option class="item active" disabled selected value></option>
+                                    <option class="item" value="1">January</option>
+                                    <option class="item" value="2">February</option>
+                                    <option class="item" value="3">March</option>
+                                    <option class="item" value="4">April</option>
+                                    <option class="item" value="5">May</option>
+                                    <option class="item" value="6">June</option>
+                                    <option class="item" value="7">July</option>
+                                    <option class="item" value="8">August</option>
+                                    <option class="item" value="9">September</option>
+                                    <option class="item" value="10">October</option>
+                                    <option class="item" value="11">November</option>
+                                    <option class="item" value="12">December</option>
+                                </div>
+                            </select>
+                            <select class="select month" name="birth_date_day" id="id_birth_date_day">
+                                <div class="options">
+                                    <option class="item active" disabled selected value></option>
+                                    {% for i in ""|get_range:"1,32,1" %}
+                                        <option class="item" value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </div>
+                            </select>
+                            <select class="select day" name="birth_date_year" id="id_birth_date_year">
+                                <div class="options">
+                                    <option class="item active" disabled selected value></option>
+                                    {% for i in ""|get_range:"2021,1900,-1" %}
+                                        <option class="item" value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </div>
+                            </select>
+                            <label class="center-label">birth date</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="question">
+                            <input type="password" name="password2" autocomplete="new-password" required id="id_password2">
+                            <label class="override-form-label" for="id_password2">password confirmation</label>
                         </div>
                     </td>
                 </tr>
