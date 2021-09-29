@@ -25,6 +25,12 @@ class OrderAdmin(admin.ModelAdmin):
             return self.readonly_fields + ('user', 'payment_method', 'shippingAddress_id')
         return self.readonly_fields
 
+    def has_add_permission(self, request):
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
 
 class OrderItemsAdmin(admin.ModelAdmin):
     fields = ('order_items_qantity', 'order', 'product')
@@ -32,7 +38,13 @@ class OrderItemsAdmin(admin.ModelAdmin):
     list_filter = ('product', )
     ordering = ('product', 'order', )
 
+    def has_add_permission(self, request):
+        return False
+
     def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
         return False
 
 
