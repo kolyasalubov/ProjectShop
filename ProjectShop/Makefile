@@ -22,3 +22,10 @@ shell:
 
 test:
 	@python manage.py test
+
+update:
+	@pip install -U -r requirements.txt
+
+collect:
+	@python manage.py collectstatic --settings=$(SETTINGS) --noinput
+
