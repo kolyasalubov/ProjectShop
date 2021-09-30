@@ -5,6 +5,7 @@ from ProductApp.tests.factories import ProductFactory
 
 
 class WishListTestCase(TestCase):
+	"""Test Case for WishList model"""
 	def setUp(self) -> None:
 		pass
 

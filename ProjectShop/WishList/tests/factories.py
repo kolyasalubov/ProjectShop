@@ -7,6 +7,7 @@ from ProductApp.tests.factories import ProductFactory
 
 
 class WishListFactory(factory.django.DjangoModelFactory):
+	"""Factory for WishList model"""
 	class Meta:
 		model = WishList
 

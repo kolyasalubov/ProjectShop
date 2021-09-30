@@ -5,6 +5,7 @@ from ProductApp.tests.factories import *
 
 
 class ProductTestCase(TestCase):
+	"""Test Case for Product model"""
 	def setUp(self) -> None:
 		pass
 
@@ -41,6 +42,7 @@ class ProductTestCase(TestCase):
 
 
 class ProductCategoryTestCase(TestCase):
+	"""Test Case for ProductCategory model"""
 	def setUp(self) -> None:
 		pass
 
@@ -67,6 +69,7 @@ class ProductCategoryTestCase(TestCase):
 
 
 class ProductSubcategoryTestCase(TestCase):
+	"""Test Case for ProductSubcategory model"""
 	def setUp(self) -> None:
 		pass
 
@@ -93,6 +96,7 @@ class ProductSubcategoryTestCase(TestCase):
 
 
 class TagTestCase(TestCase):
+	"""Test Case for Tag model"""
 	def setUp(self) -> None:
 		pass
 
@@ -119,6 +123,7 @@ class TagTestCase(TestCase):
 
 
 class ProductMediaTestCase(TestCase):
+	"""Test Case for ProductMedia model"""
 	def setUp(self) -> None:
 		pass
 
@@ -142,6 +147,7 @@ class ProductMediaTestCase(TestCase):
 
 
 class ReviewTestCase(TestCase):
+	"""Test Case for Review model"""
 	def setUp(self) -> None:
 		pass
 
