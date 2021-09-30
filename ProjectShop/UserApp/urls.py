@@ -8,9 +8,6 @@ from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView, Logo
                           PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, UpdateProfileView
 
 
-app_name = 'user_app'
-
-
 view_based_urls = [
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
