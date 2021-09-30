@@ -132,6 +132,7 @@ dmypy.json
 .idea/
 .DS_Store
 .vscode/
+.vscode/settings.json
 
 # sonarqube files
 .scannerwork/
