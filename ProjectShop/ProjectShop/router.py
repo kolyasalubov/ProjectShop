@@ -5,4 +5,4 @@ from order.views import OrderViewSet
 
 router = routers.DefaultRouter()
 router.register('order', OrderViewSet, basename='order')
-router.register(r'products/(?P<product_id>\d+)/reviews', ReviewViewSet, basename="reviews")
+router.register(r'product/(?P<product_id>\d+)/reviews', ReviewViewSet, basename="reviews")
