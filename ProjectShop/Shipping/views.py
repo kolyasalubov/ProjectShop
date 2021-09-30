@@ -10,4 +10,4 @@ class ShippingViewSet(viewsets.ModelViewSet):
     """
     queryset = ShippingModel.objects.all()
     serializer_class = ShippingSerializer
-    http_method_names = ['post', 'get', 'patch', 'put']
+    http_method_names = ['post', 'get', 'patch']
