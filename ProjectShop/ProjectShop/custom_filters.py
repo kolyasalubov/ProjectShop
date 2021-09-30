@@ -11,11 +11,11 @@ class MultipleChoiceListFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         """
-        Must be overridden to return a list of tuples (value, verbose value)
+        Must be overridden to return a CHOICES field
         """
         raise NotImplementedError(
             'The MultipleChoiceListFilter.lookups() method must be overridden to '
-            'return a list of tuples (value, verbose value).'
+            'return a list of tuples (value, verbose value) or choices field of some model.'
         )
 
     def queryset(self, request, queryset):
