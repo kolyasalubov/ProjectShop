@@ -29,5 +29,4 @@ token_urls = [
 
 router = DefaultRouter()
 router.register(r'token/logout', BlacklistRefreshViewSet, basename='user')
-router.register(r'user', UserViewSet, basename='userviewset')
 urlpatterns = router.urls + token_urls + view_based_urls
