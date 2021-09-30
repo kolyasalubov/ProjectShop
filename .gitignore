@@ -131,7 +131,7 @@ dmypy.json
 # .idea, and macOS buffer files
 .idea/
 .DS_Store
-.vscode
+.vscode/
 
 # sonarqube files
 .scannerwork/
