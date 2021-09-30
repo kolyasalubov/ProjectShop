@@ -132,3 +132,10 @@ dmypy.json
 .idea/
 .DS_Store
 .vscode
+
+# sonarqube files
+.scannerwork/
+sonar-project.properties
+
+# mediafiles
+/ProjectShop/media/product_media_image/*
