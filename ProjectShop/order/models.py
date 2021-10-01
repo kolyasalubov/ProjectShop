@@ -70,6 +70,3 @@ class OrderItemsModel(models.Model):
     order = models.ForeignKey(OrderModel, on_delete=models.CASCADE)
     order_items_qantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-
-

@@ -45,8 +45,6 @@ def export_to_csv(modeladmin, request, queryset):
     pseudo_buffer = EchoCsv()
     writer = csv.writer(pseudo_buffer, delimiter=';')
 
-    writer.writerow(['Payment method', 'Payment status', 'Shipping address', 'User data', 'Products'])
-
     return StreamingHttpResponse(
         (writer.writerow(row) for row in rows),
         content_type="text/csv",

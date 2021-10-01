@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
+
 from order.models import OrderModel, OrderItemsModel
 from order.export import export_to_csv
 from ProjectShop.custom_filters import MultipleChoiceListFilter
@@ -35,13 +36,27 @@ class OrderAdmin(admin.ModelAdmin):
             return self.readonly_fields + ('user', 'payment_method', 'shippingAddress_id')
         return self.readonly_fields
 
+    def has_add_permission(self, request):
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
 
 class OrderItemsAdmin(admin.ModelAdmin):
     fields = ('order_items_qantity', 'order', 'product')
-    readonly_fields = ('product', 'order_items_qantity', 'order')
     list_display = ('product', 'order_items_qantity', 'order')
     list_filter = ('product', )
     ordering = ('product', 'order', )
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 admin.site.register(OrderModel, OrderAdmin)
