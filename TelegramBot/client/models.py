@@ -108,7 +108,7 @@ class User(BaseModel):
         arbitrary_types_allowed = True
 
     @staticmethod
-    def is_registered(phone_number: str) -> int:
+    def is_registered(phone_number: PhoneNumber) -> int:
         """
         Check if our user is registered by his phone_number. If he is, return his id for later use
         """
