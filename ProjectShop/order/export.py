@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import csv
 
-from order.models import OrderModel, OrderItemsModel
+from order.models import Order, OrderItems
 
 
 class EchoCsv:
@@ -20,11 +20,11 @@ def order_to_list(order) -> list:
     """
     Function that returns row for export_to_csv method
     """
-    order_object = OrderModel.objects.get(id=order['id'])
+    order_object = Order.objects.get(id=order['id'])
     user_object = order_object.user
     shipping_address_object = order_object.shippingAddress_id
 
-    order_items_objects = OrderItemsModel.objects.filter(order=order['id'])
+    order_items_objects = OrderItems.objects.filter(order=order['id'])
     product_list = []
     for order_item in order_items_objects:
         quantity = order_item.order_items_qantity

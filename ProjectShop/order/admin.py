@@ -17,7 +17,7 @@ class ShippingStatusListFilter(MultipleChoiceListFilter):
 
 class OrderItemsInline(admin.TabularInline):
     model = OrderItems
-    readonly_fields = ('order_items_qantity', 'product')
+    readonly_fields = ('order_items_quantity', 'product')
     extra = 1
 
 
@@ -44,8 +44,8 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemsAdmin(admin.ModelAdmin):
-    fields = ('order_items_qantity', 'order', 'product')
-    list_display = ('product', 'order_items_qantity', 'order')
+    fields = ('order_items_quantity', 'order', 'product')
+    list_display = ('product', 'order_items_quantity', 'order')
     list_filter = ('product', )
     ordering = ('product', 'order', )
 
