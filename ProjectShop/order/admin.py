@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 
-from order.models import OrderModel, OrderItemsModel
+from order.models import Order, OrderItems
 from order.export import export_to_csv
 from ProjectShop.custom_filters import MultipleChoiceListFilter
 
@@ -12,11 +12,11 @@ class ShippingStatusListFilter(MultipleChoiceListFilter):
     parameter_name = 'shipping_status__in'
 
     def lookups(self, request, model_admin):
-        return OrderModel.ShippingStatus.choices
+        return Order.ShippingStatus.choices
 
 
 class OrderItemsInline(admin.TabularInline):
-    model = OrderItemsModel
+    model = OrderItems
     readonly_fields = ('order_items_qantity', 'product')
     extra = 1
 
@@ -58,7 +58,6 @@ class OrderItemsAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-
-admin.site.register(OrderModel, OrderAdmin)
-admin.site.register(OrderItemsModel, OrderItemsAdmin)
+admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItems, OrderItemsAdmin)
 

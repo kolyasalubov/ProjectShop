@@ -25,7 +25,6 @@ from drf_yasg import openapi
 from .router import router
 from UserApp.views import TemporalHomePageView
 
-
 schema_view = get_schema_view(
     openapi.Info(
         title="Project Shop Title",
