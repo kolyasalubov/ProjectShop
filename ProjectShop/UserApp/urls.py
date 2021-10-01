@@ -8,7 +8,7 @@ from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView, Logo
                           PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, UpdateProfileView
 
 
-app_name = 'user_app'
+# app_name = 'user_app'
 
 
 view_based_urls = [
