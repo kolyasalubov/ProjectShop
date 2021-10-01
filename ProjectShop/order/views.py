@@ -1,4 +1,4 @@
-from rest_framework import viewsets, renderers
+from rest_framework import viewsets
 
 from order.models import Order, OrderItems
 from order.serializers import OrderDetailSerializer, OrderItemsSerializer
@@ -16,4 +16,3 @@ class OrderItemsViewSet(viewsets.ModelViewSet):
     queryset = OrderItems.objects.all()
     serializer_class = OrderItemsSerializer
     http_method_names = ['post', 'get', 'patch', 'put']
-

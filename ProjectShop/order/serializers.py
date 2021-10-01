@@ -23,4 +23,3 @@ class OrderDetailSerializer(serializers.ModelSerializer):
                   'payment_method',
                   'shippingAddress_id',
                   'payment_status', 'order_items')
-
