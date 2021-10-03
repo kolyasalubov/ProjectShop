@@ -100,4 +100,5 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     lookup_field = 'phone_number'
-    http_method_names = ['get', 'patch', 'delete']
+    http_method_names = ['get', 'post', 'patch', 'delete']
+
