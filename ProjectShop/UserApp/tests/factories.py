@@ -1,6 +1,6 @@
 import factory
-from UserApp.models import User
 from faker import Faker
+from UserApp.models import User
 from UserApp.tests.custom_providers import CustomPhoneProvider
 
 
