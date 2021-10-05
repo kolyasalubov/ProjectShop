@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.html import format_html
 from django.core import validators
 from django.utils.translation import ugettext_lazy as _
@@ -117,7 +118,6 @@ class Review(models.Model):
     @property
     def name(self):
         return f'{self.user} review of {self.product}'
-
 
 class Reply(models.Model):
     """
