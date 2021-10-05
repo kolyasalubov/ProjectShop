@@ -1,5 +1,6 @@
-from faker.providers.phone_number.uk_UA import Provider
 import phonenumbers
+from faker.providers.phone_number.uk_UA import Provider
+
 
 class CustomPhoneProvider(Provider):
     def phone_number(self):
