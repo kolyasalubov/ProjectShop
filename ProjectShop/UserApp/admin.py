@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
+from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
+
 from UserApp.models import User
 
 
@@ -73,3 +75,7 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(User, UserAdmin)
 # unregistering the Group model from admin.
 admin.site.unregister(Group)
+
+admin.site.unregister(OutstandingToken)
+admin.site.unregister(BlacklistedToken)
+

@@ -2,7 +2,7 @@ import requests
 import os
 
 
-PHONE_NUMBER = os.environ.get('BOT_PHONE_NUMBER')     # Crete admin is_bot user and insert his/her phone_number
+PHONE_NUMBER = os.environ.get('BOT_PHONE_NUMBER')      # Crete admin is_bot user and insert his/her phone_number
 PASSWORD = os.environ.get('BOT_PASSWORD')          # Crete admin is_bot user and insert his/her password
 SERVER_HOST = os.environ.get('SERVER_HOST')         # "http://localhost:8000/" insert for local testing
 TOKEN_URL = 'users/token/'
@@ -136,7 +136,6 @@ class RestClient:
                 headers['Authorization'] = f"Bearer {self.access}"
                 response = request_method(url, headers=headers, data=data, params=params)
         return response
-
 
 
 bot_client = RestClient(PHONE_NUMBER, PASSWORD, SERVER_HOST, TOKEN_URL, TOKEN_REFRESH_URL, LOGOUT_URL)

@@ -9,7 +9,7 @@
 
 
 {% block content %}
-    <img src="{{ user.profile_pic.url }}">
+    <img src="{{ user.profile_pic.url }}" style="width:200px">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <h2>{% translate "Profile Info" %}</h2>
