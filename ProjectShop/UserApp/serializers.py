@@ -21,3 +21,4 @@ class UserSerializerForPatch(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['first_name', 'middle_name', 'last_name', 'birth_date']
+        
