@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from UserApp.models import User
@@ -7,7 +6,7 @@ from Shipping.models import ShippingModel
 from ProductApp.models import Product
 
 
-class OrderModel(models.Model):
+class Order(models.Model):
     """Create Order model and take information about order.
 
     order_date: Date of order creation (auto);
@@ -36,13 +35,12 @@ class OrderModel(models.Model):
         CARD = "Card", _("Card")
 
     payment_method = models.CharField(
-                     max_length=4,
-                     choices=PaymentMethod.choices,
-                     default=PaymentMethod.CASH)
+        max_length=4,
+        choices=PaymentMethod.choices,
+        default=PaymentMethod.CASH)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     shippingAddress_id = models.ForeignKey(ShippingModel, on_delete=models.CASCADE)
-    order_items = models.ForeignKey('OrderItemsModel', on_delete=models.CASCADE)
 
     class ShippingStatus(models.TextChoices):
         PLANNING = "Planning", _("Planning")
@@ -51,22 +49,22 @@ class OrderModel(models.Model):
         CANCELED = "Canceled", _("Canceled")
 
     shipping_status = models.CharField(max_length=9,
-                     choices=ShippingStatus.choices,
-                     default=ShippingStatus.PLANNING)
+                                       choices=ShippingStatus.choices,
+                                       default=ShippingStatus.PLANNING)
 
     class PaymentStatus(models.TextChoices):
         PENDING = "Pending", _("Pending")
         PAID = "Paid", _("Paid")
 
     payment_status = models.CharField(max_length=7,
-                     choices=PaymentStatus.choices,
-                     default=PaymentStatus.PENDING)
+                                      choices=PaymentStatus.choices,
+                                      default=PaymentStatus.PENDING)
+
+    def __str__(self):
+        return f'{self.user}; Payment status - {self.payment_status}'
 
 
-class OrderItemsModel(models.Model):
-    order = models.ForeignKey(OrderModel, on_delete=models.CASCADE)
-    order_items_qantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
-    # product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-
-
+class OrderItems(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order_items_quantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)

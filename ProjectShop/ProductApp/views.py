@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet 
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
@@ -36,3 +36,19 @@ class ProductMediaViewSet(ReadOnlyModelViewSet):
     """This is viewset for ProductMedia model"""
     serializer_class = ProductMediaSerializer
     queryset = ProductMedia.objects.all()
+    
+
+class ReviewViewSet(ModelViewSet):
+    """
+    ViewSet to view and write reviews for specified in path product
+    """
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        product_id = self.kwargs.get('product_id')
+        queryset_list = Review.objects.filter(product=product_id)
+        return queryset_list
+
+    def perform_create(self, serializer):
+        product_id = self.kwargs.get('product_id')
+        serializer.save(product=Product.objects.get(pk=product_id))

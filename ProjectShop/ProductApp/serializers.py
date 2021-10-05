@@ -36,16 +36,6 @@ class ProductSerializer(ModelSerializer):
 		fields = '__all__'
 
 
-class ReviewSerializer(ModelSerializer):
-	"""Serializer for Review model"""
-	product = ProductSerializer(read_only=True)
-	user = UserSerializer(read_only=True)
-
-	class Meta:
-		model = Review
-		fields = '__all__'
-
-
 class ProductMediaSerializer(ModelSerializer):
 	"""Serializer for ProductMedia model"""
 	product = ProductSerializer(read_only=True)
@@ -53,3 +43,12 @@ class ProductMediaSerializer(ModelSerializer):
 	class Meta:
 		model = ProductMedia
 		fields = '__all__'
+
+
+class ReviewSerializer(ModelSerializer):
+    """
+    Serializer for Review view. Replies for review (likes and dislikes) will be added later
+    """
+    class Meta:
+        model = Review
+        fields = "__all__"
