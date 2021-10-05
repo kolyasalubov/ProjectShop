@@ -1,7 +1,7 @@
 import factory
 import random
 
-from ProductApp.models import *
+from ProductApp.models import Product, ProductCategory, ProductSubcategory, Tag, ProductMedia, Review
 from UserApp.tests.factories import UserFactory
 
 

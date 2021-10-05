@@ -122,9 +122,6 @@ class Review(models.Model):
     def short_description(self):
         return truncatewords(self.comment, 20)
 
-    def disable(self):
-        self.is_active = False
-
 
 class ProductMedia(models.Model):
     """
@@ -168,5 +165,4 @@ class ProductMedia(models.Model):
 
     @property
     def name(self):
-        return f'Media id: {self.id}, media_type: {self.media_type}, ' \
-               f'Product id: {self.product.id}, Product name: {self.product.name}'
+        return f'{self.product} {self.get_media_type_display()} {self.id}'
