@@ -39,4 +39,3 @@ def run_pooling():
     updater.idle()
 
 
-run_pooling()
