@@ -24,19 +24,6 @@ class TagSerializer(ModelSerializer):
 		fields = ['name']
 
 
-class ProductSerializer(ModelSerializer):
-	"""Serializer for Product model"""
-	categories = ProductCategorySerializer(many=True, read_only=True)
-	subcategories = ProductSubcategorySerializer(many=True, read_only=True)
-	tags = TagSerializer(many=True, read_only=True)
-	media = SlugRelatedField(many=True, read_only=True, slug_field='image')
-
-	class Meta:
-		model = Product
-		fields = ['id', 'name', 'price', 'description', 'stock_quantity',
-				  'categories', 'subcategories', 'tags', 'media']
-
-
 class ProductNameSerializer(ModelSerializer):
 	"""Serializer for Product model with only name"""
 	class Meta:
@@ -51,6 +38,19 @@ class ProductMediaSerializer(ModelSerializer):
 	class Meta:
 		model = ProductMedia
 		fields = '__all__'
+
+
+class ProductSerializer(ModelSerializer):
+	"""Serializer for Product model"""
+	categories = ProductCategorySerializer(many=True, read_only=True)
+	subcategories = ProductSubcategorySerializer(many=True, read_only=True)
+	tags = TagSerializer(many=True, read_only=True)
+	media = ProductMediaSerializer()
+
+	class Meta:
+		model = Product
+		fields = ['id', 'name', 'price', 'description', 'stock_quantity',
+				  'categories', 'subcategories', 'tags', 'media']
 
 
 class ReviewSerializer(ModelSerializer):
