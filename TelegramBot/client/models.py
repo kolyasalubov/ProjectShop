@@ -15,7 +15,38 @@ from typing import List, Tuple
 from client.status_check import bot_client
 
 
-class ShippingAddress(BaseModel):
+class PaginatedModel(BaseModel):
+    """
+    Model for all models, that require pagination
+    """
+    _path = None
+
+    @classmethod
+    def get(cls):
+        """
+        Get first page of result. Will work only if path provided (in child classes)
+        """
+        response = bot_client.send_request("GET", cls._path)
+        return cls.page(response.json())
+
+    @classmethod
+    def page(cls, json: dict) -> dict:
+        """
+        Turn our results into objects of respective class
+        """
+        json['results'] = [cls(**item) for item in json['results']]
+        return json
+
+    @classmethod
+    def turn_page(cls, url: str) -> dict:
+        """
+        Change page using given url
+        """
+        response = bot_client.send_request("GET", url)
+        return cls.page(response.json())
+
+
+class ShippingAddress(PaginatedModel):
     """
     Model to work with shipping addresses.
     """
@@ -28,14 +59,14 @@ class ShippingAddress(BaseModel):
     post_office: PositiveInt
 
     @classmethod
-    def get_shipping_addresses(cls, user_id: int) -> list:
+    def get_shipping_addresses(cls, user_id: int) -> dict:
         """
         Retrieve shipping addresses for user specified by user id
 
         Return: List[ShippingAddress]
         """
         response = bot_client.send_request("GET", f"user/shipping-address", params={"userId": user_id})
-        return [cls(**s) for s in response.json()]
+        return cls.page(response.json())
 
     def add_shipping_address(self) -> bool:
         """
@@ -53,7 +84,7 @@ class ShippingAddress(BaseModel):
         return True
 
 
-class Wishlist(BaseModel):
+class Wishlist(PaginatedModel):
     """
     Model for working with users' wishlist. Wishlist's record identification is done using product id and user id
     """
@@ -62,12 +93,12 @@ class Wishlist(BaseModel):
     product_name: constr(max_length=100)
 
     @classmethod
-    def get_wishlist(cls, user_id: int) -> list:
+    def get_wishlist(cls, user_id: int) -> dict:
         """
         Retrieve wishlist of certain user specified by user id
         """
         response = bot_client.send_request("GET", f"user/{user_id}/wishlist")
-        return [cls(**w) for w in response.json()]
+        return cls.page(response.json())
 
     def add_wishlist(self) -> bool:
         """
@@ -129,44 +160,28 @@ class User(BaseModel):
         return response.status_code == 200
 
 
-class Category(BaseModel):
+class Category(PaginatedModel):
     id: PositiveInt
     name: constr(max_length=100)
 
-    @classmethod
-    def get(cls) -> list:
-        """Get category list"""
-        response = bot_client.send_request("GET", "/products/categories")
-        return [cls(**c) for c in response.json()]
+    _path = "/products/categories"
 
 
 class Subcategory(BaseModel):
     id: PositiveInt
     name: constr(max_length=100)
 
-    @classmethod
-    def get(cls, category_id: int) -> list:
-        """
-        Get subcategory list by category
-        """
-        response = bot_client.send_request("GET", f"/products/subcategories")
-        return [cls(**s) for s in response.json()]
+    _path = "/products/subcategories"
 
 
 class Tag(BaseModel):
     id: PositiveInt
     name: constr(max_length=100)
 
-    @classmethod
-    def get(cls) -> list:
-        """
-        Get tags list
-        """
-        response = bot_client.send_request("GET", "/products/tags")
-        return [cls(**t) for t in response.json()]
+    _path = "/products/tags"
 
 
-class Review(BaseModel):
+class Review(PaginatedModel):
     """
     Model for reviews. Replies (likes and dislikes) are embedded in model for convenience
     """
@@ -178,12 +193,12 @@ class Review(BaseModel):
     dislikes: PositiveInt = None
 
     @classmethod
-    def view_reviews(cls, product_id: int) -> list:
+    def view_reviews(cls, product_id: int) -> dict:
         """
-        Get list of reviews for specified product
+        Here we need to dynamically set our path, so we don`t use base get method
         """
         response = bot_client.send_request("GET", f"/products/{product_id}/reviews")
-        return [cls(**t) for t in response.json()]
+        return cls.page(response.json())
 
     def post(self, product_id: int):
         """
@@ -201,7 +216,7 @@ class Review(BaseModel):
         return response.json()
 
 
-class Product(BaseModel):
+class Product(PaginatedModel):
     id = PositiveInt
     name: constr(max_length=100)
     price: condecimal(decimal_places=2, max_digits=9)
@@ -215,19 +230,17 @@ class Product(BaseModel):
         arbitrary_types_allowed = True
 
     @classmethod
-    def get(cls, category_id: int, page_size=10, page=1, subcategories=None, tags=None):
+    def view_products(cls, category_id: int, subcategories: list = None, tags: list = None) -> dict:
         """
         Get paginated list of products by some filters. If filters aren't specified, list should be sorted by popularity
         """
-        params = {"category": category_id,
-                  "bodySize": page_size,
-                  "page": page}
+        params = {"category": category_id}
         if subcategories:
             params.update({"subcategories": subcategories})
         if tags:
             params.update({"tags": tags})
         response = bot_client.send_request("GET", f"/products", params=params)
-        return [cls(**p) for p in response.json()]
+        return cls.page(response.json())
 
 
 class Order(BaseModel):
