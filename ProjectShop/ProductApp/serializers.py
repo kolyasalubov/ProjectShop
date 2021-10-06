@@ -25,23 +25,31 @@ class TagSerializer(ModelSerializer):
 		fields = '__all__'
 
 
+class ProductNameSerializer(ModelSerializer):
+	"""Serializer for Product model with only name"""
+	class Meta:
+		model = Product
+		fields = ['name']
+
+
+class ProductMediaSerializer(ModelSerializer):
+	"""Serializer for ProductMedia model"""
+	product = ProductNameSerializer(read_only=True)
+
+	class Meta:
+		model = ProductMedia
+		fields = '__all__'
+
+
 class ProductSerializer(ModelSerializer):
 	"""Serializer for Product model"""
 	categories = ProductCategorySerializer(many=True, read_only=True)
 	subcategories = ProductSubcategorySerializer(many=True, read_only=True)
 	tags = TagSerializer(many=True, read_only=True)
+	media = ProductMediaSerializer()
 
 	class Meta:
 		model = Product
-		fields = '__all__'
-
-
-class ProductMediaSerializer(ModelSerializer):
-	"""Serializer for ProductMedia model"""
-	product = ProductSerializer(read_only=True)
-
-	class Meta:
-		model = ProductMedia
 		fields = '__all__'
 
 
