@@ -29,7 +29,7 @@ class ProductSerializer(ModelSerializer):
 	categories = ProductCategorySerializer(many=True, read_only=True)
 	subcategories = ProductSubcategorySerializer(many=True, read_only=True)
 	tags = TagSerializer(many=True, read_only=True)
-	media = SlugRelatedField(many=True, read_only=True, slug_field='video_link')
+	media = SlugRelatedField(many=True, read_only=True, slug_field='image')
 
 	class Meta:
 		model = Product
