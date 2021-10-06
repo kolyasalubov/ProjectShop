@@ -8,8 +8,9 @@ Methods in models are facades for all api requests required by telegram bot
 import datetime
 from enum import Enum
 
-from phonenumbers import PhoneNumber
+import phonenumbers
 from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator
+from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
 
 from client import bot_client
@@ -17,6 +18,8 @@ from client import bot_client
 GET_USER_ID_BY_TELEGRAM_ID_URL = 'users/get_user_id_by_telegram_id/'
 GET_USER_ID_BY_PHONE_NUMBER_URL = 'users/get_user_id_by_phone_number/'
 USER_URL = 'users/user/'
+USER_INIT_KEY = 'from base'   # key for User.__init__  access
+USER_BY_TELEGRAM_ID_URL = 'users/get_user_id_by_telegram_id/'
 
 
 class ShippingAddress(BaseModel):
@@ -98,20 +101,21 @@ class User(BaseModel):
     self.phone_number field uses PhoneNumber class from phonenumbers library, everything else - Pydantic fields
     More details on phonenmbers: https://github.com/stefanfoulis/django-phonenumber-field
     """
-    id: PositiveInt = None
-    telegram_id: constr(max_length=40) = None
+    id: PositiveInt
+    telegram_id: constr(max_length=40)
     first_name: constr(max_length=40)
     last_name: constr(max_length=40)
     phone_number: constr(max_length=20)
     email: EmailStr
     birth_date: datetime.date = None
 
-    @validator('phone_number')
-    def name_must_contain_space(cls, v):
-        print(cls, v)
-        if ' ' not in v:
-            raise ValueError('must contain a space')
-        return v.title()
+    changeable_fields = ['first_name', 'last_name', 'birth_date']
+
+    def __init__(self, key, **kwargs):
+        if key == USER_INIT_KEY:
+            super().__init__(**kwargs)
+        else:
+            raise PermissionError
 
     class Config:
         """
@@ -119,24 +123,63 @@ class User(BaseModel):
         """
         arbitrary_types_allowed = True
 
-    def to_dict(self):
-        data = {
-            'first_name': self.first_name,
-            'last_name': self.last_name,
-            'phone_number': '+' + str(self.phone_number.country_code),
-            'email': self.email,
-            'birth_date': self.birth_date
-        }
+    def __setattr__(self, key, value):
+        if key in self.changeable_fields:
+            super().__setattr__(key, value)
+        else:
+            raise PermissionError(f"Field {key} is not changeable.")
 
-    @staticmethod
-    def get_user_id_by_phone_number(phone_number: str) -> int:
-        """
-        Return user id using phone number if user exists.
-        """
-        url = GET_USER_ID_BY_PHONE_NUMBER_URL + phone_number + '/'
-        response = bot_client.send_request("GET", url)
-        if response.status_code == 200:
-            return response.json()['id']
+    @validator('phone_number')
+    def name_must_contain_space(cls, value):
+        phone_number = phonenumbers.parse(value)
+        if phonenumbers.is_valid_number(phone_number):
+            return value
+        raise ValidationError
+
+    @classmethod
+    def _create_user(cls, user_response, expected_status_code):
+        user = None
+        if user_response.status_code == expected_status_code:
+            user = user_response.json()
+            user = cls(
+                key=USER_INIT_KEY,
+                id=user.get('id'),
+                telegram_id=user.get('telegram_id'),
+                first_name=user.get('first_name'),
+                last_name=user.get('last_name'),
+                phone_number=user.get('phone_number'),
+                email=user.get('email'),
+                birth_date=user.get('birth_date'),
+            )
+        return user_response.status_code, user
+
+    @classmethod
+    def register_user(cls, telegram_id, phone_number, email, first_name, last_name, birth_date=None):
+        user_data = {
+            'telegram_id': telegram_id,
+            'phone_number': phone_number,
+            'email': email,
+            'first_name': first_name,
+            'last_name': last_name,
+            'birth_date': birth_date
+        }
+        user_response = bot_client.send_request('POST', USER_URL, data=user_data)
+        return cls._create_user(user_response, 201)
+
+    @classmethod
+    def _patch_user(cls, ):
+        pass
+    @classmethod
+    def get_user_by_telegram_id(cls, telegram_id):
+        url = USER_BY_TELEGRAM_ID_URL + telegram_id + '/'
+        user_response = bot_client.send_request('GET', url)
+        return cls._create_user(user_response, 200)
+
+    @classmethod
+    def get_user_by_phone_number(cls, phone_number):
+        url = USER_URL + phone_number + '/'
+        user_response = bot_client.send_request('GET', url)
+        return cls._create_user(user_response, 200)
 
     def register(self) -> int:
         """

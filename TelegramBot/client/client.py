@@ -182,4 +182,6 @@ bot_client = RestClient(
     )
 # Use only next methods: logout, send_request
 
-a = bot_client.add_telegram_id_to_user_profile("asddfg", '+380980589874')
+if __name__ == '__main___':
+    a = bot_client.send_request('GET', 'api/order/')
+    print(a.content)
