@@ -1,14 +1,21 @@
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from typing import Tuple, List
 
 
-def create_keyboard(values: List[Tuple[str, str]], columns: int) -> InlineKeyboardMarkup:
+def create_keyboard(dictionary: dict, columns: int) -> InlineKeyboardMarkup:
     """
     Function to turn list of required for buttons values into actual inline buttons.
     Arguments:
-        values: list of pairs button value - button meta. Button meta will be sent back with update
+        dictionary: dictionary including our values and next/previous ages urls.
+                    Button meta will be sent back with update
         columns: the number of columns in keyboard
     """
-    return InlineKeyboardMarkup([[InlineKeyboardButton(*values[column + row][0])
-                                for row in range(columns)]
-                                for column in range(0, len(values), columns)])
+    keyboard = [[InlineKeyboardButton(dictionary['results'][column + row][0], dictionary['results'][column + row][0])
+                 for row in range(columns)]
+                for column in range(0, len(dictionary['results']), columns)]
+    if dictionary['previous']:
+        keyboard.append(["<", dictionary['previous']])
+        if dictionary['next']:
+            keyboard[-1].extend([">", dictionary['next']])
+    elif dictionary['next']:
+        keyboard.append([">", dictionary['next']])
+    return InlineKeyboardMarkup(keyboard)

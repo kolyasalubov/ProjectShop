@@ -1,7 +1,7 @@
 from telegram import KeyboardButton
 from telegram import ReplyKeyboardMarkup
 
-from TelegramBot.client.client import RestClient, bot_client
+from client.client import RestClient, bot_client
 
 
 BUTTON_REGISTER = "Register"

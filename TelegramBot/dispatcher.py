@@ -1,12 +1,12 @@
 import telegram
 from telegram.ext import (
     Updater, Dispatcher, Filters,
-    CommandHandler, MessageHandler,
+    CommandHandler, MessageHandler, CallbackQueryHandler,
 )
 
 from TOKEN import TELEGRAM_TOKEN
+from handlers.product_manager import propose_categories, turn_categories_page
 from handlers.user_menu import BUTTON_SHOW_PRODUCTS, get_base_reply_keyboard
-
 
 
 def start_command(update, context):
@@ -17,10 +17,12 @@ def start_command(update, context):
     )
 
 
-
 def setup_dispatcher(dp):
     """ Setupping dispatcher and adding all handlers """
     dp.add_handler(CommandHandler('start', start_command))
+    dp.add_handler(MessageHandler(Filters.text('search products'), propose_categories, pass_chat_data=True))
+    dp.add_handler(CallbackQueryHandler(turn_categories_page, pass_chat_data=True,
+                                        pattern=r'^.+products/categories.+$'))
     return dp
 
 
