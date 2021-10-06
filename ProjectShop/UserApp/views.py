@@ -91,20 +91,15 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
         return Response(status=status.HTTP_200_OK)
 
 
-class GetUserIdByTelegramIdViewSet(viewsets.ReadOnlyModelViewSet):
+class GetUserByTelegramIdViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserIdSerializer
+    serializer_class = UserSerializer
     lookup_field = 'telegram_id'
-
-
-class GetUserIdByPhoneNumberViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserIdSerializer
-    lookup_field = 'phone_number'
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    lookup_field = 'phone_number'
 
 
