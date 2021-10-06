@@ -47,21 +47,21 @@ class ProductFactory(factory.django.DjangoModelFactory):
     stock_quantity = factory.Faker('random_int', min=0, max=100)
 
     @factory.post_generation
-    def categories(self, extracted, **kwargs):
+    def categories(self, create, extracted, **kwargs):
         categories = extracted if extracted is not None \
             else ProductCategoryFactory.create_batch(random.randint(1, 5))
         for category in categories:
             self.categories.add(category)
 
     @factory.post_generation
-    def subcategories(self, extracted, **kwargs):
+    def subcategories(self, create, extracted, **kwargs):
         subcategories = extracted if extracted is not None \
             else ProductSubcategoryFactory.create_batch(random.randint(1, 5))
         for subcategory in subcategories:
             self.subcategories.add(subcategory)
 
     @factory.post_generation
-    def tags(self, extracted, **kwargs):
+    def tags(self, create, extracted, **kwargs):
         tags = extracted if extracted is not None \
             else TagFactory.create_batch(random.randint(1, 5))
         for tag in tags:
