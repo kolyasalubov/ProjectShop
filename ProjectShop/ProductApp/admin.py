@@ -29,7 +29,19 @@ class MediaInline(admin.TabularInline):
     extra = 1
 
 
-class ProductAdmin(admin.ModelAdmin):
+class CustomModelAdmin(admin.ModelAdmin):
+
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
+        slug, i = obj.slug, 1
+        while type(obj).objects.filter(slug=obj.slug).exists():
+            obj.slug = f'{slug}-{i}'
+            i += 1
+        super().save_model(request, obj, form, change)
+
+
+class ProductAdmin(CustomModelAdmin):
     inlines = (MediaInline,)
     fields = ('name', 'slug', 'price', 'stock_quantity', 'description', 'categories', 'subcategories', 'tags')
     list_display = ('name', 'price', 'stock_quantity', 'short_description')
@@ -44,7 +56,7 @@ class ProductAdmin(admin.ModelAdmin):
         while Product.objects.filter(slug=obj.slug).exists():
             obj.slug = f'{slug}-{i}'
             i += 1
-        super(ProductAdmin, self).save_model(request, obj, form, change)
+        super().save_model(request, obj, form, change)
 
 
 class ProductMediaAdmin(admin.ModelAdmin):
@@ -77,7 +89,7 @@ class ReviewAdmin(admin.ModelAdmin):
         return form
 
 
-class ProductCategoryAdmin(admin.ModelAdmin):
+class ProductCategoryAdmin(CustomModelAdmin):
     search_fields = ('name',)
 
     def save_model(self, request, obj, form, change):
@@ -87,10 +99,10 @@ class ProductCategoryAdmin(admin.ModelAdmin):
         while ProductCategory.objects.filter(slug=obj.slug).exists():
             obj.slug = f'{slug}-{i}'
             i += 1
-        super(ProductCategoryAdmin, self).save_model(request, obj, form, change)
+        super().save_model(request, obj, form, change)
 
 
-class ProductSubcategoryAdmin(admin.ModelAdmin):
+class ProductSubcategoryAdmin(CustomModelAdmin):
     search_fields = ('name',)
 
     def save_model(self, request, obj, form, change):
@@ -100,20 +112,11 @@ class ProductSubcategoryAdmin(admin.ModelAdmin):
         while ProductSubcategory.objects.filter(slug=obj.slug).exists():
             obj.slug = f'{slug}-{i}'
             i += 1
-        super(ProductSubcategoryAdmin, self).save_model(request, obj, form, change)
+        super().save_model(request, obj, form, change)
 
 
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(CustomModelAdmin):
     search_fields = ('name',)
-
-    def save_model(self, request, obj, form, change):
-        if not obj.slug:
-            obj.slug = slugify(obj.name)
-        slug, i = obj.slug, 1
-        while Tag.objects.filter(slug=obj.slug).exists():
-            obj.slug = f'{slug}-{i}'
-            i += 1
-        super(TagAdmin, self).save_model(request, obj, form, change)
 
 
 admin.site.register(Product, ProductAdmin)
