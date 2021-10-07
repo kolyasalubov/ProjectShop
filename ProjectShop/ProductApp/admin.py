@@ -49,15 +49,6 @@ class ProductAdmin(CustomModelAdmin):
     search_fields = ('name', 'description')
     filter_horizontal = ('categories', 'subcategories', 'tags')
 
-    def save_model(self, request, obj, form, change):
-        if not obj.slug:
-            obj.slug = slugify(obj.name)
-        slug, i = obj.slug, 1
-        while Product.objects.filter(slug=obj.slug).exists():
-            obj.slug = f'{slug}-{i}'
-            i += 1
-        super().save_model(request, obj, form, change)
-
 
 class ProductMediaAdmin(admin.ModelAdmin):
     fields = ('product', 'media_type', 'video_link', 'image', 'image_tag')
