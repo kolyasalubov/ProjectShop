@@ -113,25 +113,39 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class WishListViewSet(viewsets.ModelViewSet):
+    """
+    Viewset made for users wishlist.
+    """
     serializer_class = UserWishListSerializer
     
     queryset = User.objects.all()
     http_method_names = ['get', 'patch', 'delete']
     
-    def update(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         user = self.get_object()
-        wishlist = self.get_object().wishlist
         data = request.data
         
         try:
-            products = Product.objects.filter(name=data['name'])
-            wishlist.products = products
+            products = Product.objects.get(name=data['name'])
+            user.wishlist.add(products)
         except KeyError:
             print("Something went wrong")
         
-        print(user)
-        print(wishlist)
-        user.wishlist.set(wishlist)
         user.save()
-        serializer = UserWishListSerializer(wishlist)
+        serializer = UserWishListSerializer(user)
         return Response(serializer.data)
+    
+    def destroy(self, request, *args, **kwargs):
+        user = self.get_object()
+        data = request.data
+    
+        try:
+            products = Product.objects.get(name=data['name'])
+            user.wishlist.remove(products)
+        except KeyError:
+            print("Something went wrong")
+    
+        user.save()
+        serializer = UserWishListSerializer(user)
+        return Response(serializer.data)
+    

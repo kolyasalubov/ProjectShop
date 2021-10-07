@@ -34,5 +34,3 @@ class UserWishListSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'wishlist', 'products']
         depth = 2
-
-        
