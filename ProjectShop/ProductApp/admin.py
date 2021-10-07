@@ -41,7 +41,7 @@ class ProductAdmin(admin.ModelAdmin):
         if not obj.slug:
             obj.slug = slugify(obj.name)
         slug, i = obj.slug, 1
-        while Product.objects.filter(slug=obj.slug):
+        while Product.objects.filter(slug=obj.slug).exists():
             obj.slug = f'{slug}-{i}'
             i += 1
         super(ProductAdmin, self).save_model(request, obj, form, change)
@@ -84,7 +84,7 @@ class ProductCategoryAdmin(admin.ModelAdmin):
         if not obj.slug:
             obj.slug = slugify(obj.name)
         slug, i = obj.slug, 1
-        while ProductCategory.objects.filter(slug=obj.slug):
+        while ProductCategory.objects.filter(slug=obj.slug).exists():
             obj.slug = f'{slug}-{i}'
             i += 1
         super(ProductCategoryAdmin, self).save_model(request, obj, form, change)
@@ -97,7 +97,7 @@ class ProductSubcategoryAdmin(admin.ModelAdmin):
         if not obj.slug:
             obj.slug = slugify(obj.name)
         slug, i = obj.slug, 1
-        while ProductSubcategory.objects.filter(slug=obj.slug):
+        while ProductSubcategory.objects.filter(slug=obj.slug).exists():
             obj.slug = f'{slug}-{i}'
             i += 1
         super(ProductSubcategoryAdmin, self).save_model(request, obj, form, change)
@@ -110,7 +110,7 @@ class TagAdmin(admin.ModelAdmin):
         if not obj.slug:
             obj.slug = slugify(obj.name)
         slug, i = obj.slug, 1
-        while Tag.objects.filter(slug=obj.slug):
+        while Tag.objects.filter(slug=obj.slug).exists():
             obj.slug = f'{slug}-{i}'
             i += 1
         super(TagAdmin, self).save_model(request, obj, form, change)
