@@ -12,7 +12,7 @@ from phonenumbers import PhoneNumber
 from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal
 from typing import List, Tuple
 
-from client.client import bot_client
+from client.status_check import bot_client
 
 
 class ShippingAddress(BaseModel):
@@ -35,15 +35,14 @@ class ShippingAddress(BaseModel):
         Return: List[ShippingAddress]
         """
         response = bot_client.send_request("GET", f"user/shipping-address", params={"userId": user_id})
-        if response.status_code == 200:
-            return [cls(**s) for s in response.json()]
+        return [cls(**s) for s in response.json()]
 
     def add_shipping_address(self) -> bool:
         """
         Add new shipping address to user addresses list
         """
         response = bot_client.send_request("POST", f"user/shipping-address", data=self.__dict__)
-        return response.status_code == 201
+        return True
 
     @staticmethod
     def delete(address_id: int) -> bool:
@@ -51,7 +50,7 @@ class ShippingAddress(BaseModel):
         Delete user's shipping address, specified by user's id and shipping address' id
         """
         response = bot_client.send_request("DELETE", f"/user/shipping-address", params={"id": address_id})
-        return response.status_code == 200
+        return True
 
 
 class Wishlist(BaseModel):
@@ -68,15 +67,14 @@ class Wishlist(BaseModel):
         Retrieve wishlist of certain user specified by user id
         """
         response = bot_client.send_request("GET", f"user/{user_id}/wishlist")
-        if response.status_code == 200:
-            return [cls(**w) for w in response.json()]
+        return [cls(**w) for w in response.json()]
 
     def add_wishlist(self) -> bool:
         """
         Add item to user's wishlist
         """
         response = bot_client.send_request("POST", f"user/{self.user_id}/wishlist", data=self.product_id)
-        return response.status_code == 201
+        return True
 
     @staticmethod
     def delete(user_id: int, product_id: int) -> bool:
@@ -85,7 +83,7 @@ class Wishlist(BaseModel):
         """
         response = bot_client.send_request("DELETE", f"/user/wishlist", params={"userId": user_id,
                                                                                 "productId": product_id})
-        return response.status_code == 200
+        return True
 
 
 class User(BaseModel):
@@ -113,16 +111,14 @@ class User(BaseModel):
         Check if our user is registered by his phone_number. If he is, return his id for later use
         """
         response = bot_client.send_request("GET", f"/user", params={"phone-number", phone_number})
-        if response.status_code == 200:
-            return response.json()['id']
+        return response.json()['id']
 
     def register(self) -> int:
         """
         Send user to save in database. On success, return his dedicated id
         """
         response = bot_client.send_request("POST", "/user", data=self.__dict__)
-        if response.status_code == 201:
-            return response.json()["id"]
+        return response.json()["id"]
 
     @staticmethod
     def update(user_id: int, data_to_change: dict) -> bool:
@@ -141,8 +137,7 @@ class Category(BaseModel):
     def get(cls) -> list:
         """Get category list"""
         response = bot_client.send_request("GET", "/products/categories")
-        if response.status_code == 200:
-            return [cls(**c) for c in response.json()]
+        return [cls(**c) for c in response.json()]
 
 
 class Subcategory(BaseModel):
@@ -155,8 +150,7 @@ class Subcategory(BaseModel):
         Get subcategory list by category
         """
         response = bot_client.send_request("GET", f"/products/subcategories")
-        if response.status_code == 200:
-            return [cls(**s) for s in response.json()]
+        return [cls(**s) for s in response.json()]
 
 
 class Tag(BaseModel):
@@ -169,8 +163,7 @@ class Tag(BaseModel):
         Get tags list
         """
         response = bot_client.send_request("GET", "/products/tags")
-        if response.status_code == 200:
-            return [cls(**t) for t in response.json()]
+        return [cls(**t) for t in response.json()]
 
 
 class Review(BaseModel):
@@ -197,7 +190,7 @@ class Review(BaseModel):
         Create new review for product specified by product_id
         """
         response = bot_client.send_request("POST", f"/products/{product_id}/reviews", data=self.__dict__)
-        return response.status_code == 201
+        return True
 
     def like(self, user_id, like=True):
         """
@@ -205,8 +198,7 @@ class Review(BaseModel):
         """
         data = {"userId": user_id, "reply": like}
         response = bot_client.send_request("PUT", f"/products/reviews/{self.id}/replies", data=data)
-        if response.status_code == 200:
-            return response.json()
+        return response.json()
 
 
 class Product(BaseModel):
