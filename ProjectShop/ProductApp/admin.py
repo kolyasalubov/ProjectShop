@@ -92,15 +92,6 @@ class ReviewAdmin(admin.ModelAdmin):
 class ProductCategoryAdmin(CustomModelAdmin):
     search_fields = ('name',)
 
-    def save_model(self, request, obj, form, change):
-        if not obj.slug:
-            obj.slug = slugify(obj.name)
-        slug, i = obj.slug, 1
-        while ProductCategory.objects.filter(slug=obj.slug).exists():
-            obj.slug = f'{slug}-{i}'
-            i += 1
-        super().save_model(request, obj, form, change)
-
 
 class ProductSubcategoryAdmin(CustomModelAdmin):
     search_fields = ('name',)
