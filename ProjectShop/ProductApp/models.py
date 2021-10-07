@@ -18,7 +18,7 @@ class ProductCategory(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    slug = models.SlugField(default='', editable=True, max_length=100)
+    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
 
     class Meta:
         verbose_name_plural = _('Product categories')
@@ -40,7 +40,7 @@ class ProductSubcategory(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    slug = models.SlugField(default='', editable=True, max_length=100)
+    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
 
     class Meta:
         verbose_name_plural = _('Product subcategories')
@@ -62,7 +62,7 @@ class Tag(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    slug = models.SlugField(default='', editable=True, max_length=100)
+    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
 
     def __str__(self):
         return self.name
@@ -91,7 +91,7 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag)
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    slug = models.SlugField(default='', editable=True, max_length=100)
+    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
     price = models.DecimalField(validators=[validators.MinValueValidator(0)], decimal_places=2, max_digits=9,
                                 null=False, blank=False)
     description = models.TextField(max_length=5000, null=False, blank=False)

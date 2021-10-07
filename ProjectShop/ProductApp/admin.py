@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 from ProductApp.models import Product, ProductCategory, ProductSubcategory, Tag, Review, ProductMedia
 
@@ -36,6 +37,15 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     filter_horizontal = ('categories', 'subcategories', 'tags')
 
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
+        slug, i = obj.slug, 1
+        while Product.objects.filter(slug=obj.slug):
+            obj.slug = f'{slug}-{i}'
+            i += 1
+        super(ProductAdmin, self).save_model(request, obj, form, change)
+
 
 class ProductMediaAdmin(admin.ModelAdmin):
     fields = ('product', 'media_type', 'video_link', 'image', 'image_tag')
@@ -70,13 +80,40 @@ class ReviewAdmin(admin.ModelAdmin):
 class ProductCategoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
+        slug, i = obj.slug, 1
+        while ProductCategory.objects.filter(slug=obj.slug):
+            obj.slug = f'{slug}-{i}'
+            i += 1
+        super(ProductCategoryAdmin, self).save_model(request, obj, form, change)
+
 
 class ProductSubcategoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
+        slug, i = obj.slug, 1
+        while ProductSubcategory.objects.filter(slug=obj.slug):
+            obj.slug = f'{slug}-{i}'
+            i += 1
+        super(ProductSubcategoryAdmin, self).save_model(request, obj, form, change)
+
 
 class TagAdmin(admin.ModelAdmin):
     search_fields = ('name',)
+
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
+        slug, i = obj.slug, 1
+        while Tag.objects.filter(slug=obj.slug):
+            obj.slug = f'{slug}-{i}'
+            i += 1
+        super(TagAdmin, self).save_model(request, obj, form, change)
 
 
 admin.site.register(Product, ProductAdmin)
