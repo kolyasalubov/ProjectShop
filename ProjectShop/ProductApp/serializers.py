@@ -45,7 +45,7 @@ class ProductSerializer(ModelSerializer):
 	categories = ProductCategorySerializer(many=True, read_only=True)
 	subcategories = ProductSubcategorySerializer(many=True, read_only=True)
 	tags = TagSerializer(many=True, read_only=True)
-	media = ProductMediaSerializer()
+	media = ProductMediaSerializer(many=True)
 
 	class Meta:
 		model = Product

@@ -4,7 +4,8 @@ from order.views import OrderViewSet, OrderItemsViewSet
 from ProductApp.views import (ProductViewSet, ReviewViewSet, TagViewSet, ProductMediaViewSet,
 							  ProductCategoryViewSet, ProductSubcategoryViewSet)
 from Shipping.views import ShippingViewSet
-from UserApp.views import UserViewSet
+from UserApp.views import UserViewSet, WishListViewSet
+
 
 router = routers.DefaultRouter()
 router.register(r'order', OrderViewSet, basename='order')
@@ -17,3 +18,5 @@ router.register(r'product_media', ProductMediaViewSet, basename='product_media')
 router.register(r'product/(?P<product_id>\d+)/reviews', ReviewViewSet, basename="reviews")
 router.register(r'shipping', ShippingViewSet, basename='shipping')
 router.register(r'user', UserViewSet, basename='user')
+router.register(r'wishlist', WishListViewSet, basename='wishlist')
+

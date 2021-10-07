@@ -13,9 +13,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
+from ProductApp.models import Product
 from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
-from UserApp.serializers import UserSerializer, UserSerializerForPatch
+from UserApp.serializers import UserSerializer, UserSerializerForPatch, UserWishListSerializer
 from UserApp.models import User
 
 
@@ -58,11 +59,11 @@ class TemporalHomePageView(TemplateView):
 class CustomUpdateView(generic.edit.SingleObjectTemplateResponseMixin,
                        generic.edit.ModelFormMixin,
                        generic.edit.ProcessFormView):
-
+    
     def get(self, request, *args, **kwargs):
         self.object = request.user
         return super().get(request, *args, **kwargs)
-
+    
     def post(self, request, *args, **kwargs):
         self.object = request.user
         return super().post(request, *args, **kwargs)
@@ -81,7 +82,7 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
     A simple ViewSet for creating blacklist token from refresh token.
     """
     permission_classes = (IsAdminBot, IsAuthenticated)
-
+    
     def create(self, request):
         try:
             refresh_token = RefreshToken(request.data.get('refresh'))
@@ -96,16 +97,41 @@ class UserViewSet(viewsets.ModelViewSet):
     Viewset made for our user.
     lookup_field = 'phone_number'
     """
-
+    
     serializer_class = UserSerializer
     queryset = User.objects.all()
     lookup_field = 'phone_number'
     http_method_names = ['get', 'post', 'patch', 'delete']
-
+    
     def get_serializer_class(self):
         serializer_class = self.serializer_class
-
+        
         if self.request.method == 'PATCH':
             serializer_class = UserSerializerForPatch
-
+        
         return serializer_class
+
+
+class WishListViewSet(viewsets.ModelViewSet):
+    serializer_class = UserWishListSerializer
+    
+    queryset = User.objects.all()
+    http_method_names = ['get', 'patch', 'delete']
+    
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        wishlist = self.get_object().wishlist
+        data = request.data
+        
+        try:
+            products = Product.objects.filter(name=data['name'])
+            wishlist.products = products
+        except KeyError:
+            print("Something went wrong")
+        
+        print(user)
+        print(wishlist)
+        user.wishlist.set(wishlist)
+        user.save()
+        serializer = UserWishListSerializer(wishlist)
+        return Response(serializer.data)

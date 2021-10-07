@@ -54,7 +54,7 @@ class UserAdmin(BaseUserAdmin):
                     'register_date', 'is_superuser', 'is_bot')
     list_filter = ('is_superuser', 'is_active', 'role')
     fieldsets = (
-        (None, {'fields': ('phone_number', )}),
+        (None, {'fields': ('phone_number', 'wishlist')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email', 'role', 'profile_pic')}),
         ('Permissions', {'fields': ('is_active', 'is_bot')}),
     )
@@ -68,7 +68,7 @@ class UserAdmin(BaseUserAdmin):
     )
     search_fields = ('phone_number',)
     ordering = ('phone_number',)
-    filter_horizontal = ()
+    filter_horizontal = ('wishlist',)
 
 
 # registering new django admin...
