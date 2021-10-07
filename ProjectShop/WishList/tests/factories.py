@@ -1,13 +1,15 @@
-import factory
 import random
 
-from WishList.models import WishList
-from UserApp.tests.factories import UserFactory
+import factory
+
 from ProductApp.tests.factories import ProductFactory
+from UserApp.tests.factories import UserFactory
+from WishList.models import WishList
 
 
 class WishListFactory(factory.django.DjangoModelFactory):
     """Factory for WishList model"""
+
     class Meta:
         model = WishList
 

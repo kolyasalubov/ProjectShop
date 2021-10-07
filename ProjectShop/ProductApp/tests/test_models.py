@@ -1,6 +1,6 @@
-from django.test import TestCase
 from django.db.utils import IntegrityError
 from django.template.defaultfilters import truncatewords
+from django.test import TestCase
 
 from ProductApp.tests.factories import (
     ProductFactory,
@@ -14,6 +14,7 @@ from ProductApp.tests.factories import (
 
 class ProductTestCase(TestCase):
     """Test Case for Product model"""
+
     def setUp(self) -> None:
         self.product = ProductFactory()
 
@@ -23,15 +24,15 @@ class ProductTestCase(TestCase):
 
     def test_categories_is_not_empty(self):
         product = self.product
-        self.assertNotEqual(product.categories.all(), [])
+        self.assertTrue(product.categories.all().exists())
 
     def test_subcategories_is_not_empty(self):
         product = self.product
-        self.assertNotEqual(product.subcategories.all(), [])
+        self.assertTrue(product.subcategories.all().exists())
 
     def test_tags_is_not_empty(self):
         product = self.product
-        self.assertNotEqual(product.tags.all(), [])
+        self.assertTrue(product.tags.all().exists())
 
     def test_category_create_add_clear(self):
         product = self.product
@@ -49,12 +50,10 @@ class ProductTestCase(TestCase):
             product.short_description
         )
 
-    def tearDown(self) -> None:
-        del self.product
-
 
 class ProductCategoryTestCase(TestCase):
     """Test Case for ProductCategory model"""
+
     def setUp(self) -> None:
         self.category = ProductCategoryFactory()
 
@@ -78,12 +77,10 @@ class ProductCategoryTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             self.category = ProductCategoryFactory(name=None)
 
-    def tearDown(self) -> None:
-        del self.category
-
 
 class ProductSubcategoryTestCase(TestCase):
     """Test Case for ProductSubcategory model"""
+
     def setUp(self) -> None:
         self.subcategory = ProductSubcategoryFactory()
 
@@ -107,12 +104,10 @@ class ProductSubcategoryTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             self.subcategory = ProductSubcategoryFactory(name=None)
 
-    def tearDown(self) -> None:
-        del self.subcategory
-
 
 class TagTestCase(TestCase):
     """Test Case for Tag model"""
+
     def setUp(self) -> None:
         self.tag = TagFactory()
 
@@ -136,12 +131,10 @@ class TagTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             self.tag = TagFactory(name=None)
 
-    def tearDown(self) -> None:
-        del self.tag
-
 
 class ProductMediaTestCase(TestCase):
     """Test Case for ProductMedia model"""
+
     def setUp(self) -> None:
         self.media = ProductMediaFactory()
 
@@ -162,12 +155,10 @@ class ProductMediaTestCase(TestCase):
         self.assertIn('http', media.video_link)
         self.assertIn('://', media.video_link)
 
-    def tearDown(self) -> None:
-        del self.media
-
 
 class ReviewTestCase(TestCase):
     """Test Case for Review model"""
+
     def setUp(self) -> None:
         self.review = ReviewFactory()
 
@@ -183,6 +174,8 @@ class ReviewTestCase(TestCase):
         review = self.review
         self.assertTrue(0 <= review.rating <= 5)
         self.assertFalse(type(review.rating) == 'str')
+        # this raises Asserting error because we can
+        # add any number to rating on edit, which is wrong
         with self.assertRaises(IntegrityError):
             review.rating = 6
 
@@ -199,6 +192,3 @@ class ReviewTestCase(TestCase):
             truncatewords(review.comment, 20),
             review.short_description
         )
-
-    def tearDown(self) -> None:
-        del self.review

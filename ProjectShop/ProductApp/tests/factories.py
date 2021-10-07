@@ -1,5 +1,6 @@
-import factory
 import random
+
+import factory
 
 from ProductApp.models import (
     Product,
@@ -14,6 +15,7 @@ from UserApp.tests.factories import UserFactory
 
 class TagFactory(factory.django.DjangoModelFactory):
     """Factory for Tag model"""
+
     class Meta:
         model = Tag
 
@@ -22,6 +24,7 @@ class TagFactory(factory.django.DjangoModelFactory):
 
 class ProductCategoryFactory(factory.django.DjangoModelFactory):
     """Factory for ProductCategory model"""
+
     class Meta:
         model = ProductCategory
 
@@ -30,6 +33,7 @@ class ProductCategoryFactory(factory.django.DjangoModelFactory):
 
 class ProductSubcategoryFactory(factory.django.DjangoModelFactory):
     """Factory for ProductSubcategory model"""
+
     class Meta:
         model = ProductSubcategory
 
@@ -38,6 +42,7 @@ class ProductSubcategoryFactory(factory.django.DjangoModelFactory):
 
 class ProductFactory(factory.django.DjangoModelFactory):
     """Factory for Product model"""
+
     class Meta:
         model = Product
 
@@ -70,6 +75,7 @@ class ProductFactory(factory.django.DjangoModelFactory):
 
 class ProductMediaFactory(factory.django.DjangoModelFactory):
     """Factory for ProductMedia model"""
+
     class Meta:
         model = ProductMedia
 
@@ -82,6 +88,7 @@ class ProductMediaFactory(factory.django.DjangoModelFactory):
 
 class ReviewFactory(factory.django.DjangoModelFactory):
     """Factory for Review model"""
+
     class Meta:
         model = Review
 
