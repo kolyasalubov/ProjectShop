@@ -31,7 +31,7 @@ class MediaInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = (MediaInline,)
-    fields = ('name', 'slug', ('price', 'stock_quantity'), 'description', 'categories', 'subcategories', 'tags')
+    fields = ('name', 'slug', 'price', 'stock_quantity', 'description', 'categories', 'subcategories', 'tags')
     list_display = ('name', 'price', 'stock_quantity', 'short_description')
     list_filter = (IsAvailableProductFilter,)
     search_fields = ('name', 'description')
