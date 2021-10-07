@@ -96,15 +96,6 @@ class ProductCategoryAdmin(CustomModelAdmin):
 class ProductSubcategoryAdmin(CustomModelAdmin):
     search_fields = ('name',)
 
-    def save_model(self, request, obj, form, change):
-        if not obj.slug:
-            obj.slug = slugify(obj.name)
-        slug, i = obj.slug, 1
-        while ProductSubcategory.objects.filter(slug=obj.slug).exists():
-            obj.slug = f'{slug}-{i}'
-            i += 1
-        super().save_model(request, obj, form, change)
-
 
 class TagAdmin(CustomModelAdmin):
     search_fields = ('name',)
