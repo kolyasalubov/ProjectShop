@@ -1,10 +1,16 @@
 from rest_framework import routers
 
-from order.views import OrderViewSet, OrderItemsViewSet
-from ProductApp.views import (ProductViewSet, ReviewViewSet, TagViewSet, ProductMediaViewSet,
-							  ProductCategoryViewSet, ProductSubcategoryViewSet)
+from ProductApp.views import (
+    ProductViewSet,
+    ReviewViewSet,
+    TagViewSet,
+    ProductMediaViewSet,
+    ProductCategoryViewSet,
+    ProductSubcategoryViewSet
+)
 from Shipping.views import ShippingViewSet
 from UserApp.views import UserViewSet
+from order.views import OrderViewSet, OrderItemsViewSet
 
 router = routers.DefaultRouter()
 router.register(r'order', OrderViewSet, basename='order')

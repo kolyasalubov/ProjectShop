@@ -1,8 +1,8 @@
+import csv
+
 from django.contrib import admin
 from django.http import StreamingHttpResponse
 from django.utils.translation import ugettext_lazy as _
-
-import csv
 
 from order.models import Order, OrderItems
 
@@ -11,15 +11,15 @@ class EchoCsv:
     """An object that implements just the write method of the file-like
     interface.
     """
+
     def write(self, value):
         """Write the value by returning it, instead of storing in a buffer."""
         return value
 
 
 def order_to_list(order) -> list:
-    """
-    Function that returns row for export_to_csv method
-    """
+    """Function that returns row for export_to_csv method"""
+
     order_object = Order.objects.get(id=order['id'])
     user_object = order_object.user
     shipping_address_object = order_object.shippingAddress_id
@@ -34,7 +34,7 @@ def order_to_list(order) -> list:
     products = ' ; '.join(product_list)
 
     order_row = [order_object.payment_method, order_object.payment_status, str(shipping_address_object),
-                  str(user_object), products]
+                 str(user_object), products]
 
     return order_row
 

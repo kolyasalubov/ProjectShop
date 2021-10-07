@@ -9,7 +9,7 @@ class WishList(models.Model):
        Attributes:
            products: references to category that product belongs to.
            user: reference to the user who make wishlist.
-       """
+    """
 
     # products = models.ManyToManyField(Product, related_name='wishlists')
 

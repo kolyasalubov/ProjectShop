@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from UserApp.models import User
-from Shipping.models import ShippingModel
 from ProductApp.models import Product
+from Shipping.models import ShippingModel
+from UserApp.models import User
 
 
 class Order(models.Model):
@@ -25,7 +25,6 @@ class Order(models.Model):
     payment_status: Payment status of the order.
     (1, "Pending"), (2, "Paid").
     type: int, default: 1
-
     """
 
     order_date = models.DateTimeField(auto_now_add=True)

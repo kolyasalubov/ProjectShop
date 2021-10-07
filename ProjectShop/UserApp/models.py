@@ -1,13 +1,11 @@
-from django.db import models
-from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.utils.translation import ugettext_lazy as _
-
-from phonenumber_field.modelfields import PhoneNumberField
 from PIL import Image, UnidentifiedImageError
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+from phonenumber_field.modelfields import PhoneNumberField
 
 from UserApp.managers import UserManager
-
 
 ROLE_CHOICES = (
     (0, 'user'),
@@ -49,6 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         role: Describes user`s role, admin(1) is an administrator
         type: int, default value = 0, required field
     """
+
     first_name = models.CharField(verbose_name=_('first name'), blank=False, null=False, max_length=40)
     last_name = models.CharField(verbose_name=_('last name'), blank=False, null=False, max_length=40)
     middle_name = models.CharField(verbose_name=_('middle name'), blank=True, null=False, max_length=40)

@@ -1,7 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-
+from django.contrib.auth.models import Group
 from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
 
 from UserApp.models import User
@@ -11,21 +10,25 @@ class UserAdmin(BaseUserAdmin):
 
     def has_delete_permission(self, request, obj=None) -> bool:
         """Restrict self deletion and deletion for not superusers"""
+
         return request.user != obj and request.user.is_superuser
 
     def has_add_permission(self, request) -> bool:
         """Restrict adding for not superusers"""
+
         return request.user.is_superuser
 
     def has_change_permission(self, request, obj=None) -> bool:
         """Allow changing for superusers and for admin to change users"""
+
         return request.user.role
 
     def get_form(self, request, obj=None, **kwargs):
         """Enable certain fields in form"""
+
         form = super().get_form(request, obj, **kwargs)
         is_superuser = request.user.is_superuser
-        enabled_fields = set()  # type: Set[str]
+        enabled_fields = set()  # type Set[str]
 
         if is_superuser:
             enabled_fields |= set(form.base_fields.keys())  # going to enable all fields except 'role'
@@ -54,8 +57,9 @@ class UserAdmin(BaseUserAdmin):
                     'register_date', 'is_superuser', 'is_bot')
     list_filter = ('is_superuser', 'is_active', 'role')
     fieldsets = (
-        (None, {'fields': ('phone_number', )}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email', 'role', 'profile_pic')}),
+        (None, {'fields': ('phone_number',)}),
+        ('Personal info',
+         {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email', 'role', 'profile_pic')}),
         ('Permissions', {'fields': ('is_active', 'is_bot')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -78,4 +82,3 @@ admin.site.unregister(Group)
 
 admin.site.unregister(OutstandingToken)
 admin.site.unregister(BlacklistedToken)
-

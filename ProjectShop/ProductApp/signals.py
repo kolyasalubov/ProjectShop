@@ -16,6 +16,7 @@ def delete_image_when_row_deleted_from_db(sender, instance, **kwargs) -> None:
     :param kwargs: additional parameters
     :return: None
     """
+
     for field in sender._meta.concrete_fields:
         if isinstance(field, models.ImageField):
             instance_file_field = getattr(instance, field.name)
@@ -26,7 +27,7 @@ def delete_image_when_row_deleted_from_db(sender, instance, **kwargs) -> None:
 def delete_image_when_image_changed(sender, instance, **kwargs) -> None:
     """
     Delete image if it was switched.
-    
+
     :param sender: models.Model child class
     :param instance: sender instance
     :param kwargs: additional parameters
@@ -47,4 +48,3 @@ def delete_image_when_image_changed(sender, instance, **kwargs) -> None:
             instance_file_field = getattr(instance, field.name)
             if instance_in_db_file_field.name != instance_file_field.name:
                 delete_file_if_unused(sender, instance, field, instance_in_db_file_field)
-

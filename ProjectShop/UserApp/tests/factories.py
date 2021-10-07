@@ -7,6 +7,7 @@ from UserApp.tests.custom_providers import CustomPhoneProvider
 fake = Faker()
 fake.add_provider(CustomPhoneProvider)
 
+
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
@@ -17,4 +18,3 @@ class UserFactory(factory.django.DjangoModelFactory):
     phone_number = factory.LazyFunction(lambda : fake.phone_number())
     email = factory.Faker('email')
     password = factory.PostGenerationMethodCall('set_password', 'ValidPassword1@')
-    

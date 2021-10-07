@@ -1,22 +1,21 @@
-from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from braces.views import AnonymousRequiredMixin
 from django.contrib.auth import views as auth_views, get_user_model
-from django.views import generic
-from django.views.generic.base import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-
-from braces.views import AnonymousRequiredMixin
-from rest_framework import generics, status, viewsets
-from rest_framework.response import Response
+from django.views import generic
+from django.views.generic.base import TemplateView
+from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
-from UserApp.serializers import UserSerializer, UserSerializerForPatch
 from UserApp.models import User
+from UserApp.permissions import IsAdminBot
+from UserApp.serializers import UserSerializer, UserSerializerForPatch
 
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
@@ -80,6 +79,7 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
     """
     A simple ViewSet for creating blacklist token from refresh token.
     """
+
     permission_classes = (IsAdminBot, IsAuthenticated)
 
     def create(self, request):

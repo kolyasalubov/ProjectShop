@@ -1,9 +1,8 @@
-from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
-from django.utils.html import format_html
 from django.core import validators
-from django.utils.translation import ugettext_lazy as _
+from django.db import models
 from django.template.defaultfilters import truncatewords
+from django.utils.html import format_html
+from django.utils.translation import ugettext_lazy as _
 
 from UserApp.models import User
 
@@ -119,17 +118,19 @@ class Review(models.Model):
     def name(self):
         return f'{self.user} review of {self.product}'
 
+
 class Reply(models.Model):
     """
     A database object that represents a reply to review left by a user,
     including a like/dislike reaction.
 
     Attributes:
-        reaction: numeric symbol which represent user reaction, where 1-like, 2-dislike,
-                                                and 0 represents that he change his mind.
+        reaction: numeric symbol which represent user reaction,
+                  where 1-like, 2-dislike,and 0 represents that he change his mind.
         review: reference to the review.
         user: reference to the user writing a review.
     """
+
     REACTIONS = [
         (0, 'none'),
         (1, 'like'),

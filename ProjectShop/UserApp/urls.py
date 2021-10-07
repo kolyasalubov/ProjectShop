@@ -1,15 +1,12 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from UserApp.views import (BlacklistRefreshViewSet, LoginView, RegisterView, 
-                          LogoutView, PasswordResetView,
-                          PasswordResetDoneView, PasswordResetConfirmView, 
-                          PasswordResetCompleteView,
-                          UpdateProfileView, UserViewSet)
-
+from UserApp.views import (BlacklistRefreshViewSet, LoginView, RegisterView,
+                           LogoutView, PasswordResetView,
+                           PasswordResetDoneView, PasswordResetConfirmView,
+                           PasswordResetCompleteView,
+                           UpdateProfileView)
 
 view_based_urls = [
     path('login/', LoginView.as_view(), name='login'),
@@ -23,7 +20,7 @@ view_based_urls = [
 ]
 
 token_urls = [
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),   # it is default View for token auth.
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # it is default View for token auth.
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # it is default View for token auth.
 ]
 
