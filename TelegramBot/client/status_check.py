@@ -36,8 +36,9 @@ def client_decorator(instance):
     def wrapper():
         decorated_attr = status_code_check(getattr(instance, "send_request"))
         setattr(instance, "send_request", decorated_attr)
+        return instance
 
     return wrapper
 
 
-bot_client = client_decorator(bot_client)
+bot_client = client_decorator(bot_client)()
