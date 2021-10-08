@@ -34,10 +34,9 @@ class CustomModelAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not obj.slug:
             obj.slug = slugify(obj.name)
-        slug, i = obj.slug, 1
-        while type(obj).objects.filter(slug=obj.slug).exists():
-            obj.slug = f'{slug}-{i}'
-            i += 1
+        object_count = self.model.objects.filter(slug=obj.slug).count() + 1
+        if object_count != 1:
+            obj.slug = f'{obj.slug}-{object_count}'
         super().save_model(request, obj, form, change)
 
 
