@@ -2,7 +2,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_views, get_user_model
 from django.views import generic
-from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
@@ -47,10 +46,6 @@ class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
 
 class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     template_name = 'UserApp/password_reset_complete.html'
-
-
-class TemporalHomePageView(TemplateView):
-    template_name = 'UserApp/home.html'
 
 
 class CustomUpdateView(generic.edit.SingleObjectTemplateResponseMixin,

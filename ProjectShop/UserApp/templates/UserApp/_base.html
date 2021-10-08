@@ -27,7 +27,7 @@
     <!--  Messages end here  -->
 
 
-    <!--  Navbar starts here  -->
+    <!--  First Navbar starts here  -->
     <h3> Navbar: </h3>
     <a href="{% url 'home' %}">{% translate "Home page" %}</a>
 
@@ -50,7 +50,13 @@
         </li>
       {% endfor %}
     </ul>
-    <!--  Navbar ends here  -->
+    <!--  First Navbar ends here  -->
+
+    <!--  Second Navbar starts here  -->
+    {% for category in categories %}
+        <a href="#">{{ category.name }}</a>
+    {% endfor %}
+    <!--  Second Navbar ends here  -->
 
 
     {% block content %}{% endblock %}

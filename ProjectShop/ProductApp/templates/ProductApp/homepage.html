@@ -1,0 +1,19 @@
+{% extends "UserApp/_base.html" %}
+
+{% load i18n %}
+
+
+{% block content %}
+    <h1>{% translate "Home page" %}</h1>
+
+    {% for product in products %}
+
+        <a href="#">{{ product.name }}</a>
+        <p>{% translate "Product price:" %} {{ product.price }}</p>
+        <p>{% translate "Product description:" %} {{ product.description }}</p>
+        <hr>
+
+    {% endfor %}
+
+
+{% endblock content %}
