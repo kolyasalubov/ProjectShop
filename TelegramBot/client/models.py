@@ -18,7 +18,7 @@ from client import bot_client
 GET_USER_ID_BY_TELEGRAM_ID_URL = 'users/get_user_id_by_telegram_id/'
 GET_USER_ID_BY_PHONE_NUMBER_URL = 'users/get_user_id_by_phone_number/'
 USER_URL = 'users/user/'
-USER_INIT_KEY = 'from base'   # key for User.__init__  access
+USER_INIT_KEY = None   # key for User.__init__  access
 USER_BY_TELEGRAM_ID_URL = 'users/get_user_id_by_telegram_id/'
 
 
@@ -109,13 +109,15 @@ class User(BaseModel):
     email: EmailStr
     birth_date: datetime.date = None
 
-    changeable_fields = ['first_name', 'last_name', 'birth_date']
+    @staticmethod
+    def get_restricted_fields():
+        return 'id', 'telegram_id', 'phone_number', 'email'
 
-    def __init__(self, key, **kwargs):
+    def __init__(self, key=None, **kwargs):
         if key == USER_INIT_KEY:
             super().__init__(**kwargs)
         else:
-            raise PermissionError
+            raise PermissionError('Direct creation is restricted. Use class methods.')
 
     class Config:
         """
@@ -124,10 +126,16 @@ class User(BaseModel):
         arbitrary_types_allowed = True
 
     def __setattr__(self, key, value):
-        if key in self.changeable_fields:
-            super().__setattr__(key, value)
+        if key in self.get_restricted_fields():
+            raise PermissionError(f'{key} is not changeable field')
         else:
-            raise PermissionError(f"Field {key} is not changeable.")
+            url = USER_URL + self.phone_number + '/'
+            data = {key: value}
+            response = bot_client.send_request('PATCH', url, data=data)
+            if response.status_code == 200:
+                super().__setattr__(key, value)
+            else:
+                raise ConnectionError(response.status_code, response.reason)
 
     @validator('phone_number')
     def name_must_contain_space(cls, value):
@@ -166,9 +174,13 @@ class User(BaseModel):
         user_response = bot_client.send_request('POST', USER_URL, data=user_data)
         return cls._create_user(user_response, 201)
 
-    @classmethod
-    def _patch_user(cls, ):
-        pass
+    @staticmethod
+    def _patch_user_telegram_id(phone_number, telegram_id):
+        url = USER_URL + phone_number + '/'
+        data = {'telegram_id': telegram_id}
+        response = bot_client.send_request('PATCH', url, data=data)
+        return response
+
     @classmethod
     def get_user_by_telegram_id(cls, telegram_id):
         url = USER_BY_TELEGRAM_ID_URL + telegram_id + '/'
@@ -176,10 +188,15 @@ class User(BaseModel):
         return cls._create_user(user_response, 200)
 
     @classmethod
-    def get_user_by_phone_number(cls, phone_number):
+    def get_user_by_phone_number(cls, phone_number, telegram_id):
         url = USER_URL + phone_number + '/'
         user_response = bot_client.send_request('GET', url)
-        return cls._create_user(user_response, 200)
+        print(user_response.status_code)
+        if user_response.status_code == 200:
+            user_response = cls._patch_user_telegram_id(phone_number, telegram_id)
+            print(user_response.content)
+            return cls._create_user(user_response, 200)
+        return user_response.status_code, None
 
     def register(self) -> int:
         """
@@ -196,12 +213,12 @@ class User(BaseModel):
         if response.status_code == 201:
             return response.json()["id"]
 
-    def update(self, data_to_change: dict) -> bool:
-        """
-        Change user_data via dict. Return true on success
-        """
-        response = bot_client.send_request("PATCH", f"/user", params={"userId", user_id}, data=data_to_change)
-        return response.status_code == 200
+    # def update(self, data_to_change: dict) -> bool:
+    #     """
+    #     Change user_data via dict. Return true on success
+    #     """
+    #     response = bot_client.send_request("PATCH", f"/user", params={"userId", user_id}, data=data_to_change)
+    #     return response.status_code == 200
 
 
 class Category(BaseModel):
