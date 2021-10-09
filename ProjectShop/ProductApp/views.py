@@ -1,4 +1,5 @@
 from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.viewsets import ModelViewSet
 
@@ -7,14 +8,28 @@ from ProductApp.serializers import ReviewSerializer
 
 
 class HomePageView(generic.ListView):
-    context_object_name = 'categories'
+    context_object_name = 'products'
     template_name = 'ProductApp/homepage.html'
-    queryset = ProductCategory.objects.all()
+    queryset = Product.objects.all()
+    paginate_by = 12
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products'] = Product.objects.all()
+        categories = self.get_related_categories()
+        context['categories'] = categories
         return context
+
+    def get_related_categories(self):
+        queryset = ProductCategory.objects.all()
+        paginator = Paginator(queryset, 20)
+        page = self.request.GET.get('page')
+        try:
+            categories = paginator.page(page)
+        except PageNotAnInteger:
+            categories = paginator.page(1)
+        except EmptyPage:
+            categories = paginator.page(paginator.num_pages)
+        return categories
 
 
 class ReviewViewSet(ModelViewSet):
