@@ -9,7 +9,7 @@
 
   </head>
   <body>
-  <header>
+  <header id="header">
     <div class="nav-menu">
         <!-- burger menu -->
         <button class="hamburger" type="button">
@@ -18,22 +18,12 @@
             </span>
         </button>
         <nav class="burger-nav disappeared">
-
-            <div class="burger-categories_section">
-                <h2>Categories</h2>
-                <div class="burger-categories_items">
-                    <input type="text" placeholder="Search" class="search-burger_btn">
-                    <a href="#" class="item-link">All goods</a>
-                    <a href="#" class="item-link">Cameras</a>
-                    <a href="#" class="item-link">Mobile phones</a>
-                    <a href="#" class="item-link">PC</a>
-                    <a href="#" class="item-link">More...</a>
-                </div>
-            </div>
-
             <div class="burger-profile_section">
                 {% if user.is_authenticated %}
-                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                    <h2 class="burger-header">{{ user.first_name }} {{ user.last_name }}</h2>
+                {% else %}
+                     <h2 class="burger-header">Name Surname(needs login)</h2>
+                {% endif %}
                 <div class="burger-profile_items">
                     <a href="{% url 'profile' %}" class="item-link">Profile</a>
                     <a href="#" class="item-link">Cart</a>
@@ -43,27 +33,39 @@
                     <a href="#" class="item-link">Settings</a>
                     <a href="{% url 'logout' %}" class="item-link">Log out</a>
                 </div>
-                {% else %}
-
-                {% endif %}
-
             </div>
         </nav>
 
         <!-- navbar -->
-
-        <a class="site-logo" href="{% url 'home' %}">ProjectShop</a>
+        <div class="site-logo">
+            <a class="site-logo" href="{% url 'home' %}">ProjectShop</a>
+        </div>
         <div class="nav-menu_actions">
-            <div class="search-container">
+            <div class="wrapper">
                 <form action="">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit" class="button-search">Search</button>
+                    <button type="submit" class="search-button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <input type="text" name="search" class="search-box">
                 </form>
             </div>
             <div class="nav-icons">
-                <a href="" class="nav-link">Cart</a>
-                <a href="{% url 'profile' %}" class="nav-link">Profile</a>
-                <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+                <a href="" class="nav-link">
+                    <img class="nav-image" src={% static 'assets/EmptyCart.svg' %}>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-link">
+                    <img class="nav-image" src={% static 'assets/MaleAccountOrangePurple.svg' %}>
+                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <img class="nav-image" src={% static 'assets/Logout.svg' %}>
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">
+                        <img class="nav-image" src={% static 'assets/Login.svg' %}>
+                    </a>
+                {% endif %}
+
             </div>
         </div>
 
@@ -76,30 +78,34 @@
 
     <footer>
     <div class="footer-main">
-        <div class="footer-main-text">
-            <p>Project<br>Shop</p>
+        <div class="footer-main-text" >
+            <a href="{% url 'home' %}" style="color:#F6E37B">Project<br>Shop</a>
         </div>
         <div class="footer-container-second">
             <div class="footer-text-container">
-                <p class="footer-main-text-second">Our Contacts</p>
+                <p class="footer-main-text-second">Contact Us</p>
                 <br>
                 <div class="footer-second-text">
-                    <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. At quo corporis,
-                        illo expedveniam nisi laboriosam deserunt eos, magni placeat, commodi
+                    <span>LVIV - OFFICE 9 <br>
+                        57 Fedkovycha Street, Lviv 79018 <br>
+                        +380-32-240-9999<br>
+                        Toll free: 0-8006-0-8006
                     </span>
                 </div>
             </div>
             <div class="footer-text-container">
-                <p class="footer-main-text-second">Information</p>
-                <br>
+                <br><br>
                 <div class="footer-second-text" style="font-size: 1rem;">
-                    <span>Sitemap<br>Payment&Delivery Info<br> Privacy Policy <br>Term of Use
+                    <span><a href="#" style="color:#F6E37B">Conditions of use</a><br>
+                        <a href="#" style="color:#F6E37B">Privacy policy</a><br>
+                        <a href="#" style="color:#F6E37B">Payment&Delivery info</a><br>
+                        <a href="#" style="color:#F6E37B">Sitemap</a>
                     </span>
                 </div>
             </div>
         </div>
     </div>
-</footer>
+    </footer>
     <!--Custom JS-->
     <script src="{% static 'js/main.js' %}"></script>
   </body>
