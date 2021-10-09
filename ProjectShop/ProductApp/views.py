@@ -32,6 +32,13 @@ class HomePageView(generic.ListView):
         return categories
 
 
+class CategoriesView(generic.ListView):
+    model = ProductCategory
+    context_object_name = 'categories'
+    template_name = 'ProductApp/categories.html'
+    paginate_by = 12
+
+
 class ReviewViewSet(ModelViewSet):
     """
     ViewSet to view and write reviews for specified in path product
