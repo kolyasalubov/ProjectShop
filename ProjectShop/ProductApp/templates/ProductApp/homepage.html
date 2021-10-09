@@ -3,6 +3,17 @@
 {% load i18n %}
 
 
+{% block category %}
+
+    {% for category in categories %}
+
+        <a href="#">{{ category.name }}</a>
+
+    {% endfor %}
+
+{% endblock category %}
+
+
 {% block content %}
     <h1>{% translate "Home page" %}</h1>
 
@@ -36,6 +47,5 @@
         {% endif %}
 
     {% endif %}
-
 
 {% endblock content %}

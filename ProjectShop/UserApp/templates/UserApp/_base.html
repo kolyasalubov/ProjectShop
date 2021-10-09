@@ -53,13 +53,10 @@
     <!--  First Navbar ends here  -->
 
     <!--  Second Navbar starts here  -->
-    {% for category in categories %}
-        <a href="#">{{ category.name }}</a>
-    {% endfor %}
+    {% block category %}{% endblock category %}
     <!--  Second Navbar ends here  -->
 
-
-    {% block content %}{% endblock %}
+    {% block content %}{% endblock content %}
 
 
 </body>
