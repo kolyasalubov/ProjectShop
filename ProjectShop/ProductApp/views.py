@@ -8,15 +8,18 @@ from ProductApp.serializers import ReviewSerializer
 
 
 class HomePageView(generic.ListView):
+    # model = Product
     context_object_name = 'products'
     template_name = 'ProductApp/homepage.html'
     queryset = Product.objects.all()
-    paginate_by = 12
+    # paginate_by = 12
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         categories = self.get_related_categories()
+        products = self.get_related_products()
         context['categories'] = categories
+        context['products'] = products
         return context
 
     def get_related_categories(self):
@@ -30,6 +33,18 @@ class HomePageView(generic.ListView):
         except EmptyPage:
             categories = paginator.page(paginator.num_pages)
         return categories
+
+    def get_related_products(self):
+        queryset = Product.objects.all()
+        paginator = Paginator(queryset, 12)
+        page = self.request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+        return products
 
 
 class CategoriesView(generic.ListView):
