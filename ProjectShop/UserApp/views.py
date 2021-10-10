@@ -125,12 +125,11 @@ class WishListViewSet(viewsets.ModelViewSet):
         user = self.get_object()
         data = request.data
         
-        try:
-            products = Product.objects.get(name=data['name'])
-            user.wishlist.add(products)
-        except KeyError:
-            print("Something went wrong")
-        
+        products = Product.objects.filter(name=data['name']).first()
+        if not products:
+            return Response(data={'message': _('Such Product doesn\'t exist.')}, status=status.HTTP_204_NO_CONTENT)
+        user.wishlist.add(products)
+    
         user.save()
         serializer = UserWishListSerializer(user)
         return Response(serializer.data)
@@ -139,11 +138,10 @@ class WishListViewSet(viewsets.ModelViewSet):
         user = self.get_object()
         data = request.data
     
-        try:
-            products = Product.objects.get(name=data['name'])
-            user.wishlist.remove(products)
-        except KeyError:
-            print("Something went wrong")
+        product = Product.objects.filter(name=data.get('name')).first()
+        if not product:
+            user.wishlist.clear()
+        user.wishlist.remove(product)
     
         user.save()
         serializer = UserWishListSerializer(user)
