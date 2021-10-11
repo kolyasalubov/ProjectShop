@@ -3,10 +3,39 @@
 {% load i18n %}
 
 {% block title %}
-    <title>{% blocktranslate with title=flatpage.title %} {{ title }} {% endblocktranslate %}</title>
+    {% blocktranslate with title=flatpage.title %} {{ title }} {% endblocktranslate %}
 {% endblock title %}
 
 
 {% block content %}
-    {% blocktranslate with content=flatpage.content %} {{ content }} {% endblocktranslate %}
+<!--    <h1>This is about us page</h1>-->
+<!--    {% blocktranslate with content=flatpage.content %} {{ content }} {% endblocktranslate %}-->
+    <head>
+    <style>
+    h1 {
+        text-align: center;
+        text-transform: uppercase;
+        color: #4CAF50;
+    }
+
+    p {
+        text-indent: 50px;
+        text-align: justify;
+        letter-spacing: 3px;
+    }
+
+    a {
+    text-decoration: none;
+    color: #008CBA;
+    }
+    </style>
+    </head>
+    <body>
+
+<div>
+  <h1> {% blocktranslate with title=flatpage.title %} {{ title }} {% endblocktranslate %}</h1>
+  <p>{% blocktranslate with content=flatpage.content %} {{ content }} {% endblocktranslate %}</p>
+</div>
+
+</body>
 {% endblock %}
