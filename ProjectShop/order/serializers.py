@@ -12,7 +12,7 @@ class OrderItemsSerializer(serializers.ModelSerializer):
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):
-    """Serializer for Order Detail view"""
+    """Serializer for Order view"""
     order_items = OrderItemsSerializer(many=True, read_only=True)
 
     class Meta:

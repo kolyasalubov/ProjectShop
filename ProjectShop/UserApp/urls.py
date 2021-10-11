@@ -3,9 +3,12 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
-from UserApp.views import BlacklistRefreshViewSet, LoginView, RegisterView, LogoutView, PasswordResetView, \
-                          PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView,\
-                          UpdateProfileView, PasswordChangeView
+
+from UserApp.views import (BlacklistRefreshViewSet, LoginView, RegisterView, 
+                          LogoutView, PasswordResetView,
+                          PasswordResetDoneView, PasswordResetConfirmView, 
+                          PasswordResetCompleteView, PasswordChangeView,
+                          UpdateProfileView, UserViewSet)
 
 
 view_based_urls = [

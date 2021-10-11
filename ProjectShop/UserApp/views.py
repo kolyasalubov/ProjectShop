@@ -15,6 +15,8 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
+from UserApp.serializers import UserSerializer, UserSerializerForPatch
+from UserApp.models import User
 
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
@@ -93,3 +95,23 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
         except TokenError as error:
             return Response(str(error), status=status.HTTP_202_ACCEPTED)
         return Response(status=status.HTTP_200_OK)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    Viewset made for our user.
+    lookup_field = 'phone_number'
+    """
+
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    lookup_field = 'phone_number'
+    http_method_names = ['get', 'post', 'patch', 'delete']
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'PATCH':
+            serializer_class = UserSerializerForPatch
+
+        return serializer_class
