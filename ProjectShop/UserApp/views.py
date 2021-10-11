@@ -35,6 +35,12 @@ class LogoutView(auth_views.LogoutView):
     template_name = 'UserApp/logout.html'
 
 
+class PasswordChangeView(SuccessMessageMixin, auth_views.PasswordChangeView):
+    template_name = 'UserApp/password_change.html'
+    success_url = reverse_lazy('profile')
+    success_message = _("Congratulation! Your password has been updated!")
+
+
 class PasswordResetView(auth_views.PasswordResetView):
     template_name = 'UserApp/password_reset.html'
 
