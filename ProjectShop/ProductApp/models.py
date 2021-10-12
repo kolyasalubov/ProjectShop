@@ -182,7 +182,7 @@ class ProductImage(models.Model):
     )
 
     class Meta:
-        verbose_name_plural = _("Product media")
+        verbose_name_plural = _("Product image")
 
     def small_image_tag(self):
         return format_html(
@@ -218,6 +218,9 @@ class ProductVideo(models.Model):
         video_link: link to data that iframe is using.
         product: reference to target product.
     """
+
+    class Meta:
+        verbose_name_plural = _("Product video")
 
     product = models.ForeignKey(
         Product,
