@@ -13,8 +13,6 @@ class OrderItemsSerializer(serializers.ModelSerializer):
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     """Serializer for Order view"""
-    
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     order_items = OrderItemsSerializer(many=True, read_only=True)
 
     class Meta:

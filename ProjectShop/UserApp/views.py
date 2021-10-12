@@ -15,7 +15,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
-from UserApp.serializers import UserSerializer
+from UserApp.serializers import UserSerializer, UserSerializerForPatch
 from UserApp.models import User
 
 
@@ -102,3 +102,10 @@ class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'phone_number'
     http_method_names = ['get', 'post', 'patch', 'delete']
 
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'PATCH':
+            serializer_class = UserSerializerForPatch
+
+        return serializer_class

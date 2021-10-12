@@ -12,7 +12,7 @@ from phonenumbers import PhoneNumber
 from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal
 from typing import List, Tuple
 
-from client.client import bot_client
+from client.status_check import bot_client
 
 
 class PaginatedModel(BaseModel):
@@ -27,8 +27,7 @@ class PaginatedModel(BaseModel):
         Get first page of result. Will work only if path provided (in child classes)
         """
         response = bot_client.send_request("GET", cls._path)
-        if response.status_code == 200:
-            return cls.page(response.json())
+        return cls.page(response.json())
 
     @classmethod
     def page(cls, json: dict) -> dict:
@@ -44,8 +43,7 @@ class PaginatedModel(BaseModel):
         Change page using given url
         """
         response = bot_client.send_request("GET", url)
-        if response.status_code == 200:
-            return cls.page(response.json())
+        return cls.page(response.json())
 
 
 class ShippingAddress(PaginatedModel):
@@ -68,15 +66,14 @@ class ShippingAddress(PaginatedModel):
         Return: List[ShippingAddress]
         """
         response = bot_client.send_request("GET", f"user/shipping-address", params={"userId": user_id})
-        if response.status_code == 200:
-            return cls.page(response.json())
+        return cls.page(response.json())
 
     def add_shipping_address(self) -> bool:
         """
         Add new shipping address to user addresses list
         """
         response = bot_client.send_request("POST", f"user/shipping-address", data=self.__dict__)
-        return response.status_code == 201
+        return True
 
     @staticmethod
     def delete(address_id: int) -> bool:
@@ -84,7 +81,7 @@ class ShippingAddress(PaginatedModel):
         Delete user's shipping address, specified by user's id and shipping address' id
         """
         response = bot_client.send_request("DELETE", f"/user/shipping-address", params={"id": address_id})
-        return response.status_code == 200
+        return True
 
 
 class Wishlist(PaginatedModel):
@@ -101,15 +98,14 @@ class Wishlist(PaginatedModel):
         Retrieve wishlist of certain user specified by user id
         """
         response = bot_client.send_request("GET", f"user/{user_id}/wishlist")
-        if response.status_code == 200:
-            return cls.page(response.json())
+        return cls.page(response.json())
 
     def add_wishlist(self) -> bool:
         """
         Add item to user's wishlist
         """
         response = bot_client.send_request("POST", f"user/{self.user_id}/wishlist", data=self.product_id)
-        return response.status_code == 201
+        return True
 
     @staticmethod
     def delete(user_id: int, product_id: int) -> bool:
@@ -118,7 +114,7 @@ class Wishlist(PaginatedModel):
         """
         response = bot_client.send_request("DELETE", f"/user/wishlist", params={"userId": user_id,
                                                                                 "productId": product_id})
-        return response.status_code == 200
+        return True
 
 
 class User(BaseModel):
@@ -146,16 +142,14 @@ class User(BaseModel):
         Check if our user is registered by his phone_number. If he is, return his id for later use
         """
         response = bot_client.send_request("GET", f"/user", params={"phone-number", phone_number})
-        if response.status_code == 200:
-            return response.json()['id']
+        return response.json()['id']
 
     def register(self) -> int:
         """
         Send user to save in database. On success, return his dedicated id
         """
         response = bot_client.send_request("POST", "/user", data=self.__dict__)
-        if response.status_code == 201:
-            return response.json()["id"]
+        return response.json()["id"]
 
     @staticmethod
     def update(user_id: int, data_to_change: dict) -> bool:
@@ -204,15 +198,14 @@ class Review(PaginatedModel):
         Here we need to dynamically set our path, so we don`t use base get method
         """
         response = bot_client.send_request("GET", f"/products/{product_id}/reviews")
-        if response.status_code == 200:
-            return cls.page(response.json())
+        return cls.page(response.json())
 
     def post(self, product_id: int):
         """
         Create new review for product specified by product_id
         """
         response = bot_client.send_request("POST", f"/products/{product_id}/reviews", data=self.__dict__)
-        return response.status_code == 201
+        return True
 
     def like(self, user_id, like=True):
         """
@@ -220,8 +213,7 @@ class Review(PaginatedModel):
         """
         data = {"userId": user_id, "reply": like}
         response = bot_client.send_request("PUT", f"/products/reviews/{self.id}/replies", data=data)
-        if response.status_code == 200:
-            return response.json()
+        return response.json()
 
 
 class Product(PaginatedModel):
