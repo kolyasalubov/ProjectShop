@@ -25,7 +25,7 @@ class ShippingModel(models.Model):
         """
     # shipping_address_id = models.IntegerField(verbose_name="shipping address Id", primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    postal_code = models.CharField(verbose_name=_("postal code"), null=False, blank=False, max_length=20)
+    postal_code = models.CharField(verbose_name=_("postal code"), null=False, blank=False, max_length=10)
     country = CountryField()
     region = models.CharField(verbose_name=_("region"), null=False, blank=False, max_length=50)
     city = models.CharField(verbose_name=_("city"), null=False, blank=False, max_length=50)
