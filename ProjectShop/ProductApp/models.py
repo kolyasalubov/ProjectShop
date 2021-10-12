@@ -16,7 +16,7 @@ class ProductCategory(models.Model):
         name: name of the category.
     """
 
-    name = models.CharField(max_length=100, null=False, blank=False)
+    name = models.CharField(max_length=100)
 
     class Meta:
         verbose_name_plural = _("Product categories")
@@ -34,7 +34,7 @@ class ProductSubcategory(models.Model):
         name: name of the subcategory.
     """
 
-    name = models.CharField(max_length=100, null=False, blank=False)
+    name = models.CharField(max_length=100)
 
     class Meta:
         verbose_name_plural = _("Product subcategories")
@@ -53,7 +53,7 @@ class Tag(models.Model):
         name: the name of the tag.
     """
 
-    name = models.CharField(max_length=100, null=False, blank=False)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -78,7 +78,7 @@ class Product(models.Model):
     categories = models.ManyToManyField(ProductCategory)
     tags = models.ManyToManyField(Tag)
 
-    name = models.CharField(max_length=100, null=False, blank=False)
+    name = models.CharField(max_length=100)
     price = models.DecimalField(
         validators=[validators.MinValueValidator(0)],
         decimal_places=2,
@@ -86,10 +86,8 @@ class Product(models.Model):
         null=False,
         blank=False,
     )
-    description = models.TextField(max_length=5000, null=False, blank=False)
-    stock_quantity = models.IntegerField(
-        validators=[validators.MinValueValidator(0)], null=False, blank=False
-    )
+    description = models.TextField(max_length=5000)
+    stock_quantity = models.IntegerField(validators=[validators.MinValueValidator(0)])
 
     def __str__(self):
         return self.name
@@ -116,9 +114,7 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     rating = models.IntegerField(
-        validators=[validators.MinValueValidator(0), validators.MaxValueValidator(5)],
-        null=False,
-        blank=False,
+        validators=[validators.MinValueValidator(0), validators.MaxValueValidator(5)]
     )
     comment = models.TextField(max_length=5000, null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -152,9 +148,7 @@ class Reply(models.Model):
     review = models.ForeignKey(Review, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
-    reaction = models.PositiveSmallIntegerField(
-        choices=REACTIONS, null=False, blank=False
-    )
+    reaction = models.PositiveSmallIntegerField(choices=REACTIONS)
 
     def __str__(self):
         return self.name
