@@ -73,7 +73,6 @@ class ShippingAddress(PaginatedModel):
         Add new shipping address to user addresses list
         """
         response = bot_client.send_request("POST", f"user/shipping-address", data=self.__dict__)
-        return True
 
     @staticmethod
     def delete(address_id: int) -> bool:
@@ -81,7 +80,6 @@ class ShippingAddress(PaginatedModel):
         Delete user's shipping address, specified by user's id and shipping address' id
         """
         response = bot_client.send_request("DELETE", f"/user/shipping-address", params={"id": address_id})
-        return True
 
 
 class Wishlist(PaginatedModel):
@@ -105,7 +103,6 @@ class Wishlist(PaginatedModel):
         Add item to user's wishlist
         """
         response = bot_client.send_request("POST", f"user/{self.user_id}/wishlist", data=self.product_id)
-        return True
 
     @staticmethod
     def delete(user_id: int, product_id: int) -> bool:
@@ -114,7 +111,6 @@ class Wishlist(PaginatedModel):
         """
         response = bot_client.send_request("DELETE", f"/user/wishlist", params={"userId": user_id,
                                                                                 "productId": product_id})
-        return True
 
 
 class User(BaseModel):
@@ -157,7 +153,6 @@ class User(BaseModel):
         Change user_data via dict. Return true on success
         """
         response = bot_client.send_request("PATCH", f"/user", params={"userId", user_id}, data=data_to_change)
-        return response.status_code == 200
 
 
 class Category(PaginatedModel):
@@ -205,7 +200,6 @@ class Review(PaginatedModel):
         Create new review for product specified by product_id
         """
         response = bot_client.send_request("POST", f"/products/{product_id}/reviews", data=self.__dict__)
-        return True
 
     def like(self, user_id, like=True):
         """
@@ -269,4 +263,3 @@ class Order(BaseModel):
         Post order to api
         """
         response = bot_client.send_request("POST", "/orders", data=self.__dict__)
-        return response.status_code == 201
