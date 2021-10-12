@@ -1,4 +1,6 @@
 from django.urls import path
+
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -35,7 +37,6 @@ view_based_urls = [
         PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-]
 
 token_urls = [
     path(
