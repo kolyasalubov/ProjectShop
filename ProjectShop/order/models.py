@@ -7,7 +7,8 @@ from UserApp.models import User
 
 
 class Order(models.Model):
-    """Create Order model and take information about order.
+    """
+    Create Order model and take information about order.
 
     order_date: Date of order creation (auto);
     type: datetime, autofield.
@@ -34,9 +35,8 @@ class Order(models.Model):
         CARD = "Card", _("Card")
 
     payment_method = models.CharField(
-        max_length=4,
-        choices=PaymentMethod.choices,
-        default=PaymentMethod.CASH)
+        max_length=4, choices=PaymentMethod.choices, default=PaymentMethod.CASH
+    )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     shippingAddress_id = models.ForeignKey(ShippingModel, on_delete=models.CASCADE)
@@ -47,20 +47,20 @@ class Order(models.Model):
         COMPLETED = "Completed", _("Completed")
         CANCELED = "Canceled", _("Canceled")
 
-    shipping_status = models.CharField(max_length=9,
-                                       choices=ShippingStatus.choices,
-                                       default=ShippingStatus.PLANNING)
+    shipping_status = models.CharField(
+        max_length=9, choices=ShippingStatus.choices, default=ShippingStatus.PLANNING
+    )
 
     class PaymentStatus(models.TextChoices):
         PENDING = "Pending", _("Pending")
         PAID = "Paid", _("Paid")
 
-    payment_status = models.CharField(max_length=7,
-                                      choices=PaymentStatus.choices,
-                                      default=PaymentStatus.PENDING)
+    payment_status = models.CharField(
+        max_length=7, choices=PaymentStatus.choices, default=PaymentStatus.PENDING
+    )
 
     def __str__(self):
-        return f'{self.user}; Payment status - {self.payment_status}'
+        return f"{self.user}; Payment status - {self.payment_status}"
 
 
 class OrderItems(models.Model):

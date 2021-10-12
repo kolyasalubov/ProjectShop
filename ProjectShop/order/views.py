@@ -9,7 +9,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     queryset = Order.objects.all()
     serializer_class = OrderDetailSerializer
-    http_method_names = ['post', 'get', 'patch', 'put']
+    http_method_names = ["post", "get", "patch", "put"]
 
 
 class OrderItemsViewSet(viewsets.ModelViewSet):
@@ -17,4 +17,4 @@ class OrderItemsViewSet(viewsets.ModelViewSet):
 
     queryset = OrderItems.objects.all()
     serializer_class = OrderItemsSerializer
-    http_method_names = ['post', 'get', 'patch', 'put']
+    http_method_names = ["post", "get", "patch", "put"]

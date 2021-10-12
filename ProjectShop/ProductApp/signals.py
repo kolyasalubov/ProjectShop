@@ -47,4 +47,6 @@ def delete_image_when_image_changed(sender, instance, **kwargs) -> None:
             instance_in_db_file_field = getattr(instance_in_db, field.name)
             instance_file_field = getattr(instance, field.name)
             if instance_in_db_file_field.name != instance_file_field.name:
-                delete_file_if_unused(sender, instance, field, instance_in_db_file_field)
+                delete_file_if_unused(
+                    sender, instance, field, instance_in_db_file_field
+                )

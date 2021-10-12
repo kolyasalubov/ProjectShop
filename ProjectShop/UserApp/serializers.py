@@ -10,9 +10,19 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'middle_name', 'last_name', 'birth_date', 'register_date', 'phone_number',
-                  'email', 'role', 'is_active', ]
-        read_only_fields = ('id', 'register_date', 'is_active', 'role')
+        fields = [
+            "id",
+            "first_name",
+            "middle_name",
+            "last_name",
+            "birth_date",
+            "register_date",
+            "phone_number",
+            "email",
+            "role",
+            "is_active",
+        ]
+        read_only_fields = ("id", "register_date", "is_active", "role")
 
 
 class UserSerializerForPatch(serializers.ModelSerializer):
@@ -22,4 +32,4 @@ class UserSerializerForPatch(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['first_name', 'middle_name', 'last_name', 'birth_date']
+        fields = ["first_name", "middle_name", "last_name", "birth_date"]

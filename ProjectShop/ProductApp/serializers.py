@@ -1,6 +1,13 @@
 from rest_framework.serializers import ModelSerializer
 
-from ProductApp.models import Product, ProductMedia, ProductCategory, ProductSubcategory, Tag, Review
+from ProductApp.models import (
+    Product,
+    ProductMedia,
+    ProductCategory,
+    ProductSubcategory,
+    Tag,
+    Review,
+)
 
 
 class ProductCategorySerializer(ModelSerializer):
@@ -8,7 +15,7 @@ class ProductCategorySerializer(ModelSerializer):
 
     class Meta:
         model = ProductCategory
-        fields = ['name']
+        fields = ["name"]
 
 
 class ProductSubcategorySerializer(ModelSerializer):
@@ -16,7 +23,7 @@ class ProductSubcategorySerializer(ModelSerializer):
 
     class Meta:
         model = ProductSubcategory
-        fields = ['name']
+        fields = ["name"]
 
 
 class TagSerializer(ModelSerializer):
@@ -24,7 +31,7 @@ class TagSerializer(ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ['name']
+        fields = ["name"]
 
 
 class ProductNameSerializer(ModelSerializer):
@@ -32,7 +39,7 @@ class ProductNameSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['name']
+        fields = ["name"]
 
 
 class ProductMediaSerializer(ModelSerializer):
@@ -42,7 +49,7 @@ class ProductMediaSerializer(ModelSerializer):
 
     class Meta:
         model = ProductMedia
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ProductSerializer(ModelSerializer):
@@ -55,12 +62,24 @@ class ProductSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'description', 'stock_quantity',
-                  'categories', 'subcategories', 'tags', 'media']
+        fields = [
+            "id",
+            "name",
+            "price",
+            "description",
+            "stock_quantity",
+            "categories",
+            "subcategories",
+            "tags",
+            "media",
+        ]
 
 
 class ReviewSerializer(ModelSerializer):
-    """Serializer for Review view. Replies for review (likes and dislikes) will be added later"""
+    """
+    Serializer for Review view.
+    Replies for review (likes and dislikes) will be added later
+    """
 
     product = ProductNameSerializer(read_only=True)
 

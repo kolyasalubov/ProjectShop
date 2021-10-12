@@ -66,7 +66,8 @@ class ShippingAddress(BaseModel):
 
 class Wishlist(BaseModel):
     """
-    Model for working with users' wishlist. Wishlist's record identification is done using product id and user id
+    Model for working with users' wishlist. Wishlist's record
+    identification is done using product id and user id
     """
 
     user_id: PositiveInt
@@ -110,8 +111,10 @@ class Wishlist(BaseModel):
 class User(BaseModel):
     """
     Model for working with user.
-    self.phone_number field uses PhoneNumber class from phonenumbers library, everything else - Pydantic fields
-    More details on phonenmbers: https://github.com/stefanfoulis/django-phonenumber-field
+    self.phone_number field uses PhoneNumber class from phonenumbers library,
+    everything else - Pydantic fields
+    More details on phonenmbers:
+    https://github.com/stefanfoulis/django-phonenumber-field
     """
 
     id: PositiveInt = None
@@ -123,7 +126,8 @@ class User(BaseModel):
 
     class Config:
         """
-        Arbitrary_types_allowed allows us to use non-Pydantic classes without modification for validation
+        Arbitrary_types_allowed allows us to use non-Pydantic classes
+        without modification for validation
         """
 
         arbitrary_types_allowed = True
@@ -131,7 +135,8 @@ class User(BaseModel):
     @staticmethod
     def is_registered(phone_number: PhoneNumber) -> int:
         """
-        Check if our user is registered by his phone_number. If he is, return his id for later use
+        Check if our user is registered by his phone_number.
+        If he is, return his id for later use
         """
 
         response = bot_client.send_request(
@@ -206,7 +211,7 @@ class Tag(BaseModel):
 
 class Review(BaseModel):
     """
-    Model for reviews. Replies (likes and dislikes) are embedded in model for convenience
+    Model for reviews. Replies (likes or dislikes) are embedded in model for convenience
     """
 
     id: PositiveInt
@@ -237,7 +242,9 @@ class Review(BaseModel):
 
     def like(self, user_id, like=True):
         """
-        Post a reply for review. If already posted: If reply is the same, supposed to delete it, if another - change it
+        Post a reply for review.
+        It`s already posted:
+        If reply is the same, supposed to delete it, if another - change it
         """
 
         data = {"userId": user_id, "reply": like}
@@ -264,7 +271,8 @@ class Product(BaseModel):
     @classmethod
     def get(cls, category_id: int, page_size=10, page=1, subcategories=None, tags=None):
         """
-        Get paginated list of products by some filters. If filters aren't specified, list should be sorted by popularity
+        Get paginated list of products by some filters.
+        If filters aren't specified, list should be sorted by popularity
         """
 
         params = {"category": category_id, "bodySize": page_size, "page": page}

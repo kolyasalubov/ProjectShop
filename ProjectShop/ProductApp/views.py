@@ -1,13 +1,20 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 
-from ProductApp.models import Product, ProductCategory, ProductSubcategory, ProductMedia, Review, Tag
+from ProductApp.models import (
+    Product,
+    ProductCategory,
+    ProductSubcategory,
+    ProductMedia,
+    Review,
+    Tag,
+)
 from ProductApp.serializers import (
     ProductSerializer,
     ProductCategorySerializer,
     ProductSubcategorySerializer,
     ProductMediaSerializer,
     ReviewSerializer,
-    TagSerializer
+    TagSerializer,
 )
 
 
@@ -54,10 +61,10 @@ class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
-        product_id = self.kwargs.get('product_id')
+        product_id = self.kwargs.get("product_id")
         queryset_list = Review.objects.filter(product=product_id)
         return queryset_list
 
     def perform_create(self, serializer):
-        product_id = self.kwargs.get('product_id')
+        product_id = self.kwargs.get("product_id")
         serializer.save(product=Product.objects.get(pk=product_id))
