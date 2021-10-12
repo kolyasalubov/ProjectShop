@@ -13,6 +13,12 @@ class ProductViewSet(ReadOnlyModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+    @action(methods=["POST", "GET", "PATCH"], detail=True, url_path="reviews", url_name="reviews")
+    def view_reviews(self, request, pk):
+        queryset = Review.objects.filter(product=self.get_object())
+        serializer = ReviewSerializer(queryset, many=True)
+        return Response(data=serializer.data, status=200)
+
 
 class ProductCategoryViewSet(ReadOnlyModelViewSet):
     """This is viewset for ProductCategory model"""
@@ -36,19 +42,18 @@ class ProductMediaViewSet(ReadOnlyModelViewSet):
     """This is viewset for ProductMedia model"""
     serializer_class = ProductMediaSerializer
     queryset = ProductMedia.objects.all()
-    
 
-class ReviewViewSet(ModelViewSet):
-    """
-    ViewSet to view and write reviews for specified in path product
-    """
-    serializer_class = ReviewSerializer
-
-    def get_queryset(self):
-        product_id = self.kwargs.get('product_id')
-        queryset_list = Review.objects.filter(product=product_id)
-        return queryset_list
-
-    def perform_create(self, serializer):
-        product_id = self.kwargs.get('product_id')
-        serializer.save(product=Product.objects.get(pk=product_id))
+# class ReviewViewSet(ModelViewSet):
+#    """
+#    ViewSet to view and write reviews for specified in path product
+#    """
+#    serializer_class = ReviewSerializer
+#
+#    def get_queryset(self):
+#        product_id = self.kwargs.get('product_id')
+#        queryset_list = Review.objects.filter(product=product_id)
+#        return queryset_list
+#
+#    def perform_create(self, serializer):
+#        product_id = self.kwargs.get('product_id')
+#        serializer.save(product=Product.objects.get(pk=product_id))
