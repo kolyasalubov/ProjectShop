@@ -173,9 +173,7 @@ class ProductImage(models.Model):
         product: reference to target product.
     """
 
-    product = models.ForeignKey(
-        Product, blank=False, null=False, on_delete=models.PROTECT, related_name="image"
-    )
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="image")
 
     image = models.ImageField(
         upload_to="product_media_image", default="default_image/default_image.png"
@@ -224,8 +222,6 @@ class ProductVideo(models.Model):
 
     product = models.ForeignKey(
         Product,
-        blank=False,
-        null=False,
         on_delete=models.PROTECT,
         related_name="video_link",
     )
