@@ -15,18 +15,14 @@
 
 
 {% block content %}
-    <h1>{% translate "Home page" %}</h1>
 
-    <form action="{% url 'search_results' %}" method="get">
-        {{ form }}
-    </form>
-
+    <h1>Search Results</h1>
 
     {% for product in products %}
-        <img src="{{ product.media.all.first.image.url }}" style="width:200px" alt="A product image">
-        <a href="#"><p>{{ product.name }}</p></a>
-        <p>{% translate "Product price:" %} {{ product.price }}</p>
-        <hr>
+
+    <img src="{{ product.media.all.first.image.url }}" style="width:200px" alt="A product image">
+    <a href="#"><p>{{ product.name }}</p></a>
+    <p>{% translate "Product price:" %} {{ product.price }}</p>
 
     {% endfor %}
 
