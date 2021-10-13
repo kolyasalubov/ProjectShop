@@ -12,6 +12,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_extensions.mixins import NestedViewSetMixin
+
 
 from ProductApp.models import Product
 from UserApp.permissions import IsAdminBot
@@ -112,7 +114,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return serializer_class
 
 
-class WishListViewSet(viewsets.ModelViewSet):
+class WishListViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """
     Viewset made for users wishlist.
     """
