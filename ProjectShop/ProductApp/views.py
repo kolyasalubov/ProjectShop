@@ -1,5 +1,4 @@
 from django.views import generic
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.viewsets import ModelViewSet
 
