@@ -1,16 +1,13 @@
 import requests
-import os
 
 
-PHONE_NUMBER = "+380966666666"      # Crete admin is_bot user and insert his/her phone_number
-PASSWORD = "android750"          # Crete admin is_bot user and insert his/her password
-SERVER_HOST = "http://localhost:8000/"         # "http://localhost:8000/" insert for local testing
-TOKEN_URL = 'users/token/'
-TOKEN_REFRESH_URL = 'users/token/refresh/'
-LOGOUT_URL = 'user/token/logout/'
-GET_USER_ID_BY_TELEGRAM_ID_URL = 'users/get_user_id_by_telegram_id/'
-GET_USER_ID_BY_PHONE_NUMBER_URL = 'users/get_user_id_by_phone_number/'
-USER_URL = 'users/user/'
+PHONE_NUMBER = ""      # Crete admin is_bot user and insert his/her phone_number
+PASSWORD = ""          # Crete admin is_bot user and insert his/her password
+SERVER_HOST = ""         # "http://localhost:8000/" insert for local testing
+TOKEN_URL = "users/token/"
+TOKEN_REFRESH_URL = "users/token/refresh/"
+LOGOUT_URL = "user/token/logout/"
+USER_URL = "users/user/"
 
 
 class RestClient:
@@ -33,26 +30,23 @@ class RestClient:
     """
 
     METHODS = {
-        'GET': requests.get,
-        'POST': requests.post,
-        'PUT': requests.put,
-        'DELETE': requests.delete,
-        'PATCH': requests.patch,
+        "GET": requests.get,
+        "POST": requests.post,
+        "PUT": requests.put,
+        "DELETE": requests.delete,
+        "PATCH": requests.patch,
     }
 
-    def __init__(self, phone_number, password, server_host, token_url, token_refresh_url, logout_url,
-                 get_user_ib_by_telegram_id_url, get_user_ib_by_phone_number_url, user_url):
+    def __init__(self, phone_number, password, server_host, token_url, token_refresh_url, logout_url, user_url):
         self.phone_number = phone_number
         self.password = password
         self.server_host = server_host
         self.token_url = token_url
         self.token_refresh_url = token_refresh_url
         self.logout_url = logout_url
-        self.get_user_ib_by_telegram_id_url = get_user_ib_by_telegram_id_url
-        self.get_user_ib_by_phone_number_url = get_user_ib_by_phone_number_url
         self.user_url = user_url
-        self.access = ''
-        self.refresh = ''
+        self.access = ""
+        self.refresh = ""
 
     def _obtain_tokens(self) -> int:
         """
@@ -67,8 +61,8 @@ class RestClient:
         }
         response = requests.post(url, data=data)
         if response.status_code == 200:
-            self.access = response.json().get('access')
-            self.refresh = response.json().get('refresh')
+            self.access = response.json().get("access")
+            self.refresh = response.json().get("refresh")
         return response.status_code
 
     def _refresh_tokens(self) -> int:
@@ -81,8 +75,8 @@ class RestClient:
         data = {"refresh": self.refresh}
         response = requests.post(url, data=data)
         if response.status_code == 200:
-            self.access = response.json().get('access')
-            self.refresh = response.json().get('refresh')
+            self.access = response.json().get("access")
+            self.refresh = response.json().get("refresh")
         return response.status_code
 
     def _authenticate(self) -> int:
@@ -104,7 +98,7 @@ class RestClient:
         """
         url = self.server_host + self.logout_url
         data = {"refresh": self.refresh}
-        headers = {'Authorization': f"Bearer {self.access}"}
+        headers = {"Authorization": f"Bearer {self.access}"}
         response = requests.post(url, headers=headers, data=data)
         return response
 
@@ -114,19 +108,19 @@ class RestClient:
         Provide sending request.
 
         Parameters:
-            method (str): request's method
-            url (str): request's url
-            headers (dict, None): additional request's headers
-            data (dict, None): request's body
+            method (str): request"s method
+            url (str): request"s url
+            headers (dict, None): additional request"s headers
+            data (dict, None): request"s body
             params (dict, None): additional data to send via URL
 
         Return: request.Response object
         """
         request_method = self.METHODS.get(method)
         if headers:
-            headers.update({'Authorization': f"Bearer {self.access}"})
+            headers.update({"Authorization": f"Bearer {self.access}"})
         else:
-            headers = {'Authorization': f"Bearer {self.access}"}
+            headers = {"Authorization": f"Bearer {self.access}"}
 
         if request_method is None:
             response = requests.Response()
@@ -143,30 +137,9 @@ class RestClient:
                 response.status_code = auth_status
                 return response
             else:
-                headers['Authorization'] = f"Bearer {self.access}"
+                headers["Authorization"] = f"Bearer {self.access}"
                 response = request_method(url, headers=headers, data=data, params=params)
         return response
-
-    def get_user_id_by_telegram_id(self, telegram_id):
-        url = self.get_user_ib_by_telegram_id_url + telegram_id + '/'
-        response = self.send_request('GET', url)
-        return response
-
-    def _get_user_id_by_phone_number(self, phone_number):
-        url = self.get_user_ib_by_phone_number_url + str(phone_number) + '/'
-        response = self.send_request('GET', url)
-        return response
-
-    def add_telegram_id_to_user_profile(self,telegram_id, phone_number):
-        response = self._get_user_id_by_phone_number(phone_number)
-        if response.status_code != 200:
-            return response
-        user_id = str(response.json()['id'])
-        url = self.user_url + user_id + '/'
-        data = {'telegram_id': telegram_id}
-        response = self.send_request('PATCH', url, data=data)
-        return response
-
 
 
 bot_client = RestClient(
@@ -176,12 +149,6 @@ bot_client = RestClient(
     token_url=TOKEN_URL,
     token_refresh_url=TOKEN_REFRESH_URL,
     logout_url=LOGOUT_URL,
-    get_user_ib_by_telegram_id_url=GET_USER_ID_BY_TELEGRAM_ID_URL,
-    get_user_ib_by_phone_number_url=GET_USER_ID_BY_PHONE_NUMBER_URL,
     user_url=USER_URL
     )
 # Use only next methods: logout, send_request
-
-if __name__ == '__main___':
-    a = bot_client.send_request('GET', 'api/order/')
-    print(a.content)

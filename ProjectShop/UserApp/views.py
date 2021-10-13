@@ -95,11 +95,3 @@ class GetUserByTelegramIdViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'telegram_id'
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'phone_number'
-
-
