@@ -4,9 +4,7 @@ import datetime
 from order.models import OrderModel, OrderItemsModel
 from UserApp.tests.factories import UserFactory
 from Shipping.tests.factories import ShippingFactory
-
-
-# from ProductApp.tests.factories import ProductFactory
+from ProductApp.tests.factories import ProductFactory
 
 
 class OrderModelFactory(factory.django.DjangoModelFactory):
@@ -33,6 +31,6 @@ class OrderItemsModelFactory(factory.django.DjangoModelFactory):
         model = OrderItemsModel
 
     order = factory.SubFactory(OrderModelFactory)
-    # product = factory.SubFactory(ProductFactory)
+    product = factory.SubFactory(ProductFactory)
 
     order_items_quantity = factory.Faker('random_int', min=1, max=100)

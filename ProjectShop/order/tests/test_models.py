@@ -48,3 +48,7 @@ class OrderItemsModelTestCase(TestCase):
     def test_order_items_quantity_max(self):
         OrderItems = self.OrderItems
         self.assertLess(len(str(OrderItems.order_items_quantity)), 101)
+
+    def test_product_exists(self):
+        OrderItems = self.OrderItems
+        self.assertTrue(OrderItems.product.exists())

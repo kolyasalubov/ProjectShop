@@ -6,7 +6,7 @@ from Shipping.tests.factories import ShippingFactory
 class ShippingTestCase(TestCase):
     """Implement some tests for Shipping model"""
 
-	def setUp(self) -> None:
+    def setUp(self) -> None:
         self.shipping = ShippingFactory()
 
     def test_create(self):
