@@ -31,4 +31,4 @@ class ShippingTestCase(TestCase):
 
     def test_postal_code_max(self):
         shipping = self.shipping
-        self.assertLessEqual(shipping.postal_code, 10)
+        self.assertLessEqual(len(str(shipping.postal_code)), 10)

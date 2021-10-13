@@ -24,11 +24,11 @@ class OrderModelTestCase(TestCase):
 
     def test_payment_method_max(self):
         Order = self.Order
-        self.assertLessEqual(Order.payment_method, 1)
+        self.assertLessEqual(len(str(Order.payment_method)), 1)
 
     def test_shipping_status_max(self):
         Order = self.Order
-        self.assertLessEqual(Order.shipping_status, 3)
+        self.assertLessEqual(len(str(Order.shipping_status)), 3)
 
 
 class OrderItemsModelTestCase(TestCase):
@@ -47,4 +47,4 @@ class OrderItemsModelTestCase(TestCase):
 
     def test_order_items_quantity_max(self):
         OrderItems = self.OrderItems
-        self.assertLess(OrderItems.order_items_quantity, 101)
+        self.assertLess(len(str(OrderItems.order_items_quantity)), 101)
