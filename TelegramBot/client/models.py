@@ -9,10 +9,20 @@ import datetime
 from enum import Enum
 
 from phonenumbers import PhoneNumber
-from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal
+from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, AnyUrl
 from typing import List, Tuple
 
 from client.status_check import bot_client
+
+
+class Page(BaseModel):
+    """
+    This model is used to transform gathered data into object
+    """
+    count: PositiveInt = 1
+    next: AnyUrl = None
+    previous: AnyUrl = None
+    results: list
 
 
 class PaginatedModel(BaseModel):
@@ -20,9 +30,21 @@ class PaginatedModel(BaseModel):
     Model for all models, that require pagination
     """
     _path = None
+    _name = None
+
+    def __str__(self):
+        return getattr(self, self._name)
 
     @classmethod
-    def get(cls):
+    def page(cls, json: dict) -> Page:
+        """
+        Turn our results into objects of respective class
+        """
+        json['results'] = [cls(**item) for item in json['results']]
+        return Page(**json)
+
+    @classmethod
+    def get(cls) -> Page:
         """
         Get first page of result. Will work only if path provided (in child classes)
         """
@@ -30,15 +52,7 @@ class PaginatedModel(BaseModel):
         return cls.page(response.json())
 
     @classmethod
-    def page(cls, json: dict) -> dict:
-        """
-        Turn our results into objects of respective class
-        """
-        json['results'] = [cls(**item) for item in json['results']]
-        return json
-
-    @classmethod
-    def turn_page(cls, url: str) -> dict:
+    def turn_page(cls, url: str) -> Page:
         """
         Change page using given url
         """
@@ -59,7 +73,7 @@ class ShippingAddress(PaginatedModel):
     post_office: PositiveInt
 
     @classmethod
-    def get_shipping_addresses(cls, user_id: int) -> dict:
+    def get_shipping_addresses(cls, user_id: int) -> Page:
         """
         Retrieve shipping addresses for user specified by user id
 
@@ -68,20 +82,18 @@ class ShippingAddress(PaginatedModel):
         response = bot_client.send_request("GET", f"user/shipping-address", params={"userId": user_id})
         return cls.page(response.json())
 
-    def add_shipping_address(self) -> bool:
+    def add_shipping_address(self):
         """
         Add new shipping address to user addresses list
         """
-        response = bot_client.send_request("POST", f"user/shipping-address", data=self.__dict__)
-        return True
+        bot_client.send_request("POST", f"user/shipping-address", data=self.__dict__)
 
     @staticmethod
-    def delete(address_id: int) -> bool:
+    def delete(address_id: int):
         """
         Delete user's shipping address, specified by user's id and shipping address' id
         """
-        response = bot_client.send_request("DELETE", f"/user/shipping-address", params={"id": address_id})
-        return True
+        bot_client.send_request("DELETE", f"/user/shipping-address", params={"id": address_id})
 
 
 class Wishlist(PaginatedModel):
@@ -93,28 +105,26 @@ class Wishlist(PaginatedModel):
     product_name: constr(max_length=100)
 
     @classmethod
-    def get_wishlist(cls, user_id: int) -> dict:
+    def get_wishlist(cls, user_id: int) -> Page:
         """
         Retrieve wishlist of certain user specified by user id
         """
         response = bot_client.send_request("GET", f"user/{user_id}/wishlist")
         return cls.page(response.json())
 
-    def add_wishlist(self) -> bool:
+    def add_wishlist(self):
         """
         Add item to user's wishlist
         """
-        response = bot_client.send_request("POST", f"user/{self.user_id}/wishlist", data=self.product_id)
-        return True
+        bot_client.send_request("POST", f"user/{self.user_id}/wishlist", data=self.product_id)
 
     @staticmethod
-    def delete(user_id: int, product_id: int) -> bool:
+    def delete(user_id: int, product_id: int):
         """
         Delete item from user's wishlist
         """
-        response = bot_client.send_request("DELETE", f"/user/wishlist", params={"userId": user_id,
-                                                                                "productId": product_id})
-        return True
+        bot_client.send_request("DELETE", f"/user/wishlist", params={"userId": user_id,
+                                                                     "productId": product_id})
 
 
 class User(BaseModel):
@@ -161,25 +171,24 @@ class User(BaseModel):
 
 
 class Category(PaginatedModel):
-    id: PositiveInt
     name: constr(max_length=100)
 
-    _path = "/products/categories"
+    _path = "/categories"
+    _name = "name"
 
 
-class Subcategory(BaseModel):
-    id: PositiveInt
+class Subcategory(PaginatedModel):
     name: constr(max_length=100)
 
-    _path = "/products/subcategories"
+    _path = "/subcategories"
+    _name = "name"
 
 
-class Tag(BaseModel):
-    id: PositiveInt
+class Tag(PaginatedModel):
     name: constr(max_length=100)
 
-    _path = "/products/tags"
-
+    _path = "/tags"
+    _name = "name"
 
 class Review(PaginatedModel):
     """
@@ -193,7 +202,7 @@ class Review(PaginatedModel):
     dislikes: PositiveInt = None
 
     @classmethod
-    def view_reviews(cls, product_id: int) -> dict:
+    def view_reviews(cls, product_id: int) -> Page:
         """
         Here we need to dynamically set our path, so we don`t use base get method
         """
@@ -204,8 +213,7 @@ class Review(PaginatedModel):
         """
         Create new review for product specified by product_id
         """
-        response = bot_client.send_request("POST", f"/products/{product_id}/reviews", data=self.__dict__)
-        return True
+        bot_client.send_request("POST", f"/products/{product_id}/reviews", data=self.__dict__)
 
     def like(self, user_id, like=True):
         """
@@ -230,7 +238,7 @@ class Product(PaginatedModel):
         arbitrary_types_allowed = True
 
     @classmethod
-    def view_products(cls, category_id: int, subcategories: list = None, tags: list = None) -> dict:
+    def view_products(cls, category_id: int, subcategories: list = None, tags: list = None) -> Page:
         """
         Get paginated list of products by some filters. If filters aren't specified, list should be sorted by popularity
         """
