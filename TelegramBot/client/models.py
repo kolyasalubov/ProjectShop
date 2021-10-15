@@ -233,7 +233,6 @@ class User(BaseModel):
         :return: User instance
         """
         url = USER_URL + phone_number + "/"
-        bot_client.send_request("GET", url)  # check if user exists
         user_response = cls._patch_user_telegram_id(phone_number, telegram_id)
         return cls._create_user(user_response)
 
