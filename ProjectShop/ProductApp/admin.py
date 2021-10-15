@@ -37,7 +37,7 @@ class ImageInline(admin.TabularInline):
 
 
 class VideoInline(admin.TabularInline):
-    model = ProductImage
+    model = ProductVideo
     fields = ("video_link",)
     extra = 1
 
