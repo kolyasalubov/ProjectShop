@@ -16,7 +16,7 @@ from typing import List, Tuple
 from client.client import bot_client
 
 USER_URL = ""  # add url to obtain and manage user by phone number
-USER_INIT_KEY = "super_secret_init_key"   # key for User.__init__  access
+USER_INIT_KEY = "super_secret_init_key"   # key for User.__init__  access, set None to switch off
 USER_BY_TELEGRAM_ID_URL = ''  # add url to obtain user by telegram id
 
 
@@ -113,6 +113,25 @@ class User(BaseModel):
         """
         return "id", "telegram_id", "phone_number", "email"
 
+    @classmethod
+    def _validate_fields(cls, **kwargs):
+        print(kwargs)
+        """
+        Validate value for field. Raise ValidationError
+        :param kwargs: dict
+        :return: None
+        """
+        cls(
+            key=USER_INIT_KEY,
+            id=1,
+            telegram_id=kwargs.get("telegram_id", ""),
+            first_name=kwargs.get("first_name", ""),
+            last_name=kwargs.get("last_name", ""),
+            phone_number=kwargs.get("phone_number", '+380666666666'),
+            email=kwargs.get("email", "email@email.com"),
+            birth_date=kwargs.get("birth_date", None),
+        )
+
     def __init__(self, key=None, **kwargs):
         """
         Initialize User instance. Allow initializing only if <key> parameter math with USER_INIT_KEY constant.
@@ -138,6 +157,8 @@ class User(BaseModel):
         """
         if key in self._get_restricted_fields():
             raise PermissionError(f"{key} is not changeable field")
+        data = {key: value}
+        User._validate_fields(**data)
         url = USER_URL + self.phone_number + "/"
         data = {key: value}
         bot_client.send_request("PATCH", url, data=data)
@@ -150,10 +171,13 @@ class User(BaseModel):
         :param value: str
         :return: None
         """
-        phone_number = phonenumbers.parse(value)
-        if phonenumbers.is_valid_number(phone_number):
-            return value
-        raise ValidationError
+        try:
+            phone_number = phonenumbers.parse(value)
+            if phonenumbers.is_valid_number(phone_number):
+                return value
+            raise ValidationError
+        except Exception:
+            raise ValidationError
 
     @classmethod
     def _create_user(cls, user_response):
@@ -195,6 +219,7 @@ class User(BaseModel):
             "last_name": last_name,
             "birth_date": birth_date
         }
+        User._validate_fields(**user_data)
         user_response = bot_client.send_request("POST", USER_URL, data=user_data)
         return cls._create_user(user_response)
 
@@ -208,6 +233,7 @@ class User(BaseModel):
         """
         url = USER_URL + phone_number + "/"
         data = {"telegram_id": telegram_id}
+        User._validate_fields(**data)
         response = bot_client.send_request("PATCH", url, data=data)
         return response
 
@@ -232,7 +258,7 @@ class User(BaseModel):
         :param telegram_id: str
         :return: User instance
         """
-        url = USER_URL + phone_number + "/"
+        User._validate_fields(telegram_id=telegram_id)
         user_response = cls._patch_user_telegram_id(phone_number, telegram_id)
         return cls._create_user(user_response)
 
