@@ -5,13 +5,11 @@ from rest_framework.viewsets import ModelViewSet
 
 from ProductApp.models import Review, Product, ProductCategory
 from ProductApp.serializers import ReviewSerializer
-from ProductApp.forms import SearchForm
 
 
-class HomePageView(generic.ListView, generic.FormView):
+class HomePageView(generic.ListView):
     context_object_name = 'products'
     template_name = 'ProductApp/homepage.html'
-    form_class = SearchForm
     queryset = Product.objects.all()
     paginate_by = 12
 
