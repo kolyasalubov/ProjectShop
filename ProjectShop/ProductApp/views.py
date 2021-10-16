@@ -29,23 +29,6 @@ class CategoriesView(generic.ListView):
     paginate_by = 12
 
 
-class SearchResultsListView(generic.ListView):
-    model = Product
-    context_object_name = 'products'
-    template_name = 'ProductApp/search_results.html'
-    paginate_by = 12
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        return Product.objects.filter(name__icontains=query, stock_quantity__gt=0)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        categories = ProductCategory.objects.order_by('name')[:20]
-        context['categories'] = categories
-        return context
-
-
 class ReviewViewSet(ModelViewSet):
     """
     ViewSet to view and write reviews for specified in path product
