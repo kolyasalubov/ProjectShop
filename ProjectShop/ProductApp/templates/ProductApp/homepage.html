@@ -15,9 +15,15 @@
 
 
 {% block content %}
+
+    <form method="get">
+        {{ filter.form }}
+        <button type="submit">Search</button>
+    </form>
+
     <h1>{% translate "Home page" %}</h1>
 
-    {% for product in products %}
+    {% for product in filter.qs %}
         <img src="{{ product.media.all.first.image.url }}" style="width:200px" alt="A product image">
         <a href="#"><p>{{ product.name }}</p></a>
         <p>{% translate "Product price:" %} {{ product.price }}</p>

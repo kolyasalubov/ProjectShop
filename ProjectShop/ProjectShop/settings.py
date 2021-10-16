@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'django_countries',
+    'django_filters',
     'phonenumber_field',
     'crispy_forms',
     'drf_yasg',

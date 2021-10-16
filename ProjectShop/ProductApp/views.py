@@ -5,6 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from ProductApp.models import Review, Product, ProductCategory
 from ProductApp.serializers import ReviewSerializer
+from ProductApp.filters import ProductFilter
 
 
 class HomePageView(generic.ListView):
@@ -17,6 +18,8 @@ class HomePageView(generic.ListView):
         context = super().get_context_data(**kwargs)
         categories = ProductCategory.objects.order_by('name')[:20]
         context['categories'] = categories
+        context['filter'] = ProductFilter(self.request.GET,
+                                          self.get_queryset())
         return context
 
 
