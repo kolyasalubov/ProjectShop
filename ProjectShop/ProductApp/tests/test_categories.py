@@ -26,7 +26,7 @@ class CategoriesTest(TestCase):
         self.assertEqual(view.func.__name__, CategoriesView.as_view().__name__)
 
 
-class HomePageViewTest(TestCase):
+class CategoriesViewTest(TestCase):
     def setUp(self):
         self.view = CategoriesView()
 
