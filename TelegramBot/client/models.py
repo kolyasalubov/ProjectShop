@@ -127,14 +127,14 @@ class User(BaseModel):
             telegram_id=kwargs.get("telegram_id", ""),
             first_name=kwargs.get("first_name", ""),
             last_name=kwargs.get("last_name", ""),
-            phone_number=kwargs.get("phone_number", '+380666666666'),
+            phone_number=kwargs.get("phone_number", "+380666666666"),
             email=kwargs.get("email", "email@email.com"),
             birth_date=kwargs.get("birth_date", None),
         )
 
     def __init__(self, key=None, **kwargs):
         """
-        Initialize User instance. Allow initializing only if <key> parameter math with USER_INIT_KEY constant.
+        Initialize User instance. Allow initializing only if <key> parameter match with USER_INIT_KEY constant.
         Raise PermissionError if else.
         :param key: any type
         :param kwargs: dict
