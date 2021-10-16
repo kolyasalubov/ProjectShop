@@ -2,24 +2,23 @@ from django.views import generic
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.viewsets import ModelViewSet
+from django_filters.views import FilterView
 
 from ProductApp.models import Review, Product, ProductCategory
 from ProductApp.serializers import ReviewSerializer
 from ProductApp.filters import ProductFilter
 
 
-class HomePageView(generic.ListView):
-    context_object_name = 'products'
+class HomePageView(FilterView):
+    filterset_class = ProductFilter
     template_name = 'ProductApp/homepage.html'
-    queryset = Product.objects.all()
+    context_object_name = 'products'
     paginate_by = 12
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         categories = ProductCategory.objects.order_by('name')[:20]
         context['categories'] = categories
-        context['filter'] = ProductFilter(self.request.GET,
-                                          self.get_queryset())
         return context
 
 

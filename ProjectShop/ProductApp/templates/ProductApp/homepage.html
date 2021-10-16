@@ -1,5 +1,7 @@
 {% extends "UserApp/_base.html" %}
 
+{% load pagination_tags %}
+
 {% load i18n %}
 
 
@@ -23,7 +25,7 @@
 
     <h1>{% translate "Home page" %}</h1>
 
-    {% for product in filter.qs %}
+    {% for product in products %}
         <img src="{{ product.media.all.first.image.url }}" style="width:200px" alt="A product image">
         <a href="#"><p>{{ product.name }}</p></a>
         <p>{% translate "Product price:" %} {{ product.price }}</p>
@@ -34,21 +36,21 @@
     {% if is_paginated %}
 
         {% if page_obj.has_previous %}
-            <a href="?page=1">{% translate "First" %}</a>
-            <a href="?page={{ page_obj.previous_page_number }}">{% translate "Previous" %}</a>
+            <a href="?{% url_replace request 'page' 1 %}">{% translate "First" %}</a>
+            <a href="?{% url_replace request 'page' page_obj.previous_page_number %}">{% translate "Previous" %}</a>
         {% endif %}
 
         {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
-                <a href="?page={{ num }}">{{ num }}</a>
+                <a href="?{% url_replace request 'page' num %}">{{ num }}</a>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a href="?page={{ num }}">{{ num }}</a>
+                <a href="?{% url_replace request 'page' num %}">{{ num }}</a>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">{% translate "Next" %}</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">{% translate "Last" %}</a>
+            <a href="?{% url_replace request 'page' page_obj.next_page_number %}">{% translate "Next" %}</a>
+            <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">{% translate "Last" %}</a>
         {% endif %}
 
     {% endif %}
