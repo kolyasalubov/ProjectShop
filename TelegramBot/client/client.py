@@ -108,10 +108,10 @@ class RestClient:
         Provide sending request.
 
         Parameters:
-            method (str): request"s method
-            url (str): request"s url
-            headers (dict, None): additional request"s headers
-            data (dict, None): request"s body
+            method (str): request method
+            url (str): request url
+            headers (dict, None): additional request headers
+            data (dict, None): request body
             params (dict, None): additional data to send via URL
 
         Return: request.Response object

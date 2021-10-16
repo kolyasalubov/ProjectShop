@@ -6,9 +6,9 @@ Methods in models are facades for all api requests required by telegram bot
 """
 
 import datetime
+import phonenumbers
 from enum import Enum
 
-import phonenumbers
 from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator
 from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
