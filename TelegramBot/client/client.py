@@ -1,13 +1,12 @@
 import requests
-import os
 
-
-PHONE_NUMBER = os.environ.get('BOT_PHONE_NUMBER')      # Crete admin is_bot user and insert his/her phone_number
-PASSWORD = os.environ.get('BOT_PASSWORD')          # Crete admin is_bot user and insert his/her password
-SERVER_HOST = os.environ.get('SERVER_HOST')         # "http://localhost:8000/" insert for local testing
-TOKEN_URL = 'users/token/'
-TOKEN_REFRESH_URL = 'users/token/refresh/'
-LOGOUT_URL = 'users/token/logout/'
+PHONE_NUMBER = "+380931309928"  # Crete admin is_bot user and insert his/her phone_number
+PASSWORD = "PVit5XkiU5znbNK"  # Crete admin is_bot user and insert his/her password
+SERVER_HOST = "http://localhost:8000"  # insert for local testing
+API_ROOT = "/api/v1"
+TOKEN_URL = '/users/token/'
+TOKEN_REFRESH_URL = '/users/token/refresh/'
+LOGOUT_URL = '/users/token/logout/'
 
 
 class RestClient:
@@ -34,10 +33,11 @@ class RestClient:
         'PATCH': requests.patch,
     }
 
-    def __init__(self, phone_number, password, server_host, token_url, token_refresh_url, logout_url):
+    def __init__(self, phone_number, password, server_host, api_root, token_url, token_refresh_url, logout_url):
         self.phone_number = phone_number
         self.password = password
         self.server_host = server_host
+        self.api_root = api_root
         self.token_url = token_url
         self.token_refresh_url = token_refresh_url
         self.logout_url = logout_url
@@ -123,7 +123,8 @@ class RestClient:
             response.status_code = 405
             return response
 
-        url = self.server_host + url
+        if self.server_host not in url:
+            url = self.server_host + self.api_root + url
         response = request_method(url, headers=headers, data=data, params=params)
 
         if response.status_code == 401:
@@ -138,5 +139,5 @@ class RestClient:
         return response
 
 
-bot_client = RestClient(PHONE_NUMBER, PASSWORD, SERVER_HOST, TOKEN_URL, TOKEN_REFRESH_URL, LOGOUT_URL)
+bot_client = RestClient(PHONE_NUMBER, PASSWORD, SERVER_HOST, API_ROOT, TOKEN_URL, TOKEN_REFRESH_URL, LOGOUT_URL)
 # Use only next methods: logout, send_request
