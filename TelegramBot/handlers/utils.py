@@ -8,7 +8,7 @@ class KeyboardBuilder:
     This is a builder class for a keyboard
     """
 
-    def __init__(self, page: Page, data: str):
+    def __init__(self, page: Page, data: str = None):
         self.page = page
         self.data = data
         self._keyboard = []
@@ -43,7 +43,9 @@ class KeyboardBuilder:
             [
                 InlineKeyboardButton(
                     text=f"{self.page.results[column + row]}",
-                    callback_data=f"{self.data}={self.page.results[column + row]}",
+                    callback_data=f"{self.data}={self.page.results[column + row].replace(' ', '-')}"
+                    if self.data
+                    else self.page.results[column + row],
                 )
                 for row in range(columns)
             ]
@@ -52,11 +54,13 @@ class KeyboardBuilder:
 
         self.add_pagination()
 
-    def add_finish_button(self):
+    def add_finish_button(self, data):
         """
         Add button for situations when we need to submit something
         """
-        self._keyboard.append([InlineKeyboardButton(text="Finish", callback_data=f"finish-{self.data}")])
+        self._keyboard.append(
+            [InlineKeyboardButton(text="Finish", callback_data=f"finish-{data}")]
+        )
 
     @property
     def keyboard(self) -> InlineKeyboardMarkup:
