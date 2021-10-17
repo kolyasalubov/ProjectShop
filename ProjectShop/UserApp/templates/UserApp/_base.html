@@ -57,6 +57,12 @@
     {% block category %}{% endblock category %}
     <!--  Second Navbar ends here  -->
 
+    <hr>
+    <form action="{% url 'home' %}" method="get">
+        <input name="name__icontains" type="text" placeholder="Search" aria-label="Search">
+        <button type="submit" id="submit">{% translate "Search" %}</button>
+    </form>
+
     {% block content %}{% endblock content %}
 
 
