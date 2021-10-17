@@ -1,60 +1,111 @@
-{% load i18n %}
-{% load flatpages %}
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% translate "Shop" %}</title>
+  </head>
+  <body>
+  <header id="header">
+    <div class="nav-menu">
+        <!-- burger menu -->
+        <button class="hamburger" type="button">
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+        <nav class="burger-nav disappeared">
+            <div class="burger-profile_section">
+                {% if user.is_authenticated %}
+                    <h2 class="burger-header">{{ user.first_name }} {{ user.last_name }}</h2>
+                {% else %}
+                     <h2 class="burger-header">Name Surname(needs login)</h2>
+                {% endif %}
+                <div class="burger-profile_items">
+                    <a href="{% url 'profile' %}" class="item-link">Profile</a>
+                    <a href="#" class="item-link">Cart</a>
+                    <a href="#" class="item-link">Order history</a>
+                    <a href="#" class="item-link">Filter history</a>
+                    <a href="#" class="item-link">My reviews</a>
+                    <a href="#" class="item-link">Settings</a>
+                    <a href="{% url 'logout' %}" class="item-link">Log out</a>
+                </div>
+            </div>
+        </nav>
 
-</head>
-<body>
+        <!-- navbar -->
 
+        <div class="site-logo">
+            <a class="site-logo" href="{% url 'home' %}">ProjectShop</a>
+        </div>
+        <div class="nav-menu_actions">
+            <div class="wrapper">
+                <form action="">
+                    <button type="submit" class="search-button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <input type="text" name="search" class="search-box">
+                </form>
+            </div>
+            <div class="nav-icons">
+                <a href="" class="nav-link">
+                    <img class="nav-image" src={% static 'assets/EmptyCart.svg' %}>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-link">
+                    <img class="nav-image" src={% static 'assets/MaleAccountOrangePurple.svg' %}>
+                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <img class="nav-image" src={% static 'assets/Logout.svg' %}>
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">
+                        <img class="nav-image" src={% static 'assets/Login.svg' %}>
+                    </a>
+                {% endif %}
 
-    <!--  Messages start here  -->
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
-              {% blocktranslate %} {{ message }} {% endblocktranslate %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-    <!--  Messages end here  -->
+            </div>
+        </div>
 
+    </div>
+    </header>
+    {% block content %}
+    {% endblock content%}
 
-    <!--  Navbar starts here  -->
-    <h3> Navbar: </h3>
-    <a href="{% url 'home' %}">{% translate "Home page" %}</a>
-
-    {% if user.is_authenticated %}
-        <a href="{% url 'profile' %}">{% translate "Profile" %}</a>
-        <a href="{% url 'logout' %}">{% translate "Logout" %}</a>
-      {% else %}
-        <a href="{% url 'login' %}">{% translate "Login" %}</a>
-        <a href="{% url 'register' %}">{% translate "Register" %}</a>
-    {% endif %}
-
-    <!--  Flatpages  -->
-    {% get_flatpages as flatpages %}
-    <ul>
-      {% for page in flatpages %}
-        <li>
-            <a href="/pages{{ page.url }}">
-                {% blocktranslate with flatpage_title=page.title %} {{ flatpage_title }} {% endblocktranslate %}
-            </a>
-        </li>
-      {% endfor %}
-    </ul>
-    <!--  Navbar ends here  -->
-
-
-    {% block content %}{% endblock %}
-
-
-</body>
+    <footer>
+    <div class="footer-main">
+        <div class="footer-main-text" >
+            <a href="{% url 'home' %}" style="color:#F6E37B">Project<br>Shop</a>
+        </div>
+        <div class="footer-container-second">
+            <div class="footer-text-container">
+                <p class="footer-main-text-second">Contact Us</p>
+                <br>
+                <div class="footer-second-text">
+                    <span>LVIV - OFFICE 9 <br>
+                        57 Fedkovycha Street, Lviv 79018 <br>
+                        +380-32-240-9999<br>
+                        Toll free: 0-8006-0-8006
+                    </span>
+                </div>
+            </div>
+            <div class="footer-text-container">
+                <br><br>
+                <div class="footer-second-text" style="font-size: 1rem;">
+                    <span><a href="#" style="color:#F6E37B">Conditions of use</a><br>
+                        <a href="#" style="color:#F6E37B">Privacy policy</a><br>
+                        <a href="#" style="color:#F6E37B">Payment&Delivery info</a><br>
+                        <a href="#" style="color:#F6E37B">Sitemap</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+        </footer>
+    <!--Custom JS-->
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
 </html>
