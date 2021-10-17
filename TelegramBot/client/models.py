@@ -233,16 +233,18 @@ class Product(PaginatedModel):
     categories: List[Category]
     subcategories: List[Subcategory]
     tags: List[Tag]
+    image: List[str]
+    video_link: List[str]
 
     class Config:
         arbitrary_types_allowed = True
 
     @classmethod
-    def view_products(cls, category_id: int, subcategories: list = None, tags: list = None) -> Page:
+    def view_products(cls, category: str, subcategories: list = None, tags: list = None) -> Page:
         """
         Get paginated list of products by some filters. If filters aren't specified, list should be sorted by popularity
         """
-        params = {"category": category_id}
+        params = {"category": category}
         if subcategories:
             params.update({"subcategories": subcategories})
         if tags:
