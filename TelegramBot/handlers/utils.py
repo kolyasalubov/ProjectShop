@@ -33,16 +33,17 @@ class KeyboardBuilder:
                 [InlineKeyboardButton(text=">", callback_data=self.page.next)]
             )
 
-    def create_keyboard(self, columns=1):
+    def create_keyboard(self, text=None, columns=1):
         """
         Method to turn list of required for buttons values into actual inline buttons.
         Arguments:
+            text: text to display on buttons, if None - generated dynamically
             columns: the number of columns in keyboard
         """
         self._keyboard = [
             [
                 InlineKeyboardButton(
-                    text=f"{self.page.results[column + row]}",
+                    text=f"{self.page.results[column + row]}" if not text else text,
                     callback_data=f"{self.data}={self.page.results[column + row].replace(' ', '-')}"
                     if self.data
                     else self.page.results[column + row],

@@ -135,21 +135,39 @@ class ProductCallbacks:
         """
         update.callback_query.delete_message()
 
+        if Subcategory in context.chat_data:
+            subcategories = context.chat_data[Subcategory]
+        else:
+            subcategories = None
+
+        if Tag in context.chat_data:
+            tags = context.chat_data[Tag]
+        else:
+            tags = None
+
         page = Product.view_products(
             category=context.chat_data[Category],
-            subcategories=context.chat_data[Subcategory],
-            tags=context.chat_data[Tag],
+            subcategories=subcategories,
+            tags=tags,
         )
+
+        context.chat_data[Product] = []
+
         for product in page.results:
             keyboard_builder = KeyboardBuilder(
-                Page(results=["description"]), product.name
-            ).create_keyboard()
+                Page(results=[product])
+            ).create_keyboard(text="Description")
             message = context.bot.send_message(
                 chat_id=update.callback_query.message.chat_id,
-                caption=product.name,
-                image=product.image[0],
+                text=product.name,
+                # image=product.image[0],
                 reply_markup=keyboard_builder.keyboard,
             )
+            context.chat_data[Product].append(message)
+
+        page.results = page.results[-1:]
+        keyboard_builder = KeyboardBuilder(page=page).create_keyboard(text="Description")
+        context.chat_data[Product][-1].edit_reply_markup(reply_markup=keyboard_builder.keyboard)
 
 
 def close_products(update: Update, context: CallbackContext):
