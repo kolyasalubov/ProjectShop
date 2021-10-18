@@ -2,6 +2,8 @@ from django.core import validators
 from django.db import models
 from django.template.defaultfilters import truncatewords
 from django.utils.html import format_html
+from django.core import validators
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from UserApp.models import User
@@ -17,12 +19,16 @@ class ProductCategory(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
+    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
 
     class Meta:
         verbose_name_plural = _("Product categories")
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("category-detail", kwargs={"slug": self.slug})
 
 
 class ProductSubcategory(models.Model):
@@ -35,12 +41,16 @@ class ProductSubcategory(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
+    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
 
     class Meta:
         verbose_name_plural = _("Product subcategories")
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("subcategory-detail", kwargs={"slug": self.slug})
 
 
 class Tag(models.Model):
@@ -54,9 +64,13 @@ class Tag(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
+    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("tag-detail", kwargs={"slug": self.slug})
 
 
 class Product(models.Model):
@@ -79,6 +93,7 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag)
 
     name = models.CharField(max_length=100, null=False, blank=False)
+    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
     price = models.DecimalField(
         validators=[validators.MinValueValidator(0)],
         decimal_places=2,
@@ -93,6 +108,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("product-detail", kwargs={"slug": self.slug})
 
     @property
     def short_description(self):
