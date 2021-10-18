@@ -131,3 +131,7 @@ dmypy.json
 # .idea, and macOS buffer files
 .idea/
 .DS_Store
+
+# media files
+ProjectShop/media/
+!*default_pic.svg
