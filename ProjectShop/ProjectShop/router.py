@@ -1,5 +1,4 @@
-from rest_framework import routers
-
+from rest_framework_extensions.routers import ExtendedSimpleRouter
 from ProductApp.views import (
     ProductViewSet,
     ReviewViewSet,
@@ -11,8 +10,9 @@ from ProductApp.views import (
 from Shipping.views import ShippingViewSet
 from UserApp.views import UserViewSet
 from order.views import OrderViewSet, OrderItemsViewSet
+from UserApp.views import UserViewSet, WishListViewSet
 
-router = routers.DefaultRouter()
+router = ExtendedSimpleRouter()
 router.register(r"order", OrderViewSet, basename="order")
 router.register(r"orderitems", OrderItemsViewSet, basename="orderitems")
 router.register(r"product", ProductViewSet, basename="product")
@@ -24,4 +24,5 @@ router.register(
     r"product/(?P<product_id>\d+)/reviews", ReviewViewSet, basename="reviews"
 )
 router.register(r"shipping", ShippingViewSet, basename="shipping")
-router.register(r"user", UserViewSet, basename="user")
+router.register(r"user", UserViewSet, basename="user")\
+    .register(r'wishlist', WishListViewSet, basename='user_wishlist', parents_query_lookups=['id'])

@@ -37,7 +37,7 @@ view_based_urls = [
         PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-
+]
 token_urls = [
     path(
         "token/", TokenObtainPairView.as_view(), name="token_obtain_pair"

@@ -115,9 +115,9 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-    search_fields = ("phone_number",)
-    ordering = ("phone_number",)
-    filter_horizontal = ()
+    search_fields = ('phone_number',)
+    ordering = ('phone_number',)
+    filter_horizontal = ('wishlist',)
 
 
 # registering new django admin...

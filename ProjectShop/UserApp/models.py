@@ -91,6 +91,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(verbose_name=_("is active"), default=True)
     is_bot = models.BooleanField(verbose_name=_("is bot"), default=False)
 
+    wishlist = models.ManyToManyField('ProductApp.Product', related_name='wishlist', blank=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = "phone_number"

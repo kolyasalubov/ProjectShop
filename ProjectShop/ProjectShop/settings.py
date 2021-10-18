@@ -50,12 +50,11 @@ INSTALLED_APPS = [
     "crispy_forms",
     "drf_yasg",
     # local apps
-    "UserApp",
-    "Shipping",
-    "order",
-    "ProductApp",
-    "WishList",
-]
+    'UserApp',
+    'Shipping',
+    'order',
+    'ProductApp',
+    ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
