@@ -1,8 +1,6 @@
 from telegram import KeyboardButton
 from telegram import ReplyKeyboardMarkup
 
-from client.client import RestClient, bot_client
-
 
 BUTTON_REGISTER = "Register"
 BUTTON_SHOW_PRODUCTS = "Go to products"
@@ -14,6 +12,7 @@ def get_base_reply_keyboard():
     """
     Register keyboard buttons into the menu
     """
+
     keyboard = [
         [
             KeyboardButton(BUTTON_REGISTER),
