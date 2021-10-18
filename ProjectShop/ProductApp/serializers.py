@@ -48,7 +48,7 @@ class ProductImageSerializer(ModelSerializer):
 
     class Meta:
         model = ProductImage
-        fields = "image"
+        fields = ["image"]
 
 
 class ProductVideoSerializer(ModelSerializer):
@@ -56,7 +56,7 @@ class ProductVideoSerializer(ModelSerializer):
 
     class Meta:
         model = ProductVideo
-        fields = "video_link"
+        fields = ["video_link"]
 
 
 class ProductSerializer(ModelSerializer):
@@ -65,8 +65,8 @@ class ProductSerializer(ModelSerializer):
     categories = ProductCategorySerializer(many=True, read_only=True)
     subcategories = ProductSubcategorySerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
-    image = ProductImageSerializer(many=True)
-    video_link = ProductVideoSerializer(many=True)
+    images = ProductImageSerializer(many=True)
+    video_links = ProductVideoSerializer(many=True)
 
     class Meta:
         model = Product
@@ -79,8 +79,8 @@ class ProductSerializer(ModelSerializer):
             "categories",
             "subcategories",
             "tags",
-            "image",
-            "video_link",
+            "images",
+            "video_links",
         ]
 
 
