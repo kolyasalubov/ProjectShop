@@ -21,7 +21,9 @@ from handlers.product_manager import (
     CATEGORY,
     SEARCH,
     SUBCATEGORIES,
-    TAGS, close_products,
+    TAGS,
+    close_products,
+    PRODUCTS,
 )
 from handlers.user_menu import get_base_reply_keyboard
 
@@ -62,7 +64,7 @@ def setup_dispatcher(dp):
                         pattern=r"search=Apply-filters",
                     ),
                     CallbackQueryHandler(
-                        ProductCallbacks.product_list, pattern=r"search=Most-popular"
+                        ProductCallbacks.first_page, pattern=r"search=Most-popular"
                     ),
                 ],
                 SUBCATEGORIES: [
@@ -87,10 +89,15 @@ def setup_dispatcher(dp):
                         pattern=r"^http://.+/tags/.+$",
                     ),
                     CallbackQueryHandler(
-                        ProductCallbacks.product_list,
+                        ProductCallbacks.first_page,
                         pass_chat_data=True,
                         pattern=r"finish-Tag",
                     ),
+                ],
+                PRODUCTS: [
+                    CallbackQueryHandler(
+                        ProductCallbacks.turn_page, pattern=r"^http://.+/products/.+$"
+                    )
                 ],
             },
             fallbacks=[CommandHandler("cancel", close_products)],

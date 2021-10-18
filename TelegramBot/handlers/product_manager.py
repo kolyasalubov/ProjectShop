@@ -129,45 +129,74 @@ class TagCallbacks(FilterCallbacks):
 
 class ProductCallbacks:
     @staticmethod
-    def product_list(update: Update, context: CallbackContext):
+    def _get_page(chat_data):
+        """
+        Function to get page of Products.
+        If cached page exists, it will not make another request
+        """
+
+        if "Product-list-cache" in chat_data:
+            return chat_data["Product-list-cache"]
+        else:
+            if Subcategory in chat_data:
+                subcategories = chat_data[Subcategory]
+            else:
+                subcategories = None
+
+            if Tag in chat_data:
+                tags = chat_data[Tag]
+            else:
+                tags = None
+
+            return Product.view_products(
+                category=chat_data[Category],
+                subcategories=subcategories,
+                tags=tags,
+            )
+
+    @staticmethod
+    def _product_list(update: Update, context: CallbackContext):
         """
         Function for viewing product list. Visualization is different from previous examples
         """
-        update.callback_query.delete_message()
 
-        if Subcategory in context.chat_data:
-            subcategories = context.chat_data[Subcategory]
-        else:
-            subcategories = None
-
-        if Tag in context.chat_data:
-            tags = context.chat_data[Tag]
-        else:
-            tags = None
-
-        page = Product.view_products(
-            category=context.chat_data[Category],
-            subcategories=subcategories,
-            tags=tags,
-        )
-
+        page = ProductCallbacks._get_page(context.chat_data)
         context.chat_data[Product] = []
 
         for product in page.results:
-            keyboard_builder = KeyboardBuilder(
-                Page(results=[product])
-            ).create_keyboard(text="Description")
+            keyboard_builder = KeyboardBuilder(Page(results=[product])).create_keyboard(
+                text="Description"
+            )
             message = context.bot.send_message(
                 chat_id=update.callback_query.message.chat_id,
-                text=product.name,
-                # image=product.image[0],
+                caption=product.name,
+                image=product.images[0],
                 reply_markup=keyboard_builder.keyboard,
             )
             context.chat_data[Product].append(message)
 
+        #       We need to add page changing buttons to the end of the list
         page.results = page.results[-1:]
-        keyboard_builder = KeyboardBuilder(page=page).create_keyboard(text="Description")
-        context.chat_data[Product][-1].edit_reply_markup(reply_markup=keyboard_builder.keyboard)
+        keyboard_builder = KeyboardBuilder(page=page).create_keyboard(
+            text="Description"
+        )
+        context.chat_data[Product][-1].edit_reply_markup(
+            reply_markup=keyboard_builder.keyboard
+        )
+
+    @staticmethod
+    def first_page(update: Update, context: CallbackContext):
+        update.callback_query.delete_message()
+        ProductCallbacks._product_list(update, context)
+        return PRODUCTS
+
+    @staticmethod
+    def turn_page(update: Update, context: CallbackContext):
+        context.chat_data["Product-list-cache"] = Product.turn_page(
+            update.callback_query.data
+        )
+        ProductCallbacks._product_list(update, context)
+        return PRODUCTS
 
 
 def close_products(update: Update, context: CallbackContext):
@@ -175,4 +204,8 @@ def close_products(update: Update, context: CallbackContext):
     del context.chat_data[Category]
     del context.chat_data[Subcategory]
     del context.chat_data[Tag]
+    for message in context.chat_data[Product]:
+        message.delete_message()
+    del context.chat_data[Product]
+    del context.chat_data["Product-list-cache"]
     return ConversationHandler.END
