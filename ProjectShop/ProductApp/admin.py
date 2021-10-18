@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 from ProductApp.models import (
     Product,
@@ -35,11 +36,24 @@ class MediaInline(admin.TabularInline):
     extra = 1
 
 
-class ProductAdmin(admin.ModelAdmin):
+class CustomModelAdmin(admin.ModelAdmin):
+
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
+        object_count = self.model.objects.filter(slug__startswith=obj.slug).count() + 1
+        if object_count != 1:
+            obj.slug = f'{obj.slug}-{object_count}'
+        super().save_model(request, obj, form, change)
+
+
+class ProductAdmin(CustomModelAdmin):
     inlines = (MediaInline,)
     fields = (
         "name",
-        ("price", "stock_quantity"),
+        "slug",
+        "price",
+        "stock_quantity",
         "description",
         "categories",
         "subcategories",
@@ -80,17 +94,17 @@ class ReviewAdmin(admin.ModelAdmin):
             form.base_fields[field].disabled = True
         return form
 
-
-class ProductCategoryAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
-
-
-class ProductSubcategoryAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
+      
+class ProductCategoryAdmin(CustomModelAdmin):
+    search_fields = ('name',)
 
 
-class TagAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
+class ProductSubcategoryAdmin(CustomModelAdmin):
+    search_fields = ('name',)
+
+
+class TagAdmin(CustomModelAdmin):
+    search_fields = ('name',)
 
 
 admin.site.register(Product, ProductAdmin)
