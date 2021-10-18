@@ -1,5 +1,4 @@
 from rest_framework_extensions.routers import ExtendedSimpleRouter
-
 from ProductApp.views import (
     ProductViewSet,
     ReviewViewSet,
@@ -13,7 +12,7 @@ from UserApp.views import UserViewSet
 from order.views import OrderViewSet, OrderItemsViewSet
 from UserApp.views import UserViewSet, WishListViewSet
 
-router = routers.DefaultRouter()
+router = ExtendedSimpleRouter()
 router.register(r"order", OrderViewSet, basename="order")
 router.register(r"orderitems", OrderItemsViewSet, basename="orderitems")
 router.register(r"product", ProductViewSet, basename="product")

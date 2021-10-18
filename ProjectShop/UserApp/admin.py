@@ -78,9 +78,6 @@ class UserAdmin(BaseUserAdmin):
     )
     list_filter = ("is_superuser", "is_active", "role")
     fieldsets = (
-        (None, {'fields': ('phone_number', 'wishlist')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'birth_date', 'email', 'role', 'profile_pic')}),
-        ('Permissions', {'fields': ('is_active', 'is_bot')}),
         (None, {"fields": ("phone_number",)}),
         (
             "Personal info",
