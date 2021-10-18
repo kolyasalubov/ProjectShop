@@ -7,35 +7,42 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ProductApp', '0002_initial'),
+        ("ProductApp", "0002_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='productcategory',
-            options={'verbose_name_plural': 'Product categories'},
+            name="productcategory",
+            options={"verbose_name_plural": "Product categories"},
         ),
         migrations.AlterModelOptions(
-            name='productmedia',
-            options={'verbose_name_plural': 'Product media'},
+            name="productmedia",
+            options={"verbose_name_plural": "Product media"},
         ),
         migrations.AlterModelOptions(
-            name='productsubcategory',
-            options={'verbose_name_plural': 'Product subcategories'},
+            name="productsubcategory",
+            options={"verbose_name_plural": "Product subcategories"},
         ),
         migrations.AddField(
-            model_name='review',
-            name='is_active',
+            model_name="review",
+            name="is_active",
             field=models.BooleanField(default=True),
         ),
         migrations.AlterField(
-            model_name='productmedia',
-            name='image',
-            field=models.ImageField(default='default_image/default_image.png', upload_to='product_media_image'),
+            model_name="productmedia",
+            name="image",
+            field=models.ImageField(
+                default="default_image/default_image.png",
+                upload_to="product_media_image",
+            ),
         ),
         migrations.AlterField(
-            model_name='productmedia',
-            name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='media', to='ProductApp.product'),
+            model_name="productmedia",
+            name="product",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="media",
+                to="ProductApp.product",
+            ),
         ),
     ]

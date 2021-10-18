@@ -7,10 +7,10 @@ Methods in models are facades for all api requests required by telegram bot
 
 import datetime
 from enum import Enum
+from typing import List, Tuple
 
 from phonenumbers import PhoneNumber
 from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, AnyUrl
-from typing import List, Tuple
 
 from client.status_check import bot_client
 
@@ -64,6 +64,7 @@ class ShippingAddress(PaginatedModel):
     """
     Model to work with shipping addresses.
     """
+
     id: PositiveInt = None
     user_id: PositiveInt
     postal_code: constr(max_length=20)
@@ -98,8 +99,10 @@ class ShippingAddress(PaginatedModel):
 
 class Wishlist(PaginatedModel):
     """
-    Model for working with users' wishlist. Wishlist's record identification is done using product id and user id
+    Model for working with users' wishlist. Wishlist's record
+    identification is done using product id and user id
     """
+
     user_id: PositiveInt
     product_id: PositiveInt
     product_name: constr(max_length=100)
@@ -109,6 +112,7 @@ class Wishlist(PaginatedModel):
         """
         Retrieve wishlist of certain user specified by user id
         """
+
         response = bot_client.send_request("GET", f"user/{user_id}/wishlist")
         return cls.page(response.json())
 
@@ -130,9 +134,12 @@ class Wishlist(PaginatedModel):
 class User(BaseModel):
     """
     Model for working with user.
-    self.phone_number field uses PhoneNumber class from phonenumbers library, everything else - Pydantic fields
-    More details on phonenmbers: https://github.com/stefanfoulis/django-phonenumber-field
+    self.phone_number field uses PhoneNumber class from phonenumbers library,
+    everything else - Pydantic fields
+    More details on phonenmbers:
+    https://github.com/stefanfoulis/django-phonenumber-field
     """
+
     id: PositiveInt = None
     first_name: constr(max_length=40)
     last_name: constr(max_length=40)
@@ -142,14 +149,17 @@ class User(BaseModel):
 
     class Config:
         """
-        Arbitrary_types_allowed allows us to use non-Pydantic classes without modification for validation
+        Arbitrary_types_allowed allows us to use non-Pydantic classes
+        without modification for validation
         """
+
         arbitrary_types_allowed = True
 
     @staticmethod
     def is_registered(phone_number: PhoneNumber) -> int:
         """
-        Check if our user is registered by his phone_number. If he is, return his id for later use
+        Check if our user is registered by his phone_number.
+        If he is, return his id for later use
         """
         response = bot_client.send_request("GET", f"/user", params={"phone-number", phone_number})
         return response.json()['id']
@@ -158,16 +168,16 @@ class User(BaseModel):
         """
         Send user to save in database. On success, return his dedicated id
         """
+
         response = bot_client.send_request("POST", "/user", data=self.__dict__)
         return response.json()["id"]
 
     @staticmethod
-    def update(user_id: int, data_to_change: dict) -> bool:
+    def update(user_id: int, data_to_change: dict):
         """
         Change user_data via dict. Return true on success
         """
-        response = bot_client.send_request("PATCH", f"/user", params={"userId", user_id}, data=data_to_change)
-        return response.status_code == 200
+        bot_client.send_request("PATCH", f"/user", params={"userId", user_id}, data=data_to_change)
 
 
 class Category(PaginatedModel):
@@ -190,10 +200,12 @@ class Tag(PaginatedModel):
     _path = "/tags"
     _name = "name"
 
+
 class Review(PaginatedModel):
     """
-    Model for reviews. Replies (likes and dislikes) are embedded in model for convenience
+    Model for reviews. Replies (likes or dislikes) are embedded in model for convenience
     """
+
     id: PositiveInt
     user_name: constr(max_length=40)
     rating: conint(ge=1, le=5)
@@ -206,6 +218,7 @@ class Review(PaginatedModel):
         """
         Here we need to dynamically set our path, so we don`t use base get method
         """
+
         response = bot_client.send_request("GET", f"/products/{product_id}/reviews")
         return cls.page(response.json())
 
@@ -217,8 +230,11 @@ class Review(PaginatedModel):
 
     def like(self, user_id, like=True):
         """
-        Post a reply for review. If already posted: If reply is the same, supposed to delete it, if another - change it
+        Post a reply for review.
+        It`s already posted:
+        If reply is the same, supposed to delete it, if another - change it
         """
+
         data = {"userId": user_id, "reply": like}
         response = bot_client.send_request("PUT", f"/products/reviews/{self.id}/replies", data=data)
         return response.json()
@@ -233,8 +249,8 @@ class Product(PaginatedModel):
     categories: List[Category]
     subcategories: List[Subcategory]
     tags: List[Tag]
-    image: List[str]
-    video_link: List[str]
+    images: List[str]
+    video_links: List[str]
 
     class Config:
         arbitrary_types_allowed = True
@@ -242,7 +258,8 @@ class Product(PaginatedModel):
     @classmethod
     def view_products(cls, category: str, subcategories: list = None, tags: list = None) -> Page:
         """
-        Get paginated list of products by some filters. If filters aren't specified, list should be sorted by popularity
+        Get paginated list of products by some filters.
+        If filters aren't specified, list should be sorted by popularity
         """
         params = {"category": category}
         if subcategories:
@@ -254,7 +271,6 @@ class Product(PaginatedModel):
 
 
 class Order(BaseModel):
-
     class Payment(str, Enum):
         card = "Card"
         cash = "Cash"
@@ -272,11 +288,12 @@ class Order(BaseModel):
         """
         For order in progress, add new product
         """
+
         self.products.append((product_id, quantity))
 
     def submit(self):
         """
         Post order to api
         """
-        response = bot_client.send_request("POST", "/orders", data=self.__dict__)
-        return response.status_code == 201
+
+        bot_client.send_request("POST", "/orders", data=self.__dict__)

@@ -3,6 +3,7 @@ jurigged==0.3.4
 phonenumbers==8.12.31
 pydantic==1.8.2
 PyJWT==2.1.0
+python-telegram-bot==13.7
 pytz==2021.1
 requests==2.26.0
 typing==3.7.4.3

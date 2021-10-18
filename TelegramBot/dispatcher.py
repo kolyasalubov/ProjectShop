@@ -11,6 +11,7 @@ from telegram.ext import (
 )
 
 from TOKEN import TELEGRAM_TOKEN
+from handlers.user_menu import get_base_reply_keyboard
 from client.models import Category, Subcategory, Tag
 from handlers.product_manager import (
     CategoryCallbacks,
@@ -27,6 +28,7 @@ from handlers.user_menu import get_base_reply_keyboard
 
 def start_command(update: Update, _: CallbackContext):
     """This is start command for user"""
+
     update.message.reply_text(
         text="This is your shopping bot",
         reply_markup=get_base_reply_keyboard(),
@@ -35,6 +37,7 @@ def start_command(update: Update, _: CallbackContext):
 
 def setup_dispatcher(dp):
     """Setupping dispatcher and adding all handlers"""
+
     dp.add_handler(CommandHandler("start", start_command))
     dp.add_handler(
         ConversationHandler(
@@ -98,6 +101,7 @@ def setup_dispatcher(dp):
 
 def run_pooling():
     """Run bot in pooling mode"""
+
     updater = Updater(TELEGRAM_TOKEN, use_context=True, arbitrary_callback_data=True)
 
     dp = updater.dispatcher
