@@ -13,8 +13,8 @@ class ShippingFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory)
 
-    postal_code = factory.Faker('random_int', min=79007, max=79068)    # generate one of all postal codes of the Lviv
-    country = factory.Faker('UA')
-    region = factory.Faker('Lvivska oblast')
-    city = factory.Faker('Lviv')
-    post_office = factory.Faker('random_int', min=1, max=89)
+    postal_code = factory.Faker("random_int", min=79007, max=79068)    # generate one of all postal codes of the Lviv
+    country = "UA"
+    region = "Lvivska oblast"
+    city = "Lviv"
+    post_office = factory.Faker("random_int", min=1, max=89)

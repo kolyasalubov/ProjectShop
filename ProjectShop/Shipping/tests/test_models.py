@@ -3,6 +3,7 @@ from django.db.utils import IntegrityError
 
 from Shipping.tests.factories import ShippingFactory
 
+
 class ShippingTestCase(TestCase):
     """Implement some tests for Shipping model"""
 
