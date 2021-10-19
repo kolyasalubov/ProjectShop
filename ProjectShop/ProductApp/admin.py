@@ -111,8 +111,8 @@ class ReviewAdmin(admin.ModelAdmin):
         return form
 
 
-class ProductCategoryAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
+class ProductCategoryAdmin(CustomModelAdmin):
+    search_fields = ('name',)
 
 
 class ProductSubcategoryAdmin(admin.ModelAdmin):

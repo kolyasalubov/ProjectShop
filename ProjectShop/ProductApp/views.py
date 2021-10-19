@@ -42,6 +42,7 @@ class CategoriesView(generic.ListView):
     template_name = 'ProductApp/categories.html'
     paginate_by = 12
 
+
 class ProductViewSet(ReadOnlyModelViewSet):
     """This is viewset for Product model"""
 
