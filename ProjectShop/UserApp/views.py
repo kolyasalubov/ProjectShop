@@ -63,11 +63,6 @@ class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     template_name = "UserApp/password_reset_complete.html"
 
 
-class CustomUpdateView(generic.edit.SingleObjectTemplateResponseMixin,
-                       generic.edit.ModelFormMixin,
-                       generic.edit.ProcessFormView):
-
-
 class CustomUpdateView(
     generic.edit.SingleObjectTemplateResponseMixin,
     generic.edit.ModelFormMixin,
