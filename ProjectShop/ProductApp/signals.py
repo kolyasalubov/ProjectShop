@@ -16,6 +16,7 @@ def delete_image_when_row_deleted_from_db(sender, instance, **kwargs) -> None:
     :param kwargs: additional parameters
     :return: None
     """
+
     for field in sender._meta.concrete_fields:
         if isinstance(field, models.ImageField):
             instance_file_field = getattr(instance, field.name)

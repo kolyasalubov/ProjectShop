@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 from ProductApp.models import (
     Product,
@@ -43,17 +44,42 @@ class VideoInline(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
+    
+    fields = (
+        "name",
+        ("price", "stock_quantity"),
+    list_display = ("name", "price", "stock_quantity", "short_description")
+    search_fields = ("name", "description")
+    filter_horizontal = ("categories", "subcategories", "tags")
+
+
+class CustomModelAdmin(admin.ModelAdmin):
+
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = slugify(obj.name)
+        object_count = self.model.objects.filter(slug__startswith=obj.slug).count() + 1
+        if object_count != 1:
+            obj.slug = f'{obj.slug}-{object_count}'
+        super().save_model(request, obj, form, change)
+
+
+class ProductAdmin(CustomModelAdmin):
     inlines = (
         ImageInline,
         VideoInline,
     )
     fields = (
         "name",
-        ("price", "stock_quantity"),
+        "slug",
+        "price",
+        "stock_quantity",
         "description",
         "categories",
         "subcategories",
         "tags",
+        "images",
+        "videos",
     )
     list_display = ("name", "price", "stock_quantity", "short_description")
     list_filter = (IsAvailableProductFilter,)

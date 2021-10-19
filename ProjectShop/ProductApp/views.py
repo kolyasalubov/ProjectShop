@@ -1,4 +1,7 @@
+from django.views import generic
+
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from ProductApp.models import (
     Product,
@@ -19,6 +22,25 @@ from ProductApp.serializers import (
     TagSerializer,
 )
 
+
+class HomePageView(generic.ListView):
+    context_object_name = 'products'
+    template_name = 'ProductApp/homepage.html'
+    queryset = Product.objects.all()
+    paginate_by = 12
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = ProductCategory.objects.order_by('name')[:20]
+        context['categories'] = categories
+        return context
+
+
+class CategoriesView(generic.ListView):
+    model = ProductCategory
+    context_object_name = 'categories'
+    template_name = 'ProductApp/categories.html'
+    paginate_by = 12
 
 class ProductViewSet(ReadOnlyModelViewSet):
     """This is viewset for Product model"""
@@ -62,18 +84,10 @@ class ProductVideoViewSet(ReadOnlyModelViewSet):
     queryset = ProductVideo.objects.all()
 
 
-class ReviewViewSet(ModelViewSet):
+class ReviewViewSet(NestedViewSetMixin, ModelViewSet):
     """
     ViewSet to view and write reviews for specified in path product
     """
 
     serializer_class = ReviewSerializer
-
-    def get_queryset(self):
-        product_id = self.kwargs.get("product_id")
-        queryset_list = Review.objects.filter(product=product_id)
-        return queryset_list
-
-    def perform_create(self, serializer):
-        product_id = self.kwargs.get("product_id")
-        serializer.save(product=Product.objects.get(pk=product_id))
+    queryset = Review.objects.all()
