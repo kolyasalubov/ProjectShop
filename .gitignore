@@ -103,6 +103,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.django
 .venv
 env/
 venv/
@@ -131,6 +132,8 @@ dmypy.json
 # .idea, and macOS buffer files
 .idea/
 .DS_Store
+.vscode/
+.vscode/settings.json
 
 # sonarqube files
 .scannerwork/
