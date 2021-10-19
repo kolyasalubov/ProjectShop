@@ -1,5 +1,6 @@
 from braces.views import AnonymousRequiredMixin
 from django.contrib.auth import views as auth_views, get_user_model
+from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -62,8 +63,9 @@ class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     template_name = "UserApp/password_reset_complete.html"
 
 
-class TemporalHomePageView(TemplateView):
-    template_name = "UserApp/home.html"
+class CustomUpdateView(generic.edit.SingleObjectTemplateResponseMixin,
+                       generic.edit.ModelFormMixin,
+                       generic.edit.ProcessFormView):
 
 
 class CustomUpdateView(
