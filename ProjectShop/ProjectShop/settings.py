@@ -135,8 +135,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIR = [str(BASE_DIR) + "/static"]
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    '/var/www/static/',
+    str(BASE_DIR) + '/static'
 ]
 
 # media files will be stored in 'media' folder
