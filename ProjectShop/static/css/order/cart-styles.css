@@ -1,0 +1,108 @@
+body {
+    background: white;
+    height: 100%;
+}
+
+.order{
+    margin-left: 15%;
+    margin-top: 15%;
+    width: 1120px;
+}
+
+.order-item{
+    width: 100%;
+    height: 100px;
+    margin-top: 2%;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 10px gray;
+    border-radius: 50px;
+    display: flex;
+}
+.order-item-image-div{
+    margin-left: 2%;
+}
+.order-item-image{
+    overflow: hidden;
+    height: 100px;
+    width: 100px;
+    border-radius: 40%;
+
+}
+.order-item-info{
+    margin-left: 3%;
+}
+
+.order-item-info-name{
+    position: center;
+    margin-top: 5%;
+    font-style: normal;
+    font-size: 32px;
+
+    color: #FE7332;
+}
+.order-item-info-price{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 28px;
+
+    color: #5D52C1;
+}
+.order-item-count{
+    position: fixed;
+    margin-left: 800px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 28px;
+    vertical-align: center;
+    margin-top: 3%;
+
+    color: #5D52C1;
+}
+.order-item-trash{
+    position: fixed;
+    margin-left: 900px;
+    margin-top: 2%;
+
+}
+.buttons{
+    border-radius: 50px;
+    display: flex;
+    width: 100%;
+    margin-top: 10%;
+    justify-content: space-between;
+
+}
+.continue-button{
+    width: 200px;
+    height: 50px;
+    border-radius: 25px;
+    align-items: center;
+    background-color: #F0B825;
+}
+.book-button{
+    width: 200px;
+    height: 50px;
+    border-radius: 25px;
+    align-items: center;
+    margin-left: 45%;
+    background-color: #F0B825;
+}
+.order-button{
+    width: 200px;
+    height: 50px;
+    border-radius: 25px;
+    align-items: center;
+    margin-left: 5%;
+    background-color: #F0B825;
+}
+.button-link{
+    width: 100px;
+    height: 30px;
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 38px;
+    margin-top: 5px;
+    margin-left: 30px;
+}

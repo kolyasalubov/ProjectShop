@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from django.views import generic
 
 from ProductApp.models import (
     Product,
@@ -68,3 +69,9 @@ class ReviewViewSet(ModelViewSet):
     def perform_create(self, serializer):
         product_id = self.kwargs.get("product_id")
         serializer.save(product=Product.objects.get(pk=product_id))
+
+
+class ProductsView(generic.ListView):
+    context_object_name = 'products'
+    template_name = 'products/product-list.html'
+    queryset = Product.objects.all()
