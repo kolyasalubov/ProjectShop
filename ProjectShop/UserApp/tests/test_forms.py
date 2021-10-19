@@ -17,6 +17,7 @@ class TestForms(TestCase):
         })
 
         self.assertTrue(form.is_valid())
+        print(form.errors)
         
     def test_RegisterForm_invalid_data(self):
         form = RegisterForm(data={

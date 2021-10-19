@@ -91,6 +91,11 @@ class Product(models.Model):
     def short_description(self):
         return truncatewords(self.description, 20)
 
+    @classmethod
+    def get_product_by_id(cls, product_id=1):
+        return cls.objects.get(id=product_id)
+
+  
 
 class Review(models.Model):
     """
@@ -114,6 +119,11 @@ class Review(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_review_by_product(cls, product):
+        objects = cls.objects.filter(product=product)
+        return objects
 
     @property
     def name(self):
@@ -189,6 +199,24 @@ class ProductMedia(models.Model):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def get_media_by_product(cls, product):
+        objects = cls.objects.filter(product=product, media_type = 0)
+        return objects
+
+    @classmethod
+    def get_media_video_by_product(cls, product):
+        objects = cls.objects.filter(product=product, media_type = 1)
+        return objects
+
+    @classmethod
+    def get_all_products(cls):
+        objects = cls.objects.filter(media_type = 0)
+        return objects
+
     @property
     def name(self):
         return f'{self.product} {self.get_media_type_display()}{self.id}'
+
+   
+
