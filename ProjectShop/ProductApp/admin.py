@@ -68,8 +68,6 @@ class ProductAdmin(CustomModelAdmin):
         "categories",
         "subcategories",
         "tags",
-        "images",
-        "videos",
     )
     list_display = ("name", "price", "stock_quantity", "short_description")
     list_filter = (IsAvailableProductFilter,)
