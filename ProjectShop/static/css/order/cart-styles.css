@@ -5,7 +5,8 @@ body {
 
 .order{
     margin-left: 15%;
-    margin-top: 15%;
+    margin-top: 10%;
+    padding-bottom: 7%;
     width: 1120px;
 }
 
@@ -48,18 +49,20 @@ body {
     color: #5D52C1;
 }
 .order-item-count{
-    position: fixed;
+    position: absolute;
     margin-left: 800px;
     font-style: normal;
     font-weight: normal;
     font-size: 28px;
     vertical-align: center;
     margin-top: 3%;
+    cursor: pointer;
 
     color: #5D52C1;
 }
 .order-item-trash{
-    position: fixed;
+    cursor: pointer;
+    position: absolute;
     margin-left: 900px;
     margin-top: 2%;
 

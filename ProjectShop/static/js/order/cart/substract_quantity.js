@@ -20,7 +20,8 @@ var lowerizers = document.getElementsByClassName('lowerize');
              if (json.qty <= 0){
                  $("#" + productId).remove();
              } else{
-              document.getElementById("order-item-count-num" + productId).innerHTML = json.qty
+              document.getElementById("order-item-count-num" + productId).innerHTML = json.qty;
+              document.getElementById("price" + productId).innerHTML = json.price + "$";
              }
          },
          error: function (xhr, errmsg, err) {

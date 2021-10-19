@@ -13,6 +13,7 @@
         <div class="order">
 
             <!---Order row--->
+            {% if objects %}
             {% for object in objects %}
             <div class="order-item" id="{{ object.product.id }}">
 
@@ -27,7 +28,7 @@
                     <div class="order-item-info-name">
                             {{ object.product.name }}
                     </div>
-                    <div class="order-item-info-price">
+                    <div class="order-item-info-price" id="price{{ object.product.id }}">
                             {{ object.price }}$
                     </div>
                 </div>
@@ -58,6 +59,17 @@
                 </div>
             </div>
             {% endfor %}
+            {% else %}
+                <h1>You have no products in your cart
+                </h1>
+
+                <h1>
+                    Add some please
+                </h1><h1>
+                    And visit this page again :)
+                </h1>
+
+            {% endif %}
             <div class="buttons">
                 <div class="continue-button">
                     <div class="button-link">

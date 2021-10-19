@@ -47,8 +47,9 @@ class CartAddView(View):
             product_id = int(request.POST.get('productId'))
             product = get_object_or_404(Product, id=product_id)
 
-            qty = cart.add(product=product)
-            response = JsonResponse({'qty': str(qty)})
+            qty, price = cart.add(product=product)
+            response = JsonResponse({'qty': str(qty),
+                                     'price': str(price)})
 
             return response
 
@@ -62,8 +63,10 @@ class CartAddView(View):
 
         elif request.POST.get('action') == 'substract':
             product_id = request.POST.get('productId')
-            qty = cart.substract(product_id)
+            qty, price = cart.substract(product_id)
 
-            response = JsonResponse({'qty': str(qty)})
+            response = JsonResponse({'qty': str(qty),
+                                     'price': str(price),
+                                     })
 
             return response

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
-
+    {% block header %}{% endblock header %}
   </head>
   <body>
   <header id="header">
@@ -26,7 +26,7 @@
                 {% endif %}
                 <div class="burger-profile_items">
                     <a href="{% url 'profile' %}" class="item-link">Profile</a>
-                    <a href="#" class="item-link">Cart</a>
+                    <a href="{% url 'order:cart' %}" class="item-link">Cart</a>
                     <a href="#" class="item-link">Order history</a>
                     <a href="#" class="item-link">Filter history</a>
                     <a href="#" class="item-link">My reviews</a>
@@ -50,7 +50,7 @@
                 </form>
             </div>
             <div class="nav-icons">
-                <a href="" class="nav-link">
+                <a href="{% url 'order:cart' %}" class="nav-link">
                     <img class="nav-image" src={% static 'assets/EmptyCart.svg' %}>
                 </a>
                 <a href="{% url 'profile' %}" class="nav-link">
