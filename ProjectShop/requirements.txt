@@ -1,4 +1,5 @@
 asgiref==3.4.1
+black==21.9b0
 certifi==2021.5.30
 charset-normalizer==2.0.5
 Django==3.2.6
@@ -9,12 +10,13 @@ django-phonenumber-field==5.2.0
 djangorestframework==3.12.4
 djangorestframework-simplejwt==4.8.0
 factory-boy==3.2.0
-Faker==8.13.2
 drf-yasg==1.20.0
 idna==3.2
-psycopg2-binary==2.8.6
+flake8==4.0.1
 phonenumbers==8.12.31
 Pillow==8.3.2
+pre-commit==2.15.0
+psycopg2-binary==2.8.6
 python-dotenv==0.19.1
 PyJWT==2.1.0
 pytz==2021.1
@@ -22,4 +24,3 @@ sqlparse==0.4.1
 typing==3.7.4.3
 urllib3==1.26.6
 drf_extensions==0.7.1
-

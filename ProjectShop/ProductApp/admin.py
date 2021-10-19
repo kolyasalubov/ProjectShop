@@ -94,7 +94,7 @@ class ReviewAdmin(admin.ModelAdmin):
             form.base_fields[field].disabled = True
         return form
 
-      
+
 class ProductCategoryAdmin(CustomModelAdmin):
     search_fields = ('name',)
 
