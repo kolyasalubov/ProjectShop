@@ -3,9 +3,6 @@ from django.views import generic
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
-from ProductApp.models import Review, Product, ProductCategory
-from ProductApp.serializers import ReviewSerializer
-
 from ProductApp.models import (
     Product,
     ProductCategory,
@@ -42,6 +39,7 @@ class CategoriesView(generic.ListView):
     context_object_name = 'categories'
     template_name = 'ProductApp/categories.html'
     paginate_by = 12
+
 
 class ProductViewSet(ReadOnlyModelViewSet):
     """This is viewset for Product model"""

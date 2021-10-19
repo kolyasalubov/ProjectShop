@@ -8,7 +8,7 @@ from ProductApp.tests.factories import (
     ProductSubcategoryFactory,
     TagFactory,
     ProductMediaFactory,
-    ReviewFactory
+    ReviewFactory,
 )
 
 
@@ -46,8 +46,7 @@ class ProductTestCase(TestCase):
     def test_short_description(self):
         product = self.product
         self.assertEqual(
-            truncatewords(product.description, 20),
-            product.short_description
+            truncatewords(product.description, 20), product.short_description
         )
 
 
@@ -66,12 +65,12 @@ class ProductCategoryTestCase(TestCase):
         self.assertEqual(category.name, category.__str__())
 
     def test_create_with_no_name(self):
-        category = ProductCategoryFactory(name='')
+        category = ProductCategoryFactory(name="")
         self.assertIsNotNone(category)
-        self.assertEqual(category.name, '')
-        category.name = 'cat1'
+        self.assertEqual(category.name, "")
+        category.name = "cat1"
         category.save()
-        self.assertNotEqual(category.name, '')
+        self.assertNotEqual(category.name, "")
 
     def test_create_with_None_as_name(self):
         with self.assertRaises(IntegrityError):
@@ -93,12 +92,12 @@ class ProductSubcategoryTestCase(TestCase):
         self.assertEqual(subcategory.name, subcategory.__str__())
 
     def test_create_with_no_name(self):
-        subcategory = ProductSubcategoryFactory(name='')
+        subcategory = ProductSubcategoryFactory(name="")
         self.assertIsNotNone(subcategory)
-        self.assertEqual(subcategory.name, '')
-        subcategory.name = 'subcat1'
+        self.assertEqual(subcategory.name, "")
+        subcategory.name = "subcat1"
         subcategory.save()
-        self.assertNotEqual(subcategory.name, '')
+        self.assertNotEqual(subcategory.name, "")
 
     def test_create_with_None_as_name(self):
         with self.assertRaises(IntegrityError):
@@ -120,12 +119,12 @@ class TagTestCase(TestCase):
         self.assertEqual(tag.name, tag.__str__())
 
     def test_create_with_no_name(self):
-        tag = TagFactory(name='')
+        tag = TagFactory(name="")
         self.assertIsNotNone(tag)
-        self.assertEqual(tag.name, '')
-        tag.name = 'tag1'
+        self.assertEqual(tag.name, "")
+        tag.name = "tag1"
         tag.save()
-        self.assertNotEqual(tag.name, '')
+        self.assertNotEqual(tag.name, "")
 
     def test_create_with_None_as_name(self):
         with self.assertRaises(IntegrityError):
@@ -152,8 +151,8 @@ class ProductMediaTestCase(TestCase):
 
     def test_url(self):
         media = self.media
-        self.assertIn('http', media.video_link)
-        self.assertIn('://', media.video_link)
+        self.assertIn("http", media.video_link)
+        self.assertIn("://", media.video_link)
 
 
 class ReviewTestCase(TestCase):
@@ -173,7 +172,7 @@ class ReviewTestCase(TestCase):
     def test_rating(self):
         review = self.review
         self.assertTrue(0 <= review.rating <= 5)
-        self.assertFalse(type(review.rating) == 'str')
+        self.assertFalse(type(review.rating) == "str")
         # this raises Asserting error because we can
         # add any number to rating on edit, which is wrong
         with self.assertRaises(IntegrityError):
@@ -188,7 +187,4 @@ class ReviewTestCase(TestCase):
 
     def test_short_description(self):
         review = self.review
-        self.assertEqual(
-            truncatewords(review.comment, 20),
-            review.short_description
-        )
+        self.assertEqual(truncatewords(review.comment, 20), review.short_description)

@@ -2,7 +2,6 @@ from django.core import validators
 from django.db import models
 from django.template.defaultfilters import truncatewords
 from django.utils.html import format_html
-from django.core import validators
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
@@ -19,7 +18,7 @@ class ProductCategory(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
+    slug = models.SlugField(default="", editable=True, max_length=100, blank=True)
 
     class Meta:
         verbose_name_plural = _("Product categories")
@@ -41,7 +40,7 @@ class ProductSubcategory(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
+    slug = models.SlugField(default="", editable=True, max_length=100, blank=True)
 
     class Meta:
         verbose_name_plural = _("Product subcategories")
@@ -64,7 +63,7 @@ class Tag(models.Model):
     """
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
+    slug = models.SlugField(default="", editable=True, max_length=100, blank=True)
 
     def __str__(self):
         return self.name
@@ -93,7 +92,7 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag)
 
     name = models.CharField(max_length=100, null=False, blank=False)
-    slug = models.SlugField(default='', editable=True, max_length=100, blank=True)
+    slug = models.SlugField(default="", editable=True, max_length=100, blank=True)
     price = models.DecimalField(
         validators=[validators.MinValueValidator(0)],
         decimal_places=2,
@@ -146,7 +145,7 @@ class Review(models.Model):
 
     @property
     def name(self):
-        return f'{self.user.first_name} {self.user.last_name} review of {self.product.name}'
+        return f"{self.user} review of {self.product.name}"
 
     @property
     def short_description(self):
@@ -241,4 +240,4 @@ class ProductMedia(models.Model):
 
     @property
     def name(self):
-        return f'{self.product} {self.get_media_type_display()} {self.id}'
+        return f"{self.product} {self.get_media_type_display()} {self.id}"
