@@ -43,16 +43,6 @@ class VideoInline(admin.TabularInline):
     extra = 1
 
 
-class ProductAdmin(admin.ModelAdmin):
-    
-    fields = (
-        "name",
-        ("price", "stock_quantity"),
-    list_display = ("name", "price", "stock_quantity", "short_description")
-    search_fields = ("name", "description")
-    filter_horizontal = ("categories", "subcategories", "tags")
-
-
 class CustomModelAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
@@ -78,8 +68,6 @@ class ProductAdmin(CustomModelAdmin):
         "categories",
         "subcategories",
         "tags",
-        "images",
-        "videos",
     )
     list_display = ("name", "price", "stock_quantity", "short_description")
     list_filter = (IsAvailableProductFilter,)
