@@ -9,6 +9,7 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background: #fbf8f8;
     /*background-color: #9698FE;*/
 }
 
@@ -76,3 +77,138 @@ body {
     /*color: #5d52c1;*/
 }
 
+
+/* -----------------------  Order page  ----------------------- */
+
+
+.tab {
+    background: #FFFFFF;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 920px;
+}
+
+.tab button {
+    background-color: inherit;
+    width: 150px;
+    height: 60px;
+    margin-right: 7px;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    letter-spacing: 1px;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border-radius: 25px 25px 0 0;
+    box-shadow: -4px -4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.tab button:hover {
+    background-color: #C3CBCD;
+}
+
+.tab button.active {
+    background-color: #F9F3E5;
+}
+
+.tabcontent {
+    width: 920px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    padding: 60px 0 60px 0;
+
+    background: #FFFFFF;
+    box-shadow: -4px -4px 10px rgba(0, 0, 0, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 0 50px 0 0;
+}
+
+.tablinks {
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.contact-tab {
+    background: #FFFFFF;
+    width: auto;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px 50px 20px 50px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+
+.order-tab {
+    background: #FFFFFF;
+    width: auto;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px 50px 20px 50px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+
+.h4-tabs {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.input-tabs {
+    line-height: 24px;
+    min-height: 40px;
+    box-sizing: border-box;
+    border: 1px solid #fbf8f8;
+    padding: 0 16px;
+    width: 100%;
+    background: #fbf8f8;
+    border-radius: 3px;
+}
+
+#button-go-to-delivery {
+    background: #FFFFFF;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    max-width: 314px;
+    margin-top: 50px;
+    padding: 0;
+    text-align: center;
+    transition: color .3s ease;
+    width: 100%;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+#button-checkout {
+    background: #FFFFFF;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    max-width: 214px;
+    padding: 0;
+    text-align: center;
+    transition: color .3s ease;
+    width: 100%;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.delivery-payment-tab {
+    background: #FFFFFF;
+    width: auto;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px 50px 20px 50px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}

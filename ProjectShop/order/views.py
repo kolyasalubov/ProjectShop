@@ -1,3 +1,4 @@
+from django.views import generic
 from rest_framework import viewsets
 
 from order.models import Order, OrderItems
@@ -18,3 +19,7 @@ class OrderItemsViewSet(viewsets.ModelViewSet):
     queryset = OrderItems.objects.all()
     serializer_class = OrderItemsSerializer
     http_method_names = ["post", "get", "patch", "put"]
+
+
+class MakeAnOrder(generic.TemplateView):
+    template_name = "order/make_order.html"

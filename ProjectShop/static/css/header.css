@@ -1,5 +1,10 @@
 /*nav-menu*/
 .nav-menu {
+    /*position: fixed;*/
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
     background-color: black;
     display: flex;
     justify-content: right;
@@ -60,6 +65,7 @@
     position: absolute;
     top: 4px;
     left: 45px;
+    letter-spacing: 1px;
 }
 
 
@@ -140,18 +146,18 @@
     background-color: #9698FE !important;
 }
 
-/*making header fixed */
-/* The sticky class is added to the header with JS when it reaches its scroll position */
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%
-}
+/*!*making header fixed *!*/
+/*!* The sticky class is added to the header with JS when it reaches its scroll position *!*/
+/*.sticky {*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  width: 100%*/
+/*}*/
 
-/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
-  padding-top: 102px;
-}
+/*!* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) *!*/
+/*.sticky + .content {*/
+/*  padding-top: 102px;*/
+/*}*/
 
 /* HAMBURGER MENU */
 
