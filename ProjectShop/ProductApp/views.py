@@ -1,4 +1,9 @@
+from django.views import generic
+
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+
+from ProductApp.models import Review, Product, ProductCategory
+from ProductApp.serializers import ReviewSerializer
 
 from ProductApp.models import (
     Product,
@@ -17,6 +22,25 @@ from ProductApp.serializers import (
     TagSerializer,
 )
 
+
+class HomePageView(generic.ListView):
+    context_object_name = 'products'
+    template_name = 'ProductApp/homepage.html'
+    queryset = Product.objects.all()
+    paginate_by = 12
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = ProductCategory.objects.order_by('name')[:20]
+        context['categories'] = categories
+        return context
+
+
+class CategoriesView(generic.ListView):
+    model = ProductCategory
+    context_object_name = 'categories'
+    template_name = 'ProductApp/categories.html'
+    paginate_by = 12
 
 class ProductViewSet(ReadOnlyModelViewSet):
     """This is viewset for Product model"""
