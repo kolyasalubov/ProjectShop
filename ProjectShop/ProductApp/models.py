@@ -168,7 +168,6 @@ class Reply(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     reaction = models.PositiveSmallIntegerField(choices=REACTIONS)
-    )
 
     def __str__(self):
         return self.name
