@@ -1,8 +1,10 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_views, get_user_model
+from django.http import JsonResponse
 from django.views import generic
-from django.views.generic.base import TemplateView
+from django.views.generic import ListView
+from django.views.generic.base import TemplateView, View
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
@@ -15,6 +17,13 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
+
+from rest_framework.viewsets import ModelViewSet
+from django_filters.views import FilterView
+
+from ProductApp.models import Review, Product, ProductCategory
+# from ProductApp.serializers import ReviewSerializer
+# from ProductApp.filters import ProductFilter
 
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
@@ -49,8 +58,27 @@ class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     template_name = 'UserApp/password_reset_complete.html'
 
 
-class TemporalHomePageView(TemplateView):
+class HomePageView(ListView):
+    # filterset_class = ProductFilter
     template_name = 'UserApp/home.html'
+    context_object_name = 'products'
+    queryset = Product.objects.all()
+    # paginate_by = 12
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = ProductCategory.objects.order_by('name')[:20]
+        context['categories'] = categories
+        return context
+
+class ProductJsonListView(View):
+    def get(self, *args, **kwargs):
+        print(kwargs)
+        upper = kwargs.get('num_products')
+        lower = upper - 4
+        products = list(Product.objects.values()[lower:upper])
+        products_size = len(Product.objects.all())
+        max_size = True if upper >= products_size else False
+        return JsonResponse({'data': products, 'max': max_size}, safe=False)
 
 
 class CustomUpdateView(generic.edit.SingleObjectTemplateResponseMixin,

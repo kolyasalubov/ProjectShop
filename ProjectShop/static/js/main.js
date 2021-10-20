@@ -32,3 +32,50 @@ function myFunction() {
     header.classList.remove("sticky");
   }
 }
+
+// view more implementation
+
+const productsBox = document.getElementById('products-box')
+console.log(productsBox)
+const spinnerBox = document.getElementById('spinner-box')
+const loadBtn = document.getElementById('load-btn')
+const loadBox = document.getElementById('loading-box')
+let visible = 4
+
+const handleGetData = () => {
+    $.ajax({
+        type: 'GET',
+        url: `/products-json/${visible}/`,
+        success: function(response){
+            maxSize = response.max
+            const data = response.data
+            spinnerBox.classList.remove('not-visible')
+            setTimeout(()=>{
+                spinnerBox.classList.add('not-visible')
+                data.map(product=>{
+                    console.log(product.id)
+                    productsBox.innerHTML += `<div class="product-quarter">
+            <!--image supposed to be here-->
+            <h3>${ product.name }</h3>
+            <p>Product price: ${ product.price }</p>
+            <button>Add to cart</button>
+        </div>`
+                })
+                if(maxSize){
+                    console.log('done')
+                    loadBox.innerHTML = "<h4 class='no-more-items-message'></h4>"
+                }
+            }, 500)
+        },
+        error: function(error){
+            console.log(error)
+        }
+    })
+}
+
+handleGetData()
+
+loadBtn.addEventListener('click', ()=>{
+    visible += 4
+    handleGetData()
+})

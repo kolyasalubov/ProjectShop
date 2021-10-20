@@ -25,14 +25,55 @@ body {
     line-height: 120px;
 }
 
-.categories-scroller {
-    height: 35px;
-    background-color: #FE7332;
-    display: flex;
+.banner img {
+    height: 120px;
+    width: 100%;
 }
 
-.scroll-right-button {
+
+
+.right-button-container {
     float:right;
+    background-color: #C3CBCD;
+}
+
+.scroll-left-button,
+.scroll-right-button {
+    height: 35px;
+    width: 35px;
+    background-color: #C3CBCD;
+    border: none;
+    cursor: pointer;
+}
+
+.scroll-left-button:hover,
+.scroll-right-button:hover {
+    background-color: #b0b7b9;
+}
+
+.categories-scroller {
+    height: 50px;
+    background-color: #C3CBCD;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch
+}
+
+.category-section {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    padding: 14px;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+.category-section:hover {
+    background-color: #b0b7b9;
 }
 
 .featured-container {
@@ -58,18 +99,42 @@ body {
 
 .featured-block {
     border: 3px solid #000;
-    width: 19.7%;
-    height: 45%;
+    width: 120px;
+    height: 120px;
     display: flex;
     justify-content: center;
-    font-size: 95px;
+    font-size: 10px;
     align-items: center;
 }
 
-.button-container {
-    display: flex;
-    align-self: center;
+.product-row-padding::after,
+.product-row-padding::before {
+    content: "";
+    display: table;
+    clear: both;
+}
 
+.product-row-padding {
+    padding: 0 8px;
+}
+
+.product-quarter {
+    float:left;
+    width:20%;
+    height: 270px;
+    margin-top: 20px;
+    margin-left:50px;
+    margin-bottom: 40px;
+    border: medium solid black;
+}
+
+.not-visible {
+    display: none;
+}
+
+
+.button-container {
+    text-align: center;
 }
 
 .view-more-button {
@@ -78,8 +143,12 @@ body {
     font-size: large;
     font-weight: 800;
     border-radius: 10px;
-    background-color: #F0B825;
-    /*color: #5d52c1;*/
+    background-color: #C3CBCD;
+    margin: 10px;
+}
+
+.no-more-items-message {
+
 }
 
 

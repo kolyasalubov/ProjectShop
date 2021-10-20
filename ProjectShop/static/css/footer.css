@@ -1,4 +1,11 @@
 /*footer*/
+footer {
+    /*position: absolute;*/
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
 .footer-main {
     background-color: black;
     display: flex;
@@ -21,7 +28,7 @@
     display: flex;
     align-items: center;
     color: #F6E37B !important;
-    margin-bottom: -5px;
+    margin-bottom: -10px;
 }
 
 .footer-text {
@@ -42,6 +49,6 @@
 .footer-container-second {
     display: flex;
     width: 40%;
-    padding: 0 5%;
+    padding: 0 1%;
     justify-content: flex-end;
 }

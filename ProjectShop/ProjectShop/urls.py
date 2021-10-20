@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -22,8 +23,10 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from UserApp.views import ProductJsonListView
 from .router import router
-from UserApp.views import TemporalHomePageView
+from UserApp.views import HomePageView
+
 
 
 schema_view = get_schema_view(
@@ -46,7 +49,8 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/v1/', include(router.urls)),
-    path('', TemporalHomePageView.as_view(), name='home'),
+    path('', HomePageView.as_view(), name='home'),
+    path('products-json/<int:num_products>/', ProductJsonListView.as_view(), name='products-json-view')
 ]
 
 if settings.DEBUG:
