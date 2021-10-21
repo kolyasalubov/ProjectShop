@@ -8,8 +8,6 @@
 
 
 {% block content %}
-<!--    <h1>This is about us page</h1>-->
-<!--    {% blocktranslate with content=flatpage.content %} {{ content }} {% endblocktranslate %}-->
     <head>
         {% load static %}
         <title>{% blocktranslate with title=flatpage.title %} {{ title }} {% endblocktranslate %}</title>
@@ -27,7 +25,6 @@
 					    <h1>{% blocktranslate with title=flatpage.title %} {{ title }} {% endblocktranslate %}</h1>
 				    </div>
 				    <div class="content">
-<!--					    <h3>Lorem ipsum dolor sit amet, consectetur adipisicing</h3>-->
 					    <p>{% blocktranslate with content=flatpage.content %} {{ content }} {% endblocktranslate %}</p>
 				    </div>
 
@@ -37,11 +34,5 @@
 			    </div>
 		    </div>
 	    </div>
-
-<!--    <div>-->
-<!--        <h1> {% blocktranslate with title=flatpage.title %} {{ title }} {% endblocktranslate %}</h1>-->
-<!--        <p>{% blocktranslate with content=flatpage.content %} {{ content }} {% endblocktranslate %}</p>-->
-<!--    </div>-->
-
     </body>
 {% endblock %}
