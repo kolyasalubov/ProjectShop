@@ -1,6 +1,7 @@
 from django import forms
 from ProductApp.models import Review
 
+
 class ReviewForm(forms.ModelForm):
 
     def __init__(self, **kwargs):
@@ -16,4 +17,4 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = Review
-        fields = ('comment','rating')
+        fields = ('comment','rating',)

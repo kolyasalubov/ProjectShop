@@ -58,14 +58,13 @@ class ReviewViewSet(ModelViewSet):
 
 
 def ProductOverviewPageView(request, product_id = 1):
-    product__object =  Product.get_product_by_id(product_id=product_id)
+    product__object = Product.get_product_by_id(product_id=product_id)
     product_media = ProductMedia.get_media_by_product(product = product__object)
     product_media_video = ProductMedia.get_media_video_by_product(product = product__object)
     product_all = ProductMedia.get_all_products()
 
     new_review = None
     reviews = Review.get_review_by_product(product = product__object)
-
 
     if request.method == 'POST':
         review_form = ReviewForm(user = request.user ,data=request.POST)
