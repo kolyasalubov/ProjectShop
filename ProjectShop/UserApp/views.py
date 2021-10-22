@@ -27,6 +27,13 @@ class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     form_class = LoginForm
     template_name = "UserApp/login.html"
 
+    def form_valid(self, form):
+        remember_me = form.cleaned_data['remember_me']
+        if not remember_me:
+            self.request.session.set_expiry(0)
+            self.request.session.modified = True
+        return super().form_valid(form)
+
 
 class RegisterView(AnonymousRequiredMixin, SuccessMessageMixin, generic.CreateView):
     form_class = RegisterForm
