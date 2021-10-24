@@ -137,7 +137,6 @@ STATICFILES_DIR = [str(BASE_DIR) + "/static"]
 STATICFILES_DIRS = [
     str(BASE_DIR) + '/static'
 ]
-
 # media files will be stored in 'media' folder
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR) + "/media"

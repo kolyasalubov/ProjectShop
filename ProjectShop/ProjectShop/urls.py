@@ -25,6 +25,7 @@ from drf_yasg import openapi
 
 from .router import router
 from UserApp.views import TemporalHomePageView
+from order.views import MakeAnOrder
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -54,6 +55,7 @@ urlpatterns = [
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("", TemporalHomePageView.as_view(), name="home"),
+    path('checkout/', MakeAnOrder.as_view(), name='make_order'),
 ]
 
 if settings.DEBUG:

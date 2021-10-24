@@ -39,14 +39,14 @@ body {
     font-style: normal;
     font-size: 32px;
 
-    color: #FE7332;
+    color: black;
 }
 .order-item-info-price{
     font-style: normal;
     font-weight: normal;
     font-size: 28px;
 
-    color: #5D52C1;
+    color: black;
 }
 .order-item-count{
     position: absolute;
@@ -58,7 +58,7 @@ body {
     margin-top: 3%;
     cursor: pointer;
 
-    color: #5D52C1;
+    color: black;
 }
 .order-item-trash{
     cursor: pointer;

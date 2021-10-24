@@ -2,14 +2,13 @@ from django.views import generic, View
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 
+from django.views import generic
 from rest_framework import viewsets
 
 from order.context_processors import SessionCart
 from order.models import Order, OrderItems
 from order.serializers import OrderDetailSerializer, OrderItemsSerializer
 from ProductApp.models import Product
-
-
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -70,3 +69,7 @@ class CartAddView(View):
                                      })
 
             return response
+
+
+class MakeAnOrder(CartView):
+    template_name = "order/make_order.html"
