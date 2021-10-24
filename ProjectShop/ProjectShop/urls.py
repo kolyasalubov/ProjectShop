@@ -43,7 +43,6 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("products/", include("ProductApp.urls")),
     path("order/", include("order.urls")),
     path("users/", include("UserApp.urls")),
     path("pages/", include("django.contrib.flatpages.urls")),

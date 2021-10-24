@@ -1,4 +1,4 @@
-from django.views import generic, View
+from django.views import View
 from django.shortcuts import get_object_or_404
 from braces.views import AjaxResponseMixin, JSONResponseMixin
 
@@ -59,7 +59,7 @@ class CartRemoveView(JSONResponseMixin, AjaxResponseMixin, View):
         product_id = request.POST.get('productId')
         cart.remove(product_id)
 
-        return self.render_json_response()
+        return self.render_json_response({})
 
 
 class CartSubtractView(JSONResponseMixin, AjaxResponseMixin, View):
