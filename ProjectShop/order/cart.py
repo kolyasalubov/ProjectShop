@@ -5,6 +5,7 @@ class SessionCart:
     def __init__(self, request):
         """Initialize the cart"""
         self.session = request.session
+
         if 'skey' not in request.session:
             self.session['skey'] = {}
 
@@ -25,18 +26,22 @@ class SessionCart:
 
         return self.cart[product_id]['qty'], self.count_sum_price(product_id)
 
-    def substract(self, product_id):
-        product_id = str(product_id)
+    def subtract(self, product):
+        product_id = str(product.id)
 
         if product_id in self.cart:
             self.cart[product_id]['qty'] -= 1
 
             if self.cart[product_id]['qty'] <= 0:
+
                 self.remove(product_id)
                 self.save()
+
                 return 0, 0
             else:
+
                 self.save()
+
                 return self.cart[product_id]['qty'], self.count_sum_price(product_id)
 
     def remove(self, product_id):
@@ -56,8 +61,10 @@ class SessionCart:
         cart = self.cart.copy()
 
         for product in queryset:
-            cart[str(product.id)]['product'] = product
-            cart[str(product.id)]['price'] = self.count_sum_price(product.id)
-            cart[str(product.id)]['media'] = ProductMedia.objects.get(product=product)
+            product_id = str(product.id)
+
+            cart[product_id]['product'] = product
+            cart[product_id]['price'] = self.count_sum_price(product.id)
+            cart[product_id]['media'] = ProductMedia.objects.get(product=product)
 
         return cart.values()

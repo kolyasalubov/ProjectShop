@@ -1,20 +1,19 @@
-var upperizers = document.getElementsByClassName('upperize');
+let add_urls = document.getElementsByClassName('add-to-cart');
 
-for(i=0; i<upperizers.length; i++){
-    upperizers[i].addEventListener('click', function (){
-        var productId = this.dataset.id;
-
+for(i=0; i<add_urls.length; i++){
+    add_urls[i].addEventListener('click', function (){
+        let productId = this.dataset.id;
+        let action = this.dataset.action
 
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: '/order/add/',
+            url: action,
             headers: {
                 'X-CSRFToken': csrftoken,
             },
             data: {
-                productId: productId,
-                action: 'post',
+                product_id: productId,
             },
             success: function (json){
                 document.getElementById("order-item-count-num" + productId).innerHTML = json.qty

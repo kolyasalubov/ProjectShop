@@ -9,13 +9,12 @@ for (let element of deleteIcons){
 
         $.ajax({
             type: 'POST',
-            url: '/order/remove/',
+            url: action,
             headers: {
                 'X-CSRFToken': csrftoken,
             },
             data: {
                 productId: productId,
-                action: action,
             },
             success: function (json){
                 $("#" + productId).remove();

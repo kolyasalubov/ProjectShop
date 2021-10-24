@@ -1,6 +1,6 @@
 from django.views import generic, View
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from braces.views import AjaxResponseMixin, JSONResponseMixin
 
 from django.views import generic
 from rest_framework import viewsets
@@ -35,40 +35,47 @@ class CartView(generic.ListView):
         return SessionCart(self.request).list()
 
 
-class CartAddView(View):
-    context_object_name = 'objects'
-    template_name = 'order/order_page.html'
+class CartAddView(JSONResponseMixin, AjaxResponseMixin, View):
+    http_method_names = ('post', )
 
-    def post(self, request, *args, **kwargs):
+    def post_ajax(self, request, *args, **kwargs):
         cart = SessionCart(request)
 
-        if request.POST.get('action') == 'post':
-            product_id = int(request.POST.get('productId'))
-            product = get_object_or_404(Product, id=product_id)
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
 
-            qty, price = cart.add(product=product)
-            response = JsonResponse({'qty': str(qty),
-                                     'price': str(price)})
+        qty, price = cart.add(product=product)
+        response = {'qty': str(qty), 'price': str(price)}
 
-            return response
+        return self.render_json_response(response)
 
-        elif request.POST.get('action') == 'remove':
-            product_id = request.POST.get('productId')
-            cart.remove(product_id)
 
-            response = JsonResponse({'test': 'data'})
+class CartRemoveView(JSONResponseMixin, AjaxResponseMixin, View):
+    http_method_names = ('post', )
 
-            return response
+    def post_ajax(self, request, *args, **kwargs):
+        cart = SessionCart(request)
 
-        elif request.POST.get('action') == 'substract':
-            product_id = request.POST.get('productId')
-            qty, price = cart.substract(product_id)
+        product_id = request.POST.get('productId')
+        cart.remove(product_id)
 
-            response = JsonResponse({'qty': str(qty),
-                                     'price': str(price),
-                                     })
+        return self.render_json_response()
 
-            return response
+
+class CartSubtractView(JSONResponseMixin, AjaxResponseMixin, View):
+    http_method_names = ('post', )
+
+    def post_ajax(self, request, *args, **kwargs):
+        cart = SessionCart(request)
+
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
+
+        qty, price = cart.subtract(product)
+
+        response = {'qty': str(qty), 'price': str(price)}
+
+        return self.render_json_response(response)
 
 
 class MakeAnOrder(CartView):

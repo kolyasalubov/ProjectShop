@@ -5,7 +5,7 @@
         <div class="col-sm-3">
             <p>{{ object.name }}</p>
             <p>Price: ${{ object.price }}</p>
-            <button data-id="{{ object.id }}" data-action="add" class="update-cart">Add to Cart</button>
+            <button data-id="{{ object.id }}" data-action="{% url 'order:cart-add' %}" class="update-cart">Add to Cart</button>
         </div>
 {% endfor %}
 {% load static %}
@@ -19,11 +19,10 @@
 
         $.ajax({
          type: 'POST',
-         url: '/order/add/',
+         url: action,
          data: {
-             productId: productId,
+             product_id: productId,
              csrfmiddlewaretoken: '{{ csrf_token }}',
-             action: 'post',
          },
          success: function (json){
          },
