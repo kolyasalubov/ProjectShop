@@ -23,5 +23,3 @@ for(i=0; i<add_urls.length; i++){
             }
         });
     })}
-
-
