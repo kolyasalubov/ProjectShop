@@ -1,9 +1,11 @@
 from django.views import generic
 
-from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from django_filters.views import FilterView
 
 from ProductApp.models import Review, Product, ProductCategory
 from ProductApp.serializers import ReviewSerializer
+from ProductApp.filters import ProductFilter
 
 from ProductApp.models import (
     Product,
@@ -23,10 +25,10 @@ from ProductApp.serializers import (
 )
 
 
-class HomePageView(generic.ListView):
-    context_object_name = 'products'
+class HomePageView(FilterView):
+    filterset_class = ProductFilter
     template_name = 'ProductApp/homepage.html'
-    queryset = Product.objects.all()
+    context_object_name = 'products'
     paginate_by = 12
 
     def get_context_data(self, **kwargs):
