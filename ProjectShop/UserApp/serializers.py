@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     """
     Serializer that we use to serialize fields of model.
     """
-
+    
     class Meta:
         model = User
         fields = [
@@ -22,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "role",
             "is_active",
+            "telegram_id",
         ]
         read_only_fields = ("id", "register_date", "is_active", "role")
 

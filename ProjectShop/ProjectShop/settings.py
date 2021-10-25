@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.flatpages",
+  
     # 3rd-party apps
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "crispy_forms",
     "drf_yasg",
+
     # local apps
     'UserApp',
     'Shipping',
