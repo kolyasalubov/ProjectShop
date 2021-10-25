@@ -65,6 +65,7 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
+
     list_display = (
         "phone_number",
         "first_name",
@@ -75,6 +76,7 @@ class UserAdmin(BaseUserAdmin):
         "register_date",
         "is_superuser",
         "is_bot",
+        "telegram_id",
     )
     list_filter = ("is_superuser", "is_active", "role")
     fieldsets = (
