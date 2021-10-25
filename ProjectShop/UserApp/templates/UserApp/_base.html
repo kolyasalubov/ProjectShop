@@ -26,7 +26,6 @@
     {% endif %}
     <!--  Messages end here  -->
 
-
     <!--  First Navbar starts here  -->
     <h3> Navbar: </h3>
     <a href="{% url 'home' %}">{% translate "Home page" %}</a>
@@ -57,6 +56,12 @@
     <!--  Second Navbar starts here  -->
     {% block category %}{% endblock category %}
     <!--  Second Navbar ends here  -->
+
+    <hr>
+    <form action="{% url 'home' %}" method="get">
+        <input name="name__icontains" type="text" placeholder="Search" aria-label="Search">
+        <button type="submit" id="submit">{% translate "Search" %}</button>
+    </form>
 
     {% block content %}{% endblock content %}
 
