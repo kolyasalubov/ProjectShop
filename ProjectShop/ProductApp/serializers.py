@@ -2,7 +2,8 @@ from rest_framework.serializers import ModelSerializer
 
 from ProductApp.models import (
     Product,
-    ProductMedia,
+    ProductImage,
+    ProductVideo,
     ProductCategory,
     ProductSubcategory,
     Tag,
@@ -42,14 +43,20 @@ class ProductNameSerializer(ModelSerializer):
         fields = ["name"]
 
 
-class ProductMediaSerializer(ModelSerializer):
-    """Serializer for ProductMedia model"""
-
-    product = ProductNameSerializer(read_only=True)
+class ProductImageSerializer(ModelSerializer):
+    """Serializer for ProductImage model"""
 
     class Meta:
-        model = ProductMedia
-        fields = "__all__"
+        model = ProductImage
+        fields = ["image"]
+
+
+class ProductVideoSerializer(ModelSerializer):
+    """Serializer for ProductVideo model"""
+
+    class Meta:
+        model = ProductVideo
+        fields = ["video_link"]
 
 
 class ProductSerializer(ModelSerializer):
@@ -58,7 +65,8 @@ class ProductSerializer(ModelSerializer):
     categories = ProductCategorySerializer(many=True, read_only=True)
     subcategories = ProductSubcategorySerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
-    media = ProductMediaSerializer()
+    images = ProductImageSerializer(many=True)
+    video_links = ProductVideoSerializer(many=True)
 
     class Meta:
         model = Product
@@ -71,7 +79,8 @@ class ProductSerializer(ModelSerializer):
             "categories",
             "subcategories",
             "tags",
-            "media",
+            "images",
+            "video_links",
         ]
 
 

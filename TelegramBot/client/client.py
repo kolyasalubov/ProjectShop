@@ -2,18 +2,13 @@ import os
 
 import requests
 
-PHONE_NUMBER = os.environ.get(
-    "BOT_PHONE_NUMBER"
-)  # Crete admin is_bot user and insert his/her phone_number
-PASSWORD = os.environ.get(
-    "BOT_PASSWORD"
-)  # Crete admin is_bot user and insert his/her password
-SERVER_HOST = os.environ.get(
-    "SERVER_HOST"
-)  # "http://localhost:8000/" insert for local testing
-TOKEN_URL = "users/token/"
-TOKEN_REFRESH_URL = "users/token/refresh/"
-LOGOUT_URL = "users/token/logout/"
+
+PHONE_NUMBER = os.environ.get("BOT_PHONE_NUMBER")      # Crete admin is_bot user and insert his/her phone_number
+PASSWORD = os.environ.get("BOT_PASSWORD")          # Crete admin is_bot user and insert his/her password
+SERVER_HOST = os.environ.get("SERVER_HOST")         # "http://localhost:8000/" insert for local testing
+TOKEN_URL = os.environ.get("TOKEN_URL")
+TOKEN_REFRESH_URL = os.environ.get("TOKEN_REFRESH_URL")
+LOGOUT_URL = os.environ.get("LOGOUT_URL")
 
 
 class RestClient:
