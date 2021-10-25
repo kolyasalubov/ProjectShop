@@ -103,6 +103,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.django
 .venv
 env/
 venv/
@@ -135,3 +136,10 @@ dmypy.json
 # media files
 ProjectShop/media/
 !*default_pic.svg
+.vscode/
+.vscode/settings.json
+
+# sonarqube files
+.scannerwork/
+sonar-project.properties
+

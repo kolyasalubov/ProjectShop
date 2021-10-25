@@ -1,0 +1,55 @@
+{% extends "UserApp/_base.html" %}
+
+{% load pagination_tags %}
+
+{% load i18n %}
+
+
+{% block category %}
+
+    {% for category in categories %}
+
+        <a href="#">{{ category.name }}</a>
+
+    {% endfor %}
+
+{% endblock category %}
+
+
+{% block content %}
+
+    <h1>{% translate "Home page" %}</h1>
+
+    {% for product in products %}
+        {% if product.media.first %}
+        <img src="{{ product.media.first.image.url }}" style="width:200px" alt="A product image">
+        {% endif %}
+        <a href="#"><p>{{ product.name }}</p></a>
+        <p>{% translate "Product price:" %} {{ product.price }}</p>
+        <hr>
+
+    {% endfor %}
+
+    {% if is_paginated %}
+
+        {% if page_obj.has_previous %}
+            <a href="?{% url_replace request 'page' 1 %}">{% translate "First" %}</a>
+            <a href="?{% url_replace request 'page' page_obj.previous_page_number %}">{% translate "Previous" %}</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a href="?{% url_replace request 'page' num %}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?{% url_replace request 'page' num %}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?{% url_replace request 'page' page_obj.next_page_number %}">{% translate "Next" %}</a>
+            <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">{% translate "Last" %}</a>
+        {% endif %}
+
+    {% endif %}
+
+{% endblock content %}

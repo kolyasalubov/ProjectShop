@@ -1,12 +1,13 @@
+import os
 import requests
 
 
-PHONE_NUMBER = ""      # Crete admin is_bot user and insert his/her phone_number
-PASSWORD = ""          # Crete admin is_bot user and insert his/her password
-SERVER_HOST = ""         # "http://localhost:8000/" insert for local testing
-TOKEN_URL = "users/token/"
-TOKEN_REFRESH_URL = "users/token/refresh/"
-LOGOUT_URL = "user/token/logout/"
+PHONE_NUMBER = os.environ.get("BOT_PHONE_NUMBER")      # Crete admin is_bot user and insert his/her phone_number
+PASSWORD = os.environ.get("BOT_PASSWORD")          # Crete admin is_bot user and insert his/her password
+SERVER_HOST = os.environ.get("SERVER_HOST")         # "http://localhost:8000/" insert for local testing
+TOKEN_URL = os.environ.get("TOKEN_URL")
+TOKEN_REFRESH_URL = os.environ.get("TOKEN_REFRESH_URL")
+LOGOUT_URL = os.environ.get("LOGOUT_URL")
 USER_URL = "users/user/"
 
 
@@ -37,14 +38,21 @@ class RestClient:
         "PATCH": requests.patch,
     }
 
-    def __init__(self, phone_number, password, server_host, token_url, token_refresh_url, logout_url, user_url):
+    def __init__(
+        self,
+        phone_number,
+        password,
+        server_host,
+        token_url,
+        token_refresh_url,
+        logout_url,
+    ):
         self.phone_number = phone_number
         self.password = password
         self.server_host = server_host
         self.token_url = token_url
         self.token_refresh_url = token_refresh_url
         self.logout_url = logout_url
-        self.user_url = user_url
         self.access = ""
         self.refresh = ""
 
@@ -54,11 +62,9 @@ class RestClient:
 
         Return authentication status code: int
         """
+
         url = self.server_host + self.token_url
-        data = {
-            "phone_number": self.phone_number,
-            "password": self.password
-        }
+        data = {"phone_number": self.phone_number, "password": self.password}
         response = requests.post(url, data=data)
         if response.status_code == 200:
             self.access = response.json().get("access")
@@ -71,6 +77,7 @@ class RestClient:
 
         Return authentication status code: int
         """
+
         url = self.server_host + self.token_refresh_url
         data = {"refresh": self.refresh}
         response = requests.post(url, data=data)
@@ -85,6 +92,7 @@ class RestClient:
 
         Return authentication status code: int
         """
+
         status = self._refresh_tokens()
         if status in (400, 401):
             status = self._obtain_tokens()
@@ -96,14 +104,21 @@ class RestClient:
 
         Return: requests.Response object
         """
+
         url = self.server_host + self.logout_url
         data = {"refresh": self.refresh}
         headers = {"Authorization": f"Bearer {self.access}"}
         response = requests.post(url, headers=headers, data=data)
         return response
 
-    def send_request(self, method: str, url: str, headers: dict = None, data: dict = None,
-                     params: dict = None) -> requests.Response:
+    def send_request(
+        self,
+        method: str,
+        url: str,
+        headers: dict = None,
+        data: dict = None,
+        params: dict = None,
+    ) -> requests.Response:
         """
         Provide sending request.
 
@@ -116,6 +131,7 @@ class RestClient:
 
         Return: request.Response object
         """
+
         request_method = self.METHODS.get(method)
         if headers:
             headers.update({"Authorization": f"Bearer {self.access}"})
@@ -138,7 +154,9 @@ class RestClient:
                 return response
             else:
                 headers["Authorization"] = f"Bearer {self.access}"
-                response = request_method(url, headers=headers, data=data, params=params)
+                response = request_method(
+                    url, headers=headers, data=data, params=params
+                )
         return response
 
 
@@ -149,6 +167,6 @@ bot_client = RestClient(
     token_url=TOKEN_URL,
     token_refresh_url=TOKEN_REFRESH_URL,
     logout_url=LOGOUT_URL,
-    user_url=USER_URL
     )
+
 # Use only next methods: logout, send_request
