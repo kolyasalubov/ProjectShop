@@ -7,7 +7,8 @@ from ProductApp.models import (
     Product,
     ProductCategory,
     ProductSubcategory,
-    ProductMedia,
+    ProductImage,
+    ProductVideo,
     Review,
     Tag,
 )
@@ -15,7 +16,8 @@ from ProductApp.serializers import (
     ProductSerializer,
     ProductCategorySerializer,
     ProductSubcategorySerializer,
-    ProductMediaSerializer,
+    ProductImageSerializer,
+    ProductVideoSerializer,
     ReviewSerializer,
     TagSerializer,
 )
@@ -69,11 +71,18 @@ class TagViewSet(ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
 
 
-class ProductMediaViewSet(ReadOnlyModelViewSet):
+class ProductImageViewSet(ReadOnlyModelViewSet):
     """This is viewset for ProductMedia model"""
 
-    serializer_class = ProductMediaSerializer
-    queryset = ProductMedia.objects.all()
+    serializer_class = ProductImageSerializer
+    queryset = ProductImage.objects.all()
+
+
+class ProductVideoViewSet(ReadOnlyModelViewSet):
+    """This is viewset for ProductMedia model"""
+
+    serializer_class = ProductVideoSerializer
+    queryset = ProductVideo.objects.all()
 
 
 class ReviewViewSet(NestedViewSetMixin, ModelViewSet):

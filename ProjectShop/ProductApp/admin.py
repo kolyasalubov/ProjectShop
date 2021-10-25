@@ -8,7 +8,8 @@ from ProductApp.models import (
     ProductSubcategory,
     Tag,
     Review,
-    ProductMedia,
+    ProductImage,
+    ProductVideo,
 )
 
 
@@ -29,10 +30,16 @@ class IsAvailableProductFilter(admin.SimpleListFilter):
             return queryset.filter(stock_quantity__lte=0)
 
 
-class MediaInline(admin.TabularInline):
-    model = ProductMedia
-    fields = ("media_type", "video_link", "image", "image_tag")
+class ImageInline(admin.TabularInline):
+    model = ProductImage
+    fields = ("image", "image_tag")
     readonly_fields = ("image_tag",)
+    extra = 1
+
+
+class VideoInline(admin.TabularInline):
+    model = ProductVideo
+    fields = ("video_link",)
     extra = 1
 
 
@@ -48,7 +55,10 @@ class CustomModelAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(CustomModelAdmin):
-    inlines = (MediaInline,)
+    inlines = (
+        ImageInline,
+        VideoInline,
+    )
     fields = (
         "name",
         "slug",
@@ -65,11 +75,17 @@ class ProductAdmin(CustomModelAdmin):
     filter_horizontal = ("categories", "subcategories", "tags")
 
 
-class ProductMediaAdmin(admin.ModelAdmin):
-    fields = ("product", "media_type", "video_link", "image", "image_tag")
+class ProductImageAdmin(admin.ModelAdmin):
+    fields = ("product", "image", "image_tag")
     readonly_fields = ("image_tag",)
-    list_display = ("name", "media_type", "video_link", "image", "small_image_tag")
-    list_filter = ("media_type",)
+    list_display = ("name", "image", "small_image_tag")
+    search_fields = ("product__name",)
+    raw_id_fields = ("product",)
+
+
+class ProductVideoAdmin(admin.ModelAdmin):
+    fields = ("product", "video_link")
+    list_display = ("name", "video_link")
     search_fields = ("product__name",)
     raw_id_fields = ("product",)
 
@@ -99,12 +115,12 @@ class ProductCategoryAdmin(CustomModelAdmin):
     search_fields = ('name',)
 
 
-class ProductSubcategoryAdmin(CustomModelAdmin):
-    search_fields = ('name',)
+class ProductSubcategoryAdmin(admin.ModelAdmin):
+    search_fields = ("name",)
 
 
-class TagAdmin(CustomModelAdmin):
-    search_fields = ('name',)
+class TagAdmin(admin.ModelAdmin):
+    search_fields = ("name",)
 
 
 admin.site.register(Product, ProductAdmin)
@@ -112,4 +128,5 @@ admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(ProductSubcategory, ProductSubcategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Review, ReviewAdmin)
-admin.site.register(ProductMedia, ProductMediaAdmin)
+admin.site.register(ProductImage, ProductImageAdmin)
+admin.site.register(ProductVideo, ProductVideoAdmin)
