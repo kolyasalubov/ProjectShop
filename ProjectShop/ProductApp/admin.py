@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
+
+from django_extensions.admin import ForeignKeyAutocompleteAdmin
 
 from ProductApp.models import (
     Product,
@@ -37,28 +38,14 @@ class ImageInline(admin.TabularInline):
     extra = 1
 
 
+class ProductAdmin(ForeignKeyAutocompleteAdmin):
+    inlines = (MediaInline,)
+    
+    
 class VideoInline(admin.TabularInline):
     model = ProductVideo
     fields = ("video_link",)
     extra = 1
-
-
-class CustomModelAdmin(admin.ModelAdmin):
-
-    def save_model(self, request, obj, form, change):
-        if not obj.slug:
-            obj.slug = slugify(obj.name)
-        object_count = self.model.objects.filter(slug__startswith=obj.slug).count() + 1
-        if object_count != 1:
-            obj.slug = f'{obj.slug}-{object_count}'
-        super().save_model(request, obj, form, change)
-
-
-class ProductAdmin(CustomModelAdmin):
-    inlines = (
-        ImageInline,
-        VideoInline,
-    )
     fields = (
         "name",
         "slug",
@@ -111,16 +98,16 @@ class ReviewAdmin(admin.ModelAdmin):
         return form
 
 
-class ProductCategoryAdmin(CustomModelAdmin):
+class ProductCategoryAdmin(ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
 
 
-class ProductSubcategoryAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
+class ProductSubcategoryAdmin(ForeignKeyAutocompleteAdmin):
+    search_fields = ('name',)
 
 
-class TagAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
+class TagAdmin(ForeignKeyAutocompleteAdmin):
+    search_fields = ('name',)
 
 
 admin.site.register(Product, ProductAdmin)

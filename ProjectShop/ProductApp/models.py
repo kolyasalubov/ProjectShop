@@ -5,6 +5,8 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
+from django_extensions.db.fields import AutoSlugField
+
 from UserApp.models import User
 
 
@@ -17,10 +19,9 @@ class ProductCategory(models.Model):
         name: name of the category.
     """
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(default="", editable=True, max_length=100, blank=True)
-    
-    
+    name = models.CharField(max_length=100, null=False, blank=False)
+    slug = AutoSlugField(populate_from='name', editable=True)
+
     class Meta:
         verbose_name_plural = _("Product categories")
 
@@ -40,9 +41,8 @@ class ProductSubcategory(models.Model):
         name: name of the subcategory.
     """
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(default="", editable=True, max_length=100, blank=True)
-    
+    name = models.CharField(max_length=100, null=False, blank=False)
+    slug = AutoSlugField(populate_from='name', editable=True)
 
     class Meta:
         verbose_name_plural = _("Product subcategories")
@@ -64,8 +64,8 @@ class Tag(models.Model):
         name: the name of the tag.
     """
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(default="", editable=True, max_length=100, blank=True)
+    name = models.CharField(max_length=100, null=False, blank=False)
+    slug = AutoSlugField(populate_from='name', editable=True)
 
     def __str__(self):
         return self.name
@@ -92,10 +92,8 @@ class Product(models.Model):
     subcategories = models.ManyToManyField(ProductSubcategory)
     categories = models.ManyToManyField(ProductCategory)
     tags = models.ManyToManyField(Tag)
-
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(default="", editable=True, max_length=100, blank=True)
-
+    name = models.CharField(max_length=100, null=False, blank=False)
+    slug = AutoSlugField(populate_from='name', editable=True)
     price = models.DecimalField(
         validators=[validators.MinValueValidator(0)],
         decimal_places=2,
