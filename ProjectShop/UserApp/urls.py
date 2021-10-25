@@ -3,6 +3,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+
 from UserApp.views import (
     BlacklistRefreshViewSet,
     LoginView,
@@ -14,6 +15,7 @@ from UserApp.views import (
     PasswordResetCompleteView,
     UpdateProfileView,
     PasswordChangeView,
+    GetUserByTelegramIdViewSet,
 )
 
 view_based_urls = [
@@ -49,5 +51,7 @@ token_urls = [
 ]
 
 router = DefaultRouter()
-router.register(r"token/logout", BlacklistRefreshViewSet, basename="user")
+router.register(r'token/logout', BlacklistRefreshViewSet, basename='users')
+router.register(r'get_user_by_telegram_id', GetUserByTelegramIdViewSet)
+
 urlpatterns = router.urls + token_urls + view_based_urls
