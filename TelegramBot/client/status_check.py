@@ -17,7 +17,6 @@ def status_code_check(function):
     @functools.wraps(function)
     def wrapper(*args, **kwargs):
         response = function(*args, **kwargs)
-        print(response.request.url)
         if response.status_code >= 500:
             raise ServerError(response=response)
         elif response.status_code >= 400:
