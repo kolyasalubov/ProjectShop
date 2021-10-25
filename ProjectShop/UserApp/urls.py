@@ -16,6 +16,9 @@ from UserApp.views import (
     UpdateProfileView,
 )
 
+# app_name = 'user_app'
+
+
 view_based_urls = [
     path("login/", LoginView.as_view(), name="login"),
     path("register/", RegisterView.as_view(), name="register"),
@@ -36,7 +39,7 @@ view_based_urls = [
         "password-reset-complete/",
         PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
-    ),
+    ),]
 
 token_urls = [
     path(

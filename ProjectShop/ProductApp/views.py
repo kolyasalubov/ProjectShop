@@ -68,3 +68,4 @@ class ReviewViewSet(ModelViewSet):
     def perform_create(self, serializer):
         product_id = self.kwargs.get("product_id")
         serializer.save(product=Product.objects.get(pk=product_id))
+
