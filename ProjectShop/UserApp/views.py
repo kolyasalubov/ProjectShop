@@ -1,5 +1,4 @@
 from braces.views import AnonymousRequiredMixin
-from django.views.generic.base import TemplateView
 from django.contrib.auth import views as auth_views, get_user_model
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +7,6 @@ from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 
-from rest_framework.response import Response
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -18,9 +16,6 @@ from rest_framework_extensions.mixins import NestedViewSetMixin
 
 
 from ProductApp.models import Product
-from UserApp.permissions import IsAdminBot
-from UserApp.models import User
-from UserApp.serializers import UserSerializer, UserIdSerializer
 from UserApp.forms import LoginForm, RegisterForm, EditForm
 from UserApp.models import User
 from UserApp.permissions import IsAdminBot
