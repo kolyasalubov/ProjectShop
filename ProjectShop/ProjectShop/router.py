@@ -10,9 +10,8 @@ from ProductApp.views import (
     ProductSubcategoryViewSet,
 )
 from Shipping.views import ShippingViewSet
-from UserApp.views import UserViewSet
 from order.views import OrderViewSet, OrderItemsViewSet
-from UserApp.views import UserViewSet, WishListViewSet
+from UserApp.views import UserViewSet, WishListViewSet, GetUserByTelegramIdViewSet
 
 
 router = ExtendedSimpleRouter()
@@ -28,3 +27,4 @@ router.register(r"product_video", ProductVideoViewSet, basename="product_video")
 router.register(r"shipping", ShippingViewSet, basename="shipping")
 router.register(r"user", UserViewSet, basename="user")\
     .register(r'wishlist', WishListViewSet, basename='user_wishlist', parents_query_lookups=['id'])
+router.register(r'get_user_by_telegram_id', GetUserByTelegramIdViewSet, basename="user")

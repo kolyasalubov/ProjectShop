@@ -5,10 +5,10 @@ For more info, read https://pydantic-docs.helpmanual.io
 Methods in models are facades for all api requests required by telegram bot
 """
 
+import os
 import datetime
 import phonenumbers
 from enum import Enum
-from typing import List, Tuple
 
 from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator
 from pydantic.error_wrappers import ValidationError
@@ -16,9 +16,9 @@ from typing import List, Tuple
 
 from client.status_check import bot_client
 
-USER_URL = ""  # add url to obtain and manage user by phone number
-USER_INIT_KEY = "super_secret_init_key"   # key for User.__init__  access, set None to switch off
-USER_BY_TELEGRAM_ID_URL = ''  # add url to obtain user by telegram id
+USER_URL = os.environ.get("USER_URL")  # add url to obtain and manage user by phone number
+USER_INIT_KEY = os.environ.get("USER_INIT_KEY")   # key for User.__init__  access, set None to switch off
+USER_BY_TELEGRAM_ID_URL = os.environ.get("USER_BY_TELEGRAM_ID_URL")  # add url to obtain user by telegram id
 
 
 class PaginatedModel(BaseModel):
@@ -195,7 +195,6 @@ class User(BaseModel):
         data = {key: value}
         bot_client.send_request("PATCH", url, data=data)
         super().__setattr__(key, value)
-
 
     @validator("phone_number")
     def name_must_contain_space(cls, value):
