@@ -36,16 +36,16 @@ class ImageInline(admin.TabularInline):
     fields = ("image", "image_tag")
     readonly_fields = ("image_tag",)
     extra = 1
-
-
-class ProductAdmin(ForeignKeyAutocompleteAdmin):
-    inlines = (MediaInline,)
     
     
 class VideoInline(admin.TabularInline):
     model = ProductVideo
     fields = ("video_link",)
     extra = 1
+
+
+class ProductAdmin(ForeignKeyAutocompleteAdmin):
+    inlines = (ImageInline, VideoInline)
     fields = (
         "name",
         "slug",
