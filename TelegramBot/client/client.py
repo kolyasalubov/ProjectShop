@@ -8,7 +8,6 @@ SERVER_HOST = os.environ.get("SERVER_HOST")         # "http://localhost:8000/" i
 TOKEN_URL = os.environ.get("TOKEN_URL")
 TOKEN_REFRESH_URL = os.environ.get("TOKEN_REFRESH_URL")
 LOGOUT_URL = os.environ.get("LOGOUT_URL")
-USER_URL = "users/user/"
 
 
 class RestClient:
@@ -25,7 +24,6 @@ class RestClient:
         self.logout_url (str): The url for log out
         self.get_user_ib_by_telegram_id_url (str): The url for retrieving user id by user telegram id
         self.get_user_ib_by_phone_number_url (str): The url for retrieving user id by user phone number
-        self.user_url (str): The url for manipulating user
         self.access (str): access token
         self.refresh (str): refresh token
     """
