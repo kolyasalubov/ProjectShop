@@ -2,6 +2,8 @@ from django.test import TestCase, RequestFactory
 from django.urls import reverse, resolve
 
 from ProductApp.views import HomePageView
+from ProductApp.models import Product, ProductCategory
+# from ProductApp.tests.factories import ProductCategoryFactory
 
 
 class HomePageTest(TestCase):
@@ -26,12 +28,27 @@ class HomePageTest(TestCase):
 
 
 class HomePageViewTest(TestCase):
-    def test_environment_set_in_context(self):
-        request = RequestFactory().get('/')
-        view = HomePageView()
-        view.object_list = ''
-        view.setup(request)
 
-        context = view.get_context_data()
-        self.assertIn('products', context)
-        self.assertIn('categories', context)
+    def setUp(self):
+        request = RequestFactory().get('/')
+        self.view = HomePageView()
+        self.view.object_list = ''
+        self.view.setup(request)
+        self.context = self.view.get_context_data()
+
+    def test_environment_set_in_context(self):
+        self.assertIn('products', self.context)
+        self.assertIn('categories', self.context)
+
+    def test_query_sets(self):
+        # self.category = ProductCategoryFactory()
+
+        ProductCategory.objects.create(name='just a test')
+
+        self.assertQuerysetEqual(self.context['products'],
+                                 Product.objects.all())
+        self.assertCountEqual(self.context['products'], Product.objects.all())
+        self.assertQuerysetEqual(self.context['categories'],
+                                 ProductCategory.objects.order_by('name')[:20])
+        self.assertCountEqual(self.context['categories'],
+                              ProductCategory.objects.order_by('name')[:20])
