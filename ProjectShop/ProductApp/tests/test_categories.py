@@ -1,8 +1,9 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.urls import reverse, resolve
 
 from ProductApp.views import CategoriesView
 from ProductApp.models import ProductCategory
+from ProductApp.tests.factories import ProductCategoryFactory
 
 
 class CategoriesTest(TestCase):
@@ -26,11 +27,24 @@ class CategoriesTest(TestCase):
         self.assertEqual(view.func.__name__, CategoriesView.as_view().__name__)
 
 
-class HomePageViewTest(TestCase):
+class CategoriesViewTest(TestCase):
+
     def setUp(self):
+        request = RequestFactory().get('/')
         self.view = CategoriesView()
+        self.view.setup(request)
+        ProductCategoryFactory.create_batch(25)
 
     def test_attrs(self):
         self.assertEqual(self.view.model, ProductCategory)
         self.assertEqual(self.view.context_object_name, 'categories')
         self.assertEqual(self.view.template_name, 'ProductApp/categories.html')
+
+    def test_query_sets_categories(self):
+        self.assertQuerysetEqual(self.view.get_queryset(),
+                                 ProductCategory.objects.all(),
+                                 ordered=False
+                                 )
+        self.assertCountEqual(self.view.get_queryset(),
+                              ProductCategory.objects.all(),
+                              )

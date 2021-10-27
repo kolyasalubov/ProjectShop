@@ -3,7 +3,7 @@ from django.urls import reverse, resolve
 
 from ProductApp.views import HomePageView
 from ProductApp.models import Product, ProductCategory
-# from ProductApp.tests.factories import ProductCategoryFactory
+from ProductApp.tests.factories import ProductCategoryFactory, ProductFactory
 
 
 class HomePageTest(TestCase):
@@ -35,20 +35,28 @@ class HomePageViewTest(TestCase):
         self.view.object_list = ''
         self.view.setup(request)
         self.context = self.view.get_context_data()
+        ProductCategoryFactory.create_batch(25)
+        ProductFactory.create_batch(20)
+
+    def test_attrs(self):
+        self.assertEqual(self.view.context_object_name, 'products')
+        self.assertEqual(self.view.template_name, 'ProductApp/homepage.html')
 
     def test_environment_set_in_context(self):
         self.assertIn('products', self.context)
         self.assertIn('categories', self.context)
 
-    def test_query_sets(self):
-        # self.category = ProductCategoryFactory()
-
-        ProductCategory.objects.create(name='just a test')
-
-        self.assertQuerysetEqual(self.context['products'],
-                                 Product.objects.all())
-        self.assertCountEqual(self.context['products'], Product.objects.all())
+    def test_query_sets_categories(self):
         self.assertQuerysetEqual(self.context['categories'],
-                                 ProductCategory.objects.order_by('name')[:20])
+                                 ProductCategory.objects.order_by('name')[:20]
+                                 )
         self.assertCountEqual(self.context['categories'],
-                              ProductCategory.objects.order_by('name')[:20])
+                              ProductCategory.objects.order_by('name')[:20]
+                              )
+
+    def test_query_sets_products(self):
+        self.assertQuerysetEqual(self.view.get_queryset(),
+                                 Product.objects.all(),
+                                 ordered=False
+                                 )
+        self.assertCountEqual(self.view.get_queryset(), Product.objects.all())
