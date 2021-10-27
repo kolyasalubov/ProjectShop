@@ -26,8 +26,7 @@
     {% endif %}
     <!--  Messages end here  -->
 
-
-    <!--  Navbar starts here  -->
+    <!--  First Navbar starts here  -->
     <h3> Navbar: </h3>
     <a href="{% url 'home' %}">{% translate "Home page" %}</a>
 
@@ -38,6 +37,8 @@
         <a href="{% url 'login' %}">{% translate "Login" %}</a>
         <a href="{% url 'register' %}">{% translate "Register" %}</a>
     {% endif %}
+
+    <a href="{% url 'categories' %}">{% translate "Categories" %}</a>
 
     <!--  Flatpages  -->
     {% get_flatpages as flatpages %}
@@ -50,10 +51,19 @@
         </li>
       {% endfor %}
     </ul>
-    <!--  Navbar ends here  -->
+    <!--  First Navbar ends here  -->
 
+    <!--  Second Navbar starts here  -->
+    {% block category %}{% endblock category %}
+    <!--  Second Navbar ends here  -->
 
-    {% block content %}{% endblock %}
+    <hr>
+    <form action="{% url 'home' %}" method="get">
+        <input name="name__icontains" type="text" placeholder="Search" aria-label="Search">
+        <button type="submit" id="submit">{% translate "Search" %}</button>
+    </form>
+
+    {% block content %}{% endblock content %}
 
 
 </body>
