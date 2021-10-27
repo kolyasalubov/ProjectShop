@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.urls import reverse, resolve
 
 from ProductApp.views import CategoriesView
@@ -28,7 +28,6 @@ class CategoriesTest(TestCase):
 
 
 class CategoriesViewTest(TestCase):
-
     def setUp(self):
         request = RequestFactory().get('/')
         self.view = CategoriesView()
