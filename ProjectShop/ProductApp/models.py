@@ -208,8 +208,7 @@ class ProductImage(models.Model):
     image = models.ImageField(
         upload_to="product_media_image", default="default_image/default_image.png"
     )
-    
-    
+
     class Meta:
         verbose_name_plural = _("Product image")
 
@@ -258,7 +257,6 @@ class ProductVideo(models.Model):
     )
 
     video_link = models.URLField(null=True, blank=True)
-
 
     def __str__(self):
         return self.name

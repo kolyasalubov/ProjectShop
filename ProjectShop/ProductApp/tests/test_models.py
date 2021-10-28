@@ -7,7 +7,7 @@ from ProductApp.tests.factories import (
     ProductCategoryFactory,
     ProductSubcategoryFactory,
     TagFactory,
-    ProductMediaFactory,
+    TagGroupFactory,
     ReviewFactory,
 )
 
@@ -104,6 +104,24 @@ class ProductSubcategoryTestCase(TestCase):
             self.subcategory = ProductSubcategoryFactory(name=None)
 
 
+class TagGroupTestCase(TestCase):
+    """Test Case for TagGroup model"""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.group = TagGroupFactory()
+
+    def test_create(self):
+        self.assertIsNotNone(self.group)
+
+    def test_str(self):
+        self.assertEqual(self.group.name, str(self.group))
+
+    def test_create_with_None_as_name(self):
+        with self.assertRaises(IntegrityError):
+            self.group = TagGroupFactory(name=None)
+
+
 class TagTestCase(TestCase):
     """Test Case for Tag model"""
 
@@ -129,30 +147,6 @@ class TagTestCase(TestCase):
     def test_create_with_None_as_name(self):
         with self.assertRaises(IntegrityError):
             self.tag = TagFactory(name=None)
-
-
-class ProductMediaTestCase(TestCase):
-    """Test Case for ProductMedia model"""
-
-    def setUp(self) -> None:
-        self.media = ProductMediaFactory()
-
-    def test_create(self):
-        media = self.media
-        self.assertIsNotNone(media)
-
-    def test_str(self):
-        media = self.media
-        self.assertEqual(media.name, media.__str__())
-
-    def test_media_type(self):
-        media = self.media
-        self.assertTrue(media.media_type <= 1)
-
-    def test_url(self):
-        media = self.media
-        self.assertIn("http", media.video_link)
-        self.assertIn("://", media.video_link)
 
 
 class ReviewTestCase(TestCase):
