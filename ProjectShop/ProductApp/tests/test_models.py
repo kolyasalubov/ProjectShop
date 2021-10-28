@@ -119,7 +119,7 @@ class TagGroupTestCase(TestCase):
 
     def test_create_with_None_as_name(self):
         with self.assertRaises(IntegrityError):
-            self.group = TagGroupFactory(name=None)
+            TagGroupFactory(name=None)
 
 
 class TagTestCase(TestCase):
