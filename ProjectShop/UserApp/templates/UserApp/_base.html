@@ -11,12 +11,12 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
   </head>
   <body>
   <header id="header">
-    <div class="nav-menu">
         <!-- burger menu -->
+      <div class="left-container">
         <button class="hamburger" type="button">
             <span class="hamburger-box">
                 <span class="hamburger-inner"></span>
@@ -40,22 +40,20 @@
                 </div>
             </div>
         </nav>
+        <a class="logo" href="{% url 'home' %}">ProjectShop</a>
+      </div>
 
-        <!-- navbar -->
-        <div class="site-logo">
-            <a class="site-logo" href="{% url 'home' %}">ProjectShop</a>
-        </div>
-        <div class="nav-menu_actions">
-            <div class="wrapper">
-                <form action="">
+        <div class="right-container">
+            <div class="search-container">
+{#                <form action="">#}
                     <button class="search-button" type="submit">
-                        <span class="search-icon" style="background: url({% static 'assets/SearchOrange.svg' %}) no-repeat top left; "></span>
+                        <i class="fa fa-search"></i>
                     </button>
                     <input type="text" name="search" class="search-box">
-                </form>
+{#                </form>#}
             </div>
-            <div class="nav-icons">
-                <a href="" class="nav-link">
+            <div class="links-container">
+                 <a href="" class="nav-link">
                     <img class="nav-image" src={% static 'assets/EmptyCart.svg' %}>
                 </a>
                 <a href="{% url 'profile' %}" class="nav-link">
@@ -70,11 +68,8 @@
                         <img class="nav-image" src={% static 'assets/Login.svg' %}>
                     </a>
                 {% endif %}
-
             </div>
         </div>
-
-    </div>
     </header>
 
     {% block content %}
@@ -83,14 +78,14 @@
 
     <footer>
     <div class="footer-main">
-        <div class="footer-main-text" >
-            <a href="{% url 'home' %}" style="color:#F6E37B">Project<br>Shop</a>
+        <div class="footer-left">
+            <a class="footer-main-text" href="{% url 'home' %}" style="color:#F6E37B">Project<br>Shop</a>
         </div>
-        <div class="footer-container-second">
-            <div class="footer-text-container">
-                <p class="footer-main-text-second">Contact Us</p>
-                <br>
-                <div class="footer-second-text">
+        <div class="footer-right">
+            <div class="footer-first-container">
+                <p class="footer-main-text-first">Contact Us</p>
+{#                <br>#}
+                <div class="footer-second-text-first">
                     <span>LVIV - OFFICE 9 <br>
                         57 Fedkovycha Street, Lviv 79018 <br>
                         +380-32-240-9999<br>
@@ -98,15 +93,14 @@
                     </span>
                 </div>
             </div>
-            <div class="footer-text-container">
+            <div class="footer-second-container">
                 <br><br>
-                <div class="footer-second-text" style="font-size: 1rem;">
                     <span><a href="#" style="color:#F6E37B">Conditions of use</a><br>
                         <a href="#" style="color:#F6E37B">Privacy policy</a><br>
                         <a href="#" style="color:#F6E37B">Payment&Delivery info</a><br>
                         <a href="#" style="color:#F6E37B">Sitemap</a>
                     </span>
-                </div>
+
             </div>
         </div>
     </div>
