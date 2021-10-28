@@ -48,13 +48,16 @@ Clone this repo to your local machine using:
 
 ## Git Flow<a name="Git_Flow"></a>
 
-We have only master and feature branches.
+We have master and feature branches.
 
 All feature branches must be tested before being merged into master branch!
 
-Don't to push features into the master directly!
+All feature branches should starts from prefix `feature#XXX-YYY` - where XXX - number of issue and YYY - short
+description of the task e.g. feature-#17-Create_README
 
-You should have at least 3 approves before merging your feature.
+Don't push features into the master directly!
+
+You should have at least 3 approves from teammates and final approve from technical expert before merging your feature.
 
 ### How we add features<a name="How_we_add_features"></a>
 
@@ -62,7 +65,8 @@ You should have at least 3 approves before merging your feature.
 2. Create new feature branch from master.
 3. Add some commits to your new branch.
 4. Create a new pull request using `https://github.com/kolyasalubov/ProjectShop/compare/`
-5. Request review from teammates and wait for at least 3 approves.
+5. Request review from teammates and wait for at least 3 approves from teammates and final approve from technical expert
+   before merging your feature.
 6. Resolve conflicts and merge feature branch into main.
 7. Run main to check if all is correct.
 
@@ -70,7 +74,7 @@ ___
 
 ## Issue Flow<a name="Issue_Flow"></a>
 
-1. Go to [issues](https://github.com/kolyasalubov/ProjectShop/issues) and click `New issue` button
+1. Go to [issues](https://github.com/kolyasalubov/ProjectShop/issues) and click `New issue` button.
 2. When creating issue you should add name of the issue, description, choose assignee, label, project. If issue is
    a `User Story` you should link it with corresponding tasks, and corresponding tasks should be linked to issue.
 3. If issue is in work it should be placed in proper column on dashboard according to its status.
