@@ -40,15 +40,35 @@ Clone this repo to your local machine using:
 
 ### How to run<a name="How_to_run"></a>
 
-1. Open terminal
-2. Go to directory ProjectShop
+1. Open terminal.
+2. Go to directory ProjectShop.
 3. Run `docker-compose up`
-4. Open another terminal and go to directory ProjectShop
+4. Open another terminal and go to directory ProjectShop.
 5. Run `python manage.py runserver` or `make run`
+
+## Git Flow<a name="Git_Flow"></a>
+ 
+We have only master and feature branches.
+
+All feature branches must be tested before being merged into master branch!
+
+Don't to push features into the master directly!
+
+You should have at least 3 approves before merging your feature.
+
+###How we add features
+
+1. Clone this repo to your local machine using `https://github.com/kolyasalubov/ProjectShop.git`
+2. Create new feature branch from master.
+3. Add some commits to your new branch.
+4. Create a new pull request using `https://github.com/kolyasalubov/ProjectShop/compare/`
+5. Request review from teammates and wait for at least 3 approves.
+6. Resolve conflicts and merge feature branch into main.
+7. Run main to check if all is correct.
 
 ___
 
-## Issue Flow
+## Issue Flow<a name="Issue_Flow"></a>
 
 1. Go to [issues](https://github.com/kolyasalubov/ProjectShop/issues) and click `New issue` button
 2. When creating issue you should add name of the issue, description, choose assignee, label, project. If issue is
