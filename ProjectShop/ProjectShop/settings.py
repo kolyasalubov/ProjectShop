@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "crispy_forms",
     "drf_yasg",
-
+    'debug_toolbar',
+  
     # local apps
     'UserApp',
     'Shipping',
@@ -72,6 +73,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = "ProjectShop.urls"
@@ -214,3 +216,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
