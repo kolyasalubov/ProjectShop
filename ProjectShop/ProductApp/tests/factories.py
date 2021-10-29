@@ -7,9 +7,19 @@ from ProductApp.models import (
     ProductCategory,
     ProductSubcategory,
     Tag,
+    TagGroup,
     Review,
 )
 from UserApp.tests.factories import UserFactory
+
+
+class TagGroupFactory(factory.django.DjangoModelFactory):
+    """Factory for TagGroup model"""
+
+    class Meta:
+        model = TagGroup
+
+    name = factory.Faker("word")
 
 
 class TagFactory(factory.django.DjangoModelFactory):
@@ -19,6 +29,7 @@ class TagFactory(factory.django.DjangoModelFactory):
         model = Tag
 
     name = factory.Faker("word")
+    group = factory.SubFactory(TagGroupFactory)
 
 
 class ProductCategoryFactory(factory.django.DjangoModelFactory):
