@@ -29,9 +29,7 @@ class CategoriesTest(TestCase):
 
 class CategoriesViewTest(TestCase):
     def setUp(self):
-        request = RequestFactory().get('/')
         self.view = CategoriesView()
-        self.view.setup(request)
         ProductCategoryFactory.create_batch(25)
 
     def test_attrs(self):
