@@ -10,6 +10,7 @@ fake.add_provider(CustomPhoneProvider)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
+  
     class Meta:
         model = User
 
