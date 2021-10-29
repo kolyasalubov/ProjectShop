@@ -42,6 +42,12 @@ class HomePageView(FilterView):
         return context
 
 
+class ProductDetailView(generic.DetailView):
+    model = Product
+    context_object_name = 'product_detail'
+    template_name = 'ProductApp/product_detail.html'
+
+
 class CategoriesView(generic.ListView):
     model = ProductCategory
     context_object_name = 'categories'
