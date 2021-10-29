@@ -8,6 +8,7 @@ from ProductApp.models import (
     ProductSubcategory,
     Tag,
     Review,
+    Reply,
 )
 
 
@@ -86,12 +87,20 @@ class ProductSerializer(ModelSerializer):
 
 class ReviewSerializer(ModelSerializer):
     """
-    Serializer for Review view.
-    Replies for review (likes and dislikes) will be added later
-    """
+    Serializer for Review view.    """
 
     product = ProductNameSerializer(read_only=True)
 
     class Meta:
         model = Review
         fields = "__all__"
+
+class ReplySerializer(ModelSerializer):
+    """
+    Serializer for reply view
+    """
+    product = ProductNameSerializer(read_only=True)
+    class Meta:
+        model = Reply
+        fields = ["review",
+                  "reaction"]

@@ -8,6 +8,7 @@ from ProductApp.views import (
     ProductVideoViewSet,
     ProductCategoryViewSet,
     ProductSubcategoryViewSet,
+    ReplyViewSet,
 )
 from Shipping.views import ShippingViewSet
 from order.views import OrderViewSet, OrderItemsViewSet

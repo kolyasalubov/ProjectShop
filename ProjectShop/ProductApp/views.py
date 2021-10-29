@@ -17,6 +17,7 @@ from ProductApp.models import (
     ProductVideo,
     Review,
     Tag,
+    Reply,
 )
 from ProductApp.serializers import (
     ProductSerializer,
@@ -26,6 +27,7 @@ from ProductApp.serializers import (
     ProductVideoSerializer,
     ReviewSerializer,
     TagSerializer,
+    ReplySerializer,
 )
 
 
@@ -98,3 +100,12 @@ class ReviewViewSet(NestedViewSetMixin, ModelViewSet):
 
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
+
+class ReplyViewSet(NestedViewSetMixin, ModelViewSet):
+    """
+    ViewSet to view and write reviews for specified in path product
+    """
+
+    serializer_class = ReplySerializer
+    queryset = Reply.objects.all()
