@@ -72,7 +72,7 @@ class TestForms(TestCase):
 
     def test_LoginForm_valid_email(self):
         user = UserFactory()
-        form = LoginForm(data={"username": user.email, "password": "1234"})
+        form = LoginForm(data={"username": user.email, "password": "ValidPassword1@"})
 
         self.assertTrue(form.is_valid())
 

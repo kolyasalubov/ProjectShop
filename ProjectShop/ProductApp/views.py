@@ -98,3 +98,5 @@ class ReviewViewSet(NestedViewSetMixin, ModelViewSet):
 
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
+
