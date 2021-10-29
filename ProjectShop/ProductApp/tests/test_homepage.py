@@ -36,8 +36,8 @@ class HomePageViewTest(TestCase):
         self.view.object_list = ''
         self.view.setup(request)
         self.context = self.view.get_context_data()
-        ProductCategoryFactory.create_batch(4)
-        ProductFactory.create_batch(2)
+        ProductCategoryFactory.create_batch(25)
+        ProductFactory.create_batch(20)
 
     def test_attrs(self):
         self.assertEqual(self.view.filterset_class, ProductFilter)
