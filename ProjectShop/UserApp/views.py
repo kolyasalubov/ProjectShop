@@ -5,8 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from django.views import generic
-from django.views.generic.base import TemplateView
+
+
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -16,7 +16,6 @@ from rest_framework_extensions.mixins import NestedViewSetMixin
 
 
 from ProductApp.models import Product
-from UserApp.permissions import IsAdminBot
 from UserApp.forms import LoginForm, RegisterForm, EditForm
 from UserApp.models import User
 from UserApp.permissions import IsAdminBot
@@ -26,6 +25,13 @@ from UserApp.serializers import UserSerializer, UserSerializerForPatch, UserWish
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     form_class = LoginForm
     template_name = "UserApp/login.html"
+
+    def form_valid(self, form):
+        remember_me = form.cleaned_data['remember_me']
+        if not remember_me:
+            self.request.session.set_expiry(0)
+            self.request.session.modified = True
+        return super().form_valid(form)
 
 
 class RegisterView(AnonymousRequiredMixin, SuccessMessageMixin, generic.CreateView):
@@ -101,6 +107,12 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
         return Response(status=status.HTTP_200_OK)
 
 
+class GetUserByTelegramIdViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'telegram_id'
+    
+    
 class UserViewSet(viewsets.ModelViewSet):
     """
     Viewset made for our user.

@@ -47,14 +47,17 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.flatpages",
+  
     # 3rd-party apps
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "django_countries",
+    'django_extensions',
     "phonenumber_field",
     "crispy_forms",
     "drf_yasg",
     'debug_toolbar',
+  
     # local apps
     'UserApp',
     'Shipping',
@@ -157,6 +160,8 @@ AUTH_USER_MODEL = "UserApp.User"
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+SESSION_COOKIE_AGE = 1209601
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
