@@ -33,7 +33,7 @@ class TagSerializer(ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ["name"]
+        fields = ["name", "group"]
 
 
 class ProductNameSerializer(ModelSerializer):
