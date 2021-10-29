@@ -1,15 +1,38 @@
 from django.views import generic
 
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework_extensions.mixins import NestedViewSetMixin
+
+from django_filters.views import FilterView
 
 from ProductApp.models import Review, Product, ProductCategory
 from ProductApp.serializers import ReviewSerializer
+from ProductApp.filters import ProductFilter
+
+from ProductApp.models import (
+    Product,
+    ProductCategory,
+    ProductSubcategory,
+    ProductImage,
+    ProductVideo,
+    Review,
+    Tag,
+)
+from ProductApp.serializers import (
+    ProductSerializer,
+    ProductCategorySerializer,
+    ProductSubcategorySerializer,
+    ProductImageSerializer,
+    ProductVideoSerializer,
+    ReviewSerializer,
+    TagSerializer,
+)
 
 
-class HomePageView(generic.ListView):
-    context_object_name = 'products'
+class HomePageView(FilterView):
+    filterset_class = ProductFilter
     template_name = 'ProductApp/homepage.html'
-    queryset = Product.objects.all()
+    context_object_name = 'products'
     paginate_by = 12
 
     def get_context_data(self, **kwargs):
@@ -26,17 +49,52 @@ class CategoriesView(generic.ListView):
     paginate_by = 12
 
 
-class ReviewViewSet(ModelViewSet):
+class ProductViewSet(ReadOnlyModelViewSet):
+    """This is viewset for Product model"""
+
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+
+
+class ProductCategoryViewSet(ReadOnlyModelViewSet):
+    """This is viewset for ProductCategory model"""
+
+    serializer_class = ProductCategorySerializer
+    queryset = ProductCategory.objects.all()
+
+
+class ProductSubcategoryViewSet(ReadOnlyModelViewSet):
+    """This is viewset for ProductSubcategory model"""
+
+    serializer_class = ProductSubcategorySerializer
+    queryset = ProductSubcategory.objects.all()
+
+
+class TagViewSet(ReadOnlyModelViewSet):
+    """This is viewset for Tag model"""
+
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+
+
+class ProductImageViewSet(ReadOnlyModelViewSet):
+    """This is viewset for ProductMedia model"""
+
+    serializer_class = ProductImageSerializer
+    queryset = ProductImage.objects.all()
+
+
+class ProductVideoViewSet(ReadOnlyModelViewSet):
+    """This is viewset for ProductMedia model"""
+
+    serializer_class = ProductVideoSerializer
+    queryset = ProductVideo.objects.all()
+
+
+class ReviewViewSet(NestedViewSetMixin, ModelViewSet):
     """
     ViewSet to view and write reviews for specified in path product
     """
+
     serializer_class = ReviewSerializer
-
-    def get_queryset(self):
-        product_id = self.kwargs.get('product_id')
-        queryset_list = Review.objects.filter(product=product_id)
-        return queryset_list
-
-    def perform_create(self, serializer):
-        product_id = self.kwargs.get('product_id')
-        serializer.save(product=Product.objects.get(pk=product_id))
+    queryset = Review.objects.all()

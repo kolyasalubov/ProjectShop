@@ -1,67 +1,86 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
 
-from ProductApp.models import Product, ProductCategory, ProductSubcategory, Tag, Review, ProductMedia
+from django_extensions.admin import ForeignKeyAutocompleteAdmin
+
+from ProductApp.models import (
+    Product,
+    ProductCategory,
+    ProductSubcategory,
+    Tag,
+    Review,
+    ProductImage,
+    ProductVideo,
+)
 
 
 class IsAvailableProductFilter(admin.SimpleListFilter):
-    title = _('is available')
-    parameter_name = 'is_available'
+    title = _("is available")
+    parameter_name = "is_available"
 
     def lookups(self, request, model_admin):
         return (
-            ('available', _('available')),
-            ('not_available', _('not available')),
+            ("available", _("available")),
+            ("not_available", _("not available")),
         )
 
     def queryset(self, request, queryset):
-        if self.value() == 'available':
+        if self.value() == "available":
             return queryset.filter(stock_quantity__gt=0)
-        if self.value() == 'not_available':
+        if self.value() == "not_available":
             return queryset.filter(stock_quantity__lte=0)
 
 
-class MediaInline(admin.TabularInline):
-    model = ProductMedia
-    fields = ('media_type', 'video_link', 'image', 'image_tag')
-    readonly_fields = ('image_tag',)
+class ImageInline(admin.TabularInline):
+    model = ProductImage
+    fields = ("image", "image_tag")
+    readonly_fields = ("image_tag",)
+    extra = 1
+    
+    
+class VideoInline(admin.TabularInline):
+    model = ProductVideo
+    fields = ("video_link",)
     extra = 1
 
 
-class CustomModelAdmin(admin.ModelAdmin):
-
-    def save_model(self, request, obj, form, change):
-        if not obj.slug:
-            obj.slug = slugify(obj.name)
-        object_count = self.model.objects.filter(slug=obj.slug).count() + 1
-        if object_count != 1:
-            obj.slug = f'{obj.slug}-{object_count}'
-        super().save_model(request, obj, form, change)
-
-
-class ProductAdmin(CustomModelAdmin):
-    inlines = (MediaInline,)
-    fields = ('name', 'slug', 'price', 'stock_quantity', 'description', 'categories', 'subcategories', 'tags')
-    list_display = ('name', 'price', 'stock_quantity', 'short_description')
+class ProductAdmin(ForeignKeyAutocompleteAdmin):
+    inlines = (ImageInline, VideoInline)
+    fields = (
+        "name",
+        "slug",
+        "price",
+        "stock_quantity",
+        "description",
+        "categories",
+        "subcategories",
+        "tags",
+    )
+    list_display = ("name", "price", "stock_quantity", "short_description")
     list_filter = (IsAvailableProductFilter,)
-    search_fields = ('name', 'description')
-    filter_horizontal = ('categories', 'subcategories', 'tags')
+    search_fields = ("name", "description")
+    filter_horizontal = ("categories", "subcategories", "tags")
 
 
-class ProductMediaAdmin(admin.ModelAdmin):
-    fields = ('product', 'media_type', 'video_link', 'image', 'image_tag')
-    readonly_fields = ('image_tag',)
-    list_display = ('name', 'media_type', 'video_link', 'image', 'small_image_tag')
-    list_filter = ('media_type',)
-    search_fields = ('product__name',)
-    raw_id_fields = ('product',)
+class ProductImageAdmin(admin.ModelAdmin):
+    fields = ("product", "image", "image_tag")
+    readonly_fields = ("image_tag",)
+    list_display = ("name", "image", "small_image_tag")
+    search_fields = ("product__name",)
+    raw_id_fields = ("product",)
+
+
+class ProductVideoAdmin(admin.ModelAdmin):
+    fields = ("product", "video_link")
+    list_display = ("name", "video_link")
+    search_fields = ("product__name",)
+    raw_id_fields = ("product",)
 
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('name', 'is_active', 'user', 'product', 'rating')
-    list_filter = ('is_active', 'rating')
-    search_fields = ('product__name', 'user__email')
+    list_display = ("name", "is_active", "user", "product", "rating")
+    list_filter = ("is_active", "rating")
+    search_fields = ("product__name", "user__email")
 
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
@@ -71,7 +90,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        enabled_fields = {'is_active'}
+        enabled_fields = {"is_active"}
         for field in form.base_fields:
             if field in enabled_fields:
                 continue
@@ -79,15 +98,15 @@ class ReviewAdmin(admin.ModelAdmin):
         return form
 
 
-class ProductCategoryAdmin(CustomModelAdmin):
+class ProductCategoryAdmin(ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
 
 
-class ProductSubcategoryAdmin(CustomModelAdmin):
+class ProductSubcategoryAdmin(ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
 
 
-class TagAdmin(CustomModelAdmin):
+class TagAdmin(ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
 
 
@@ -96,4 +115,5 @@ admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(ProductSubcategory, ProductSubcategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Review, ReviewAdmin)
-admin.site.register(ProductMedia, ProductMediaAdmin)
+admin.site.register(ProductImage, ProductImageAdmin)
+admin.site.register(ProductVideo, ProductVideoAdmin)
