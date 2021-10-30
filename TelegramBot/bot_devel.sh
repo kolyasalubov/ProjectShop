@@ -1,14 +1,14 @@
 #!/bin/sh
-restart_bot () {
-  pkill -f main.py
-  echo "Changes detected, restarting..."
-  python main.py
-}
+
 
 echo "Starting bot..."
-python main.py &
-inotifywait -mr -e modify / |\
-while read
+
+while true
 do
-  restart_bot
+  python main.py &
+  process=$!
+  sleep 5
+  inotifywait -qr "." -e modify --exclude "__"
+  kill $process
+  echo "Changes detected, restarting..."
 done
