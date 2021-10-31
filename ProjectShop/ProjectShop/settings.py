@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "crispy_forms",
     "drf_yasg",
+    "ckeditor",
+    "ckeditor_uploader",
 
     # local apps
     'UserApp',
@@ -108,6 +110,7 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -148,6 +151,7 @@ STATICFILES_DIR = [str(BASE_DIR) + "/static"]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR) + "/media"
 
+CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
