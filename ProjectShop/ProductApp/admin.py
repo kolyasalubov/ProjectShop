@@ -52,7 +52,7 @@ class AdvancedDescriptionAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(ForeignKeyAutocompleteAdmin):
-    inlines = (ImageInline, VideoInline, )
+    inlines = (ImageInline, VideoInline)
     fields = (
         "name",
         "slug",
