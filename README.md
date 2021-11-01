@@ -48,9 +48,13 @@ Clone this repo to your local machine using:
 
 ## Git Flow<a name="Git_Flow"></a>
 
-We have main and feature branches.
+We have master(main), development(dev) and feature branches.
 
-All feature branches must be tested before being merged into main branch!
+All feature branches must be merged into dev branch!
+
+![Github flow](https://camo.githubusercontent.com/3e34f7a8d05c9d273965596db7c7b30f111b1d4990aa2ac47cb9792cfcb2b70b/68747470733a2f2f7761632d63646e2e61746c61737369616e2e636f6d2f64616d2f6a63723a62353235396363652d363234352d343966322d623839622d3938373166396565336661342f30332532302832292e7376673f63646e56657273696f6e3d31333132)
+
+All feature branches must be tested before being merged!
 
 All feature branches should starts from prefix `feature#XXX-YYY` - where XXX - number of issue and YYY - short
 description of the task e.g. feature-#17-Create_README
@@ -62,13 +66,13 @@ You should have at least 3 approves from teammates and final approve from techni
 ### How we add features<a name="How_we_add_features"></a>
 
 1. Clone this repo to your local machine using `https://github.com/kolyasalubov/ProjectShop.git`
-2. Create new feature branch from main.
+2. Create new feature branch from dev.
 3. Add some commits to your new branch.
-4. Create a new pull request using `https://github.com/kolyasalubov/ProjectShop/compare/`
+4. Create a new pull request to dev branch using `https://github.com/kolyasalubov/ProjectShop/compare/`
 5. Request review from teammates and wait for at least 3 approves from teammates and final approve from technical expert
    before merging your feature.
-6. Resolve conflicts and merge feature branch into main.
-7. Run main to check if all is correct.
+6. Resolve conflicts and merge feature branch into dev.
+7. Run dev to check if all is correct.
 
 ___
 
