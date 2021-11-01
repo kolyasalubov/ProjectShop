@@ -1,5 +1,4 @@
 from django import forms
-
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from ProductApp.models import AdvancedProductDescription
