@@ -144,6 +144,8 @@ def ProductOverviewPageView(request, product_id = 1):
 
     return render(request, 'ProductApp/ProductOverviewPage.html', context)
 
+def ProductsByTagGroupView(request):
+    return render(request, 'ProductApp/ProductsPage.html')
 
 # class ClassBasedProductOverviewView(View):
 #

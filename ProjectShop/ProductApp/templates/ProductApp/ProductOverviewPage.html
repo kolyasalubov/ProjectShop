@@ -35,14 +35,26 @@
 
             <script src="{% static 'js/ProductOverviewJS/Image.js' %}"></script>
 
+
             {% if product_media|slice:"1:" %}
             <div class="additional_photos">
                 {% for x in product_media|slice:"1:" %}
                     <div class="additional_photos1">
-                        <img id="addit_photos" height="100%" width="100%" src="{{ x.image.url }}">
+
+                        <img src="{{ x.image.url }}" style="max-width:100%;cursor:pointer" onclick="onClick(this)" class="modal-hover-opacity">
+
+                    <div id="modal01" class="modal" onclick="this.style.display='none'">
+                      <span class="close">&times;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                      <div class="modal-content">
+                        <img id="img02" style="max-width:100%">
+                      </div>
+                    </div>
+
                     </div>
                 {% endfor %}
+                 <script src="{% static 'js/ProductOverviewJS/pop-up_images.js' %}"></script>
             </div>
+
             {% else %}
             {% endif %}
 
@@ -62,6 +74,8 @@
                 {% endfor %}
 
             </div>
+
+
 
         </section>
 
@@ -135,15 +149,6 @@
             {% endfor %}
 
         </section>
-
-<!--        <section class="additional_buttons">-->
-<!--            <a href="#Anchor">-->
-<!--                <div class="up_anchor"><input type="button" value="UP" class="add_to_cart_button"/></div>-->
-<!--            </a>-->
-<!--            <a href="{% url 'home' %}">-->
-<!--                <div class="view_more_button"><input type="button" value="View more" class="add_to_cart_button"/></div>-->
-<!--            </a>-->
-<!--        </section>-->
 
     </div>
 {% endblock content%}

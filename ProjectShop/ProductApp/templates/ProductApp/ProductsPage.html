@@ -1,0 +1,182 @@
+{% extends 'UserApp/_base.html' %}
+{% block title %} Products {% endblock title %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static '/css/ProductsPage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div id="wrapper">
+        <section id="word_cloud">
+
+            <div id="word_cloud_div">
+                <div class="tag_name">
+                     Samsung
+                </div>
+                <div class="tag_delete">
+                    <img id="delete_image" src='Layer%2035.png'>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section id="top">
+
+            <div id="name_of_category">
+                Cameras
+            </div>
+
+            <div id="filter">
+
+
+
+
+                <div class="dropdown">
+                  <button onclick="myFunction()" class="dropbtn">Filter</button>
+                  <div id="myDropdown" class="dropdown-content">
+                     <h1 style="text-align:center" >Filter by</h1>
+                      <div>
+                          <input type="checkbox" id="scales" name="scales" checked>
+                          <label for="scales">Scales</label>
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus minima minus nemo sequi. Animi dignissimos est, saepe sit ut voluptates.
+                      </div>
+                  </div>
+                </div>
+
+<!--                <script src="{% static 'js/ProductsPage/filter_tab.js' %}" ></script>-->
+                <script>
+                    function myFunction() {
+                      document.getElementById("myDropdown").classList.toggle("show");
+                    }
+                    myFunction()
+                </script>
+
+
+            </div>
+
+
+        </section>
+
+
+        <section id="products">
+
+            <div class="product">
+
+               <div style="position: relative; z-index: 1;" class="product_photo">
+                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
+                  <span id="overlay_text" style="position: absolute; top: 0px; z-index: 2;">
+                      <img class="cart_image" src="Layer%2027.png">
+                  </span>
+               </div>
+
+                <div class="bottom_div">
+                    <div class="name">Iphone 13 Pro Max </div>
+                    <div class="extra">
+                        <div class="price"> 1300$</div>
+                        <div class="rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="product">
+
+               <div style="position: relative; z-index: 1;" class="product_photo">
+                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
+                  <span id="overlay_text" style="position: absolute; top: 0px; z-index: 2;">
+<!--                      <img height="100%" width="100%" src="cart.jpg">-->
+                  </span>
+               </div>
+
+                <div class="bottom_div">
+                    <div class="name">Iphone 13 Pro Max </div>
+                    <div class="extra">
+                        <div class="price"> 1300$</div>
+                        <div class="rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="product">
+
+               <div style="position: relative; z-index: 1;" class="product_photo">
+                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
+                  <span id="overlay_text" style="position: absolute; top: 0px; z-index: 2;">
+<!--                      <img height="100%" width="100%" src="cart.jpg">-->
+                  </span>
+               </div>
+
+                <div class="bottom_div">
+                    <div class="name">Iphone 13 Pro Max </div>
+                    <div class="extra">
+                        <div class="price"> 1300$</div>
+                        <div class="rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="product">
+
+               <div style="position: relative; z-index: 1;" class="product_photo">
+                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
+                  <span id="overlay_text" style="position: absolute; top: 0px; z-index: 2;">
+<!--                      <img height="100%" width="100%" src="cart.jpg">-->
+                  </span>
+               </div>
+
+                <div class="bottom_div">
+                    <div class="name">Iphone 13 Pro Max </div>
+                    <div class="extra">
+                        <div class="price"> 1300$</div>
+                        <div class="rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="product">
+
+               <div style="position: relative; z-index: 1;" class="product_photo">
+                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
+                  <span id="overlay_text" style="position: absolute; top: 0px; z-index: 2;">
+<!--                      <img height="100%" width="100%" src="cart.jpg">-->
+                  </span>
+               </div>
+
+                <div class="bottom_div">
+                    <div class="name">Iphone 13 Pro Max </div>
+                    <div class="extra">
+                        <div class="price"> 1300$</div>
+                        <div class="rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="product">
+
+               <div style="position: relative; z-index: 1;" class="product_photo">
+                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
+                  <span id="overlay_text" style="position: absolute; top: 0px; z-index: 2;">
+<!--                      <img height="100%" width="100%" src="cart.jpg">-->
+                  </span>
+               </div>
+
+                <div class="bottom_div">
+                    <div class="name">Iphone 13 Pro Max </div>
+                    <div class="extra">
+                        <div class="price"> 1300$</div>
+                        <div class="rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+{% endblock content%}
