@@ -10,7 +10,15 @@ from enum import Enum
 from typing import List, Tuple
 
 from phonenumbers import PhoneNumber
-from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, AnyUrl
+from pydantic import (
+    BaseModel,
+    constr,
+    EmailStr,
+    PositiveInt,
+    conint,
+    condecimal,
+    AnyUrl,
+)
 
 from client.status_check import bot_client
 
@@ -19,6 +27,7 @@ class Page(BaseModel):
     """
     This model is used to transform gathered data into object
     """
+
     count: PositiveInt = 1
     next: AnyUrl = None
     previous: AnyUrl = None
@@ -29,6 +38,7 @@ class PaginatedModel(BaseModel):
     """
     Model for all models, that require pagination
     """
+
     _path = None
     _name = None
 
@@ -40,7 +50,7 @@ class PaginatedModel(BaseModel):
         """
         Turn our results into objects of respective class
         """
-        json['results'] = [cls(**item) for item in json['results']]
+        json["results"] = [cls(**item) for item in json["results"]]
         return Page(**json)
 
     @classmethod
@@ -80,7 +90,9 @@ class ShippingAddress(PaginatedModel):
 
         Return: List[ShippingAddress]
         """
-        response = bot_client.send_request("GET", f"user/shipping-address", params={"userId": user_id})
+        response = bot_client.send_request(
+            "GET", f"user/shipping-address", params={"userId": user_id}
+        )
         return cls.page(response.json())
 
     def add_shipping_address(self):
@@ -94,7 +106,9 @@ class ShippingAddress(PaginatedModel):
         """
         Delete user's shipping address, specified by user's id and shipping address' id
         """
-        bot_client.send_request("DELETE", f"/user/shipping-address", params={"id": address_id})
+        bot_client.send_request(
+            "DELETE", f"/user/shipping-address", params={"id": address_id}
+        )
 
 
 class Wishlist(PaginatedModel):
@@ -120,15 +134,20 @@ class Wishlist(PaginatedModel):
         """
         Add item to user's wishlist
         """
-        bot_client.send_request("POST", f"user/{self.user_id}/wishlist", data=self.product_id)
+        bot_client.send_request(
+            "POST", f"user/{self.user_id}/wishlist", data=self.product_id
+        )
 
     @staticmethod
     def delete(user_id: int, product_id: int):
         """
         Delete item from user's wishlist
         """
-        bot_client.send_request("DELETE", f"/user/wishlist", params={"userId": user_id,
-                                                                     "productId": product_id})
+        bot_client.send_request(
+            "DELETE",
+            f"/user/wishlist",
+            params={"userId": user_id, "productId": product_id},
+        )
 
 
 class User(BaseModel):
@@ -161,8 +180,10 @@ class User(BaseModel):
         Check if our user is registered by his phone_number.
         If he is, return his id for later use
         """
-        response = bot_client.send_request("GET", f"/user", params={"phone-number", phone_number})
-        return response.json()['id']
+        response = bot_client.send_request(
+            "GET", f"/user", params={"phone-number", phone_number}
+        )
+        return response.json()["id"]
 
     def register(self) -> int:
         """
@@ -177,20 +198,15 @@ class User(BaseModel):
         """
         Change user_data via dict. Return true on success
         """
-        bot_client.send_request("PATCH", f"/user", params={"userId", user_id}, data=data_to_change)
+        bot_client.send_request(
+            "PATCH", f"/user", params={"userId", user_id}, data=data_to_change
+        )
 
 
 class Category(PaginatedModel):
     name: constr(max_length=100)
 
     _path = "/categories"
-    _name = "name"
-
-
-class Subcategory(PaginatedModel):
-    name: constr(max_length=100)
-
-    _path = "/subcategories"
     _name = "name"
 
 
@@ -226,7 +242,9 @@ class Review(PaginatedModel):
         """
         Create new review for product specified by product_id
         """
-        bot_client.send_request("POST", f"/products/{product_id}/reviews", data=self.__dict__)
+        bot_client.send_request(
+            "POST", f"/products/{product_id}/reviews", data=self.__dict__
+        )
 
     def like(self, user_id, like=True):
         """
@@ -236,7 +254,9 @@ class Review(PaginatedModel):
         """
 
         data = {"userId": user_id, "reply": like}
-        response = bot_client.send_request("PUT", f"/products/reviews/{self.id}/replies", data=data)
+        response = bot_client.send_request(
+            "PUT", f"/products/reviews/{self.id}/replies", data=data
+        )
         return response.json()
 
 
@@ -247,7 +267,6 @@ class Product(PaginatedModel):
     description: constr(max_length=5000)
     stock_quantity: PositiveInt
     categories: List[Category]
-    subcategories: List[Subcategory]
     tags: List[Tag]
     images: List[str]
     video_links: List[str]
@@ -256,16 +275,15 @@ class Product(PaginatedModel):
         arbitrary_types_allowed = True
 
     @classmethod
-    def view_products(cls, category: str, subcategories: list = None, tags: list = None) -> Page:
+    def view_products(cls, category: str = None, query: list = None) -> Page:
         """
         Get paginated list of products by some filters.
         If filters aren't specified, list should be sorted by popularity
         """
-        params = {"category": category}
-        if subcategories:
-            params.update({"subcategories": subcategories})
-        if tags:
-            params.update({"tags": tags})
+        if category:
+            params = {"category": category}
+        elif query:
+            params = {"query": query}
         response = bot_client.send_request("GET", f"/products", params=params)
         return cls.page(response.json())
 

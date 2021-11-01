@@ -1,5 +1,5 @@
 import telegram
-from telegram import Update
+from telegram import Update, ParseMode
 from telegram.ext import (
     Updater,
     Filters,
@@ -8,22 +8,22 @@ from telegram.ext import (
     CallbackQueryHandler,
     CallbackContext,
     ConversationHandler,
+    Defaults,
 )
 
 from TOKEN import TELEGRAM_TOKEN
-from handlers.user_menu import get_base_reply_keyboard
-from client.models import Category, Subcategory, Tag
+from client.models import Category, Product
 from handlers.product_manager import (
-    CategoryCallbacks,
-    SubcategoryCallbacks,
-    TagCallbacks,
-    ProductCallbacks,
-    CATEGORY,
+    search_type,
     SEARCH,
-    SUBCATEGORIES,
-    TAGS,
-    close_products,
+    CategoryCallbacks,
+    name_search,
+    CATEGORY,
+    ProductCallbacks,
+    NAME,
     PRODUCTS,
+    close_products,
+    DESCRIPTION,
 )
 from handlers.user_menu import get_base_reply_keyboard
 
@@ -43,60 +43,32 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("start", start_command))
     dp.add_handler(
         ConversationHandler(
-            entry_points=[
-                MessageHandler(
-                    Filters.text("search products"), CategoryCallbacks.propose_page
-                )
-            ],
+            entry_points=[MessageHandler(Filters.text("search products"), search_type)],
             states={
-                CATEGORY: [
+                SEARCH: [
                     CallbackQueryHandler(
-                        CategoryCallbacks.chosen_category, pattern=Category
+                        CategoryCallbacks.propose_page,
+                        pattern=r"search=Search-by-category",
                     ),
+                    CallbackQueryHandler(name_search, pattern=r"search=Search-by-name"),
+                ],
+                CATEGORY: [
+                    CallbackQueryHandler(ProductCallbacks.first_page, pattern=Category),
                     CallbackQueryHandler(
                         CategoryCallbacks.turn_page,
                         pattern=r"^http://.+/categories/.+$",
                     ),
                 ],
-                SEARCH: [
-                    CallbackQueryHandler(
-                        SubcategoryCallbacks.propose_page,
-                        pattern=r"search=Apply-filters",
-                    ),
-                    CallbackQueryHandler(
-                        ProductCallbacks.first_page, pattern=r"search=Most-popular"
-                    ),
-                ],
-                SUBCATEGORIES: [
-                    CallbackQueryHandler(
-                        SubcategoryCallbacks.chosen_value, pattern=Subcategory
-                    ),
-                    CallbackQueryHandler(
-                        SubcategoryCallbacks.turn_page,
-                        pattern=r"^http://.+/subcategories/.+$",
-                    ),
-                    CallbackQueryHandler(
-                        TagCallbacks.propose_page,
-                        pass_chat_data=True,
-                        pattern=r"^finish-Subcategory",
-                    ),
-                ],
-                TAGS: [
-                    CallbackQueryHandler(TagCallbacks.chosen_value, pattern=Tag),
-                    CallbackQueryHandler(
-                        TagCallbacks.turn_page,
-                        pass_chat_data=True,
-                        pattern=r"^http://.+/tags/.+$",
-                    ),
-                    CallbackQueryHandler(
-                        ProductCallbacks.first_page,
-                        pass_chat_data=True,
-                        pattern=r"finish-Tag",
-                    ),
-                ],
+                NAME: [MessageHandler(Filters.text, ProductCallbacks.first_page)],
                 PRODUCTS: [
                     CallbackQueryHandler(
                         ProductCallbacks.turn_page, pattern=r"^http://.+/products/.+$"
+                    ),
+                    CallbackQueryHandler(ProductCallbacks.description, pattern=Product),
+                ],
+                DESCRIPTION: [
+                    CallbackQueryHandler(
+                        ProductCallbacks.go_back, pattern=r"product=Go-back"
                     )
                 ],
             },
@@ -109,7 +81,14 @@ def setup_dispatcher(dp):
 def run_pooling():
     """Run bot in pooling mode"""
 
-    updater = Updater(TELEGRAM_TOKEN, use_context=True, arbitrary_callback_data=True)
+    defaults = Defaults(parse_mode=ParseMode.MARKDOWN_V2)
+
+    updater = Updater(
+        TELEGRAM_TOKEN,
+        defaults=defaults,
+        use_context=True,
+        arbitrary_callback_data=True,
+    )
 
     dp = updater.dispatcher
     dp = setup_dispatcher(dp)

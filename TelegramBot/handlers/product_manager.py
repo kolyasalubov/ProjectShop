@@ -1,11 +1,11 @@
 from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler
 
-from client.models import Category, Page, Subcategory, Tag, Product
+from client.models import Category, Page, Product
 from handlers.utils import KeyboardBuilder
 
 # constants for conversation states
-CATEGORY, SEARCH, SUBCATEGORIES, TAGS, PRODUCTS = range(5)
+SEARCH, CATEGORY, NAME, PRODUCTS, DESCRIPTION = range(5)
 
 
 class PageCallbacks:
@@ -57,120 +57,102 @@ class PageCallbacks:
         )
 
 
-class FilterCallbacks(PageCallbacks):
+def search_type(update: Update, context: CallbackContext):
     """
-    Base class for models, that are used as filters
+    Callback function for CallbackQueryHandler. User is deciding what kind of search they want: by name or by category
     """
 
-    @classmethod
-    def _build_keyboard(cls, page: Page) -> KeyboardBuilder:
-        keyboard_builder = super()._build_keyboard(page)
-        keyboard_builder.add_finish_button(data=cls.return_class.__name__)
-        return keyboard_builder
+    update.message.delete()
 
-    @classmethod
-    def chosen_value(cls, update: Update, context: CallbackContext):
-        query = update.callback_query
-        reply_markup = query.message.reply_markup
-        if cls.return_class not in context.chat_data:
-            context.chat_data[cls.return_class] = []
-        filters = context.chat_data[cls.return_class]
-        if query.data in filters:
-            query.answer(f"'{query.data}' has been removed from filters!")
-            filters.remove(query.data)
-        else:
-            query.answer(f"'{query.data}' has been added to filters!")
-            filters.append(query.data)
-        query.edit_message_text(
-            text=cls.text + "\n" + "\n".join(map(str, filters)),
-            reply_markup=reply_markup,
-        )
+    keyboard_builder = KeyboardBuilder(
+        Page(results=["Search by category", "Search by name"]), "search"
+    )
+    keyboard_builder.create_keyboard(columns=3)
+    context.bot.send_message(
+        chat_id=update.callback_query.message.chat_id,
+        text="What type of search would you like?",
+        reply_markup=keyboard_builder.keyboard,
+    )
+    return SEARCH
+
+
+def name_search(update: Update, context: CallbackContext):
+    """
+    Function for getting user query for product filtering/searching
+    """
+    update.callback_query.delete_message()
+
+    context.bot.send_message("Enter your search query, please:")
+
+    return NAME
+
+
+def close_products(update: Update, context: CallbackContext):
+    """
+    Function to clean memory after finishing the conversation
+    """
+    update.message.reply_text(text="Canceling product search!")
+    del context.chat_data[Category]
+    for message in context.chat_data[Product]:
+        message.delete_message()
+    del context.chat_data[Product]
+    del context.chat_data["Product-list-cache"]
+    return ConversationHandler.END
 
 
 class CategoryCallbacks(PageCallbacks):
     return_class = Category
     text = "Choose category:"
-    propose_state = CATEGORY
-
-    @classmethod
-    def chosen_category(cls, update: Update, context: CallbackContext):
-        """
-        Callback function for CallbackQueryHandler. After user chose category, he is asked if he wants to apply filters
-        """
-        context.chat_data[f"{cls.return_class.__name__}_list"].delete()
-
-        del context.chat_data[f"{cls.return_class.__name__}_list"]
-
-        context.chat_data[Category] = update.callback_query.data
-
-        keyboard_builder = KeyboardBuilder(
-            Page(results=["Apply filters", "Search by name", "Most popular"]), "search"
-        )
-        keyboard_builder.create_keyboard(columns=3)
-        context.bot.send_message(
-            chat_id=update.callback_query.message.chat_id,
-            text="What type of search would you like?",
-            reply_markup=keyboard_builder.keyboard,
-        )
-        return SEARCH
-
-
-class SubcategoryCallbacks(FilterCallbacks):
-    return_class = Subcategory
-    text = "Choose subcategories for filter:"
-    propose_state = SUBCATEGORIES
-
-
-class TagCallbacks(FilterCallbacks):
-    return_class = Tag
-    text = "Choose tags for filter:"
-    propose_state = TAGS
+    propose_state = PRODUCTS
 
 
 class ProductCallbacks:
+    """
+    All callbacks that are directly related with product surfing
+    """
+
     @staticmethod
-    def _get_page(chat_data):
+    def _get_page(update: Update, context: CallbackContext):
         """
         Function to get page of Products.
         If cached page exists, it will not make another request
         """
 
-        if "Product-list-cache" in chat_data:
-            return chat_data["Product-list-cache"]
+        if "Product-list-cache" in context.chat_data:
+            return context.chat_data["Product-list-cache"]
         else:
-            if Subcategory in chat_data:
-                subcategories = chat_data[Subcategory]
+            if update.message:
+                query = update.message.text.split()
+                category = None
             else:
-                subcategories = None
+                category = update.callback_query.data
+                query = None
 
-            if Tag in chat_data:
-                tags = chat_data[Tag]
-            else:
-                tags = None
+            product_list = Product.view_products(category=category, query=query)
+            context.chat_data["Product-list-cache"] = product_list
 
-            return Product.view_products(
-                category=chat_data[Category],
-                subcategories=subcategories,
-                tags=tags,
-            )
+            return product_list
 
     @staticmethod
     def _product_list(update: Update, context: CallbackContext):
         """
-        Function for viewing product list. Visualization is different from previous examples
+        Function for viewing product list. Visualization is different from previous examples:
+        We are getting page of messages, each is photo with name of product as caption.
+        Also each message has a 'description' button for opening detailed information
+        We are saving all messages in chat_data, because they all have to be deleted when another callback is called
         """
 
-        page = ProductCallbacks._get_page(context.chat_data)
+        page = ProductCallbacks._get_page(update, context)
         context.chat_data[Product] = []
 
         for product in page.results:
             keyboard_builder = KeyboardBuilder(Page(results=[product])).create_keyboard(
                 text="Description"
             )
-            message = context.bot.send_message(
+            message = context.bot.send_photo(
                 chat_id=update.callback_query.message.chat_id,
                 caption=product.name,
-                image=product.images[0],
+                photo=product.images[0],
                 reply_markup=keyboard_builder.keyboard,
             )
             context.chat_data[Product].append(message)
@@ -188,24 +170,60 @@ class ProductCallbacks:
     def first_page(update: Update, context: CallbackContext):
         update.callback_query.delete_message()
         ProductCallbacks._product_list(update, context)
-        return PRODUCTS
 
     @staticmethod
     def turn_page(update: Update, context: CallbackContext):
         context.chat_data["Product-list-cache"] = Product.turn_page(
             update.callback_query.data
         )
+        for message in context.chat_data[Product]:
+            message.delete()
         ProductCallbacks._product_list(update, context)
+
+    @staticmethod
+    def description(update: Update, context: CallbackContext):
+        """
+        Detailed info about product
+        It will send two messages, one with an album of photos, another - with description, tags, price and video link
+        We have the possibility to save product to wishlist, add to cart or go back to product list
+        """
+        product: Product = update.callback_query.data
+
+        album_message = context.bot.send_media_group(
+            chat_id=update.callback_query.message.chat_id, media=product.images
+        )
+
+        keyboard = KeyboardBuilder(
+            Page(results=["Add to wishlist", "Add to order", "Back"]), "product"
+        ).create_keyboard()
+
+        description_message = context.bot.send_message(
+            chat_id=update.callback_query.message.chat_id,
+            text=f"""
+            *{product.name}*
+
+            {product.description}
+            
+            _{chr(9).join(str(tag) for tag in product.tags)}_
+
+            *${product.price}*
+
+            {product.video_links[0]}""",
+            reply_markup=keyboard,
+        )
+
+        for message in context.chat_data[Product]:
+            message.delete()
+
+        context.chat_data[Product] = [album_message, description_message]
+
+        return DESCRIPTION
+
+    @staticmethod
+    def go_back(update: Update, context: CallbackContext):
+        for message in context.chat_data[Product]:
+            message.delete()
+
+        ProductCallbacks._product_list(update, context)
+
         return PRODUCTS
-
-
-def close_products(update: Update, context: CallbackContext):
-    update.message.reply_text(text="Canceling product search!")
-    del context.chat_data[Category]
-    del context.chat_data[Subcategory]
-    del context.chat_data[Tag]
-    for message in context.chat_data[Product]:
-        message.delete_message()
-    del context.chat_data[Product]
-    del context.chat_data["Product-list-cache"]
-    return ConversationHandler.END
