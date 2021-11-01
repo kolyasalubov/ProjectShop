@@ -36,14 +36,7 @@ class PageCallbacks:
             text=cls.text,
             reply_markup=cls._build_keyboard(page).keyboard,
         )
-        last_message.delete()
 
-        #       if user has already a list of specific values, it is deleted from chat
-        if f"{cls.return_class.__name__}_list" in context.chat_data:
-            context.chat_data[f"{cls.return_class.__name__}_list"].delete()
-
-        #       after that, we are saving the message in bot's memory
-        context.chat_data[f"{cls.return_class.__name__}_list"] = message
         return cls.propose_state
 
     @classmethod
@@ -103,7 +96,7 @@ def close_products(update: Update, context: CallbackContext):
 class CategoryCallbacks(PageCallbacks):
     return_class = Category
     text = "Choose category:"
-    propose_state = PRODUCTS
+    propose_state = CATEGORY
 
 
 class ProductCallbacks:
