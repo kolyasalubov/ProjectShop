@@ -30,6 +30,8 @@ class RestClient:
         self.token_url (str): The url for obtaining tokens
         self.token_refresh_url (str): The url for refreshing tokens
         self.logout_url (str): The url for log out
+        self.get_user_ib_by_telegram_id_url (str): The url for retrieving user id by user telegram id
+        self.get_user_ib_by_phone_number_url (str): The url for retrieving user id by user phone number
         self.access (str): access token
         self.refresh (str): refresh token
     """
@@ -129,10 +131,10 @@ class RestClient:
         Provide sending request.
 
         Parameters:
-            method (str): request's method
-            url (str): request's url
-            headers (dict, None): additional request's headers
-            data (dict, None): request's body
+            method (str): request method
+            url (str): request url
+            headers (dict, None): additional request headers
+            data (dict, None): request body
             params (dict, None): additional data to send via URL
 
         Return: request.Response object
@@ -168,12 +170,13 @@ class RestClient:
 
 
 bot_client = RestClient(
-    PHONE_NUMBER,
-    PASSWORD,
-    SERVER_HOST,
-    API_ROOT,
-    TOKEN_URL,
-    TOKEN_REFRESH_URL,
-    LOGOUT_URL,
-)
+    phone_number=PHONE_NUMBER,
+    password=PASSWORD,
+    server_host=SERVER_HOST,
+    api_root=API_ROOT
+    token_url=TOKEN_URL,
+    token_refresh_url=TOKEN_REFRESH_URL,
+    logout_url=LOGOUT_URL,
+    )
+
 # Use only next methods: logout, send_request
