@@ -3,9 +3,15 @@ import os
 import requests
 
 
-PHONE_NUMBER = os.environ.get("BOT_PHONE_NUMBER")      # Crete admin is_bot user and insert his/her phone_number
-PASSWORD = os.environ.get("BOT_PASSWORD")          # Crete admin is_bot user and insert his/her password
-SERVER_HOST = os.environ.get("SERVER_HOST")         # "http://localhost:8000/" insert for local testing
+PHONE_NUMBER = os.environ.get(
+    "BOT_PHONE_NUMBER"
+)  # Crete admin is_bot user and insert his/her phone_number
+PASSWORD = os.environ.get(
+    "BOT_PASSWORD"
+)  # Crete admin is_bot user and insert his/her password
+SERVER_HOST = os.environ.get(
+    "SERVER_HOST"
+)  # "http://localhost:8000/" insert for local testing
 API_ROOT = os.environ.get("API_ROOT")
 TOKEN_URL = os.environ.get("TOKEN_URL")
 TOKEN_REFRESH_URL = os.environ.get("TOKEN_REFRESH_URL")
@@ -162,6 +168,12 @@ class RestClient:
 
 
 bot_client = RestClient(
-    PHONE_NUMBER, PASSWORD, SERVER_HOST, API_ROOT, TOKEN_URL, TOKEN_REFRESH_URL, LOGOUT_URL
+    PHONE_NUMBER,
+    PASSWORD,
+    SERVER_HOST,
+    API_ROOT,
+    TOKEN_URL,
+    TOKEN_REFRESH_URL,
+    LOGOUT_URL,
 )
 # Use only next methods: logout, send_request
