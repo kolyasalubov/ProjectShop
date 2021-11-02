@@ -1,0 +1,17 @@
+{% extends "UserApp/_base.html" %}
+
+{% load i18n %}
+
+
+{% block content %}
+
+    <h1>{% translate "Product Detail Page" %}</h1>
+
+    {% if product_detail.images.first %}
+        <img src="{{ product_detail.images.first.image.url }}" style="width:200px" alt="A product image">
+    {% endif %}
+    <h3>{{ product_detail.name }}</h3>
+    <p>{% translate "Product price:" %} {{ product_detail.price }}</p>
+    <p>{% translate "Product description:" %} {{ product_detail.description }}</p>
+
+{% endblock content %}

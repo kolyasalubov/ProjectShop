@@ -21,10 +21,11 @@
     <h1>{% translate "Home page" %}</h1>
 
     {% for product in products %}
-        {% if product.media.first %}
-        <img src="{{ product.media.first.image.url }}" style="width:200px" alt="A product image">
+
+        {% if product.images.first %}
+        <img src="{{ product.images.first.image.url }}" style="width:200px" alt="A product image">
         {% endif %}
-        <a href="#"><p>{{ product.name }}</p></a>
+        <a href="{{ product.get_absolute_url }}"><p>{{ product.name }}</p></a>
         <p>{% translate "Product price:" %} {{ product.price }}</p>
         <hr>
 
