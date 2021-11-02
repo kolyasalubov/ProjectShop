@@ -1,3 +1,5 @@
+from django.shortcuts import render
+
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 
 from ProductApp.models import (
@@ -68,3 +70,13 @@ class ReviewViewSet(ModelViewSet):
     def perform_create(self, serializer):
         product_id = self.kwargs.get("product_id")
         serializer.save(product=Product.objects.get(pk=product_id))
+
+
+def product_detail_view(request):
+    obj = Product.objects.get(id=1)
+    img = ProductMedia.objects.get(id=1)
+    context = {
+        "product": obj,
+        "product_img": img,
+    }
+    return render(request, "order/make_order.html", context)

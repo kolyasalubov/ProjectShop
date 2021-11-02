@@ -7,13 +7,13 @@
 {% block content %}
      <div class="tab">
          <button class="tablinks" onclick="openTab(event, 'your-order')" id="defaultOpen">Your order</button>
-         <button class="tablinks" onclick="openTab(event, 'contact-details')">Contact details</button>
-         <button class="tablinks" onclick="openTab(event, 'delivery-and-payment')">Delivery & Payment</button>
+         <button class="tablinks" onclick="openTab(event, 'contact-details')" id="contactOpen">Contact details</button>
+         <button class="tablinks" onclick="openTab(event, 'delivery-and-payment')" id="deliveryOpen">Delivery & Payment</button>
      </div>
      <div id="contact-details" class="tabcontent">
          <div class="contact-tab">
              <h4 class="h4-tabs">Name</h4>
-             <input class="input-tabs" type="text" id="name" name="name" required minlength="4" maxlength="20" size="45">
+             <input class="input-tabs" type="text" id="name" name="name" required minlength="4" maxlength="20" size="45" placeholder="Enter your name">
              <h4 class="h4-tabs">Surname</h4>
              <input class="input-tabs" type="text" id="surname" name="surname" required minlength="4" maxlength="20" size="45">
              <h4 class="h4-tabs">Middle name</h4>
@@ -21,42 +21,32 @@
              <h4 class="h4-tabs">Email</h4>
              <input class="input-tabs" type="email" id="email" pattern=".+@globex\.com" size="45" required>
              <h4 class="h4-tabs">Phone number</h4>
-             <input class="input-tabs" type="tel" id="phone" name="phone" pattern="+38([0-9]{3}) [0-9]{3} [0-9]{2} [0-9]{2}" size="45" required>
+             <input class="input-tabs" type="tel" id="phone" name="phone" size="45" required>
              <button type="button" id="button-go-to-delivery">Go to delivery & payment section</button>
          </div>
      </div>
      <div id="your-order" class="tabcontent">
-         <div class="order-tab">
-             <h4>Product 1</h4>
-             <br>
-             <h4>Image</h4>
-             <br>
-             <h4>Name</h4>
-             <br>
-             <h4>Price</h4>
-             <br>
-             <hr>
-             <br>
-             <h4>Product2</h4>
-             <br>
-             <h4>Image</h4>
-             <br>
-             <h4>Name</h4>
-             <br>
-             <h4>Price</h4>
-             <br>
-             <a href="#">Edit order</a>
-             <br>
-             <hr>
-             <br>
-             <h4>Total</h4>
-             <br>
-             <hr>
-             <br>
-             <br>
-             <br>
-             <button type="button" id="button-checkout">Checkout</button>
+         <div class="product-one">
+             <img class="product-image" src="{{ media.image.url }}">
+             <h2 style="display: inline-block; position: absolute; margin-top: 50px; margin-left: 50px">{{ object.media.image.url }}</h2>
+             <h2 style="display: inline-block; position: absolute; margin-top: 80px; margin-left: 50px; color: #9698FE">{{product.price}}$</h2>
+             <img class="trash-icon" src={% static 'assets/TrashClosed.svg' %}>
+             <h2 style="display: inline-block; float: right; margin-top: 55px; margin-left: 10px">></h2>
+             <h2 style="display: inline-block; float: right; margin-top: 55px; color: #9698FE">2</h2>
+             <h2 style="display: inline-block; float: right; margin-top: 55px; margin-right: 10px"><</h2>
          </div>
+         <div class="product-two">
+             <img class="product-image" src={% static 'assets/product2.jpg' %}>
+             <h2 style="display: inline-block; position: absolute; margin-top: 50px; margin-left: 50px">Artline Gaming X77</h2>
+             <h2 style="display: inline-block; position: absolute; margin-top: 80px; margin-left: 50px; color: #9698FE">1674$</h2>
+             <img class="trash-icon" src={% static 'assets/TrashClosed.svg' %}>
+             <h2 style="display: inline-block; float: right; margin-top: 55px; margin-left: 10px">></h2>
+             <h2 style="display: inline-block; float: right; margin-top: 55px; color: #9698FE">1</h2>
+             <h2 style="display: inline-block; float: right; margin-top: 55px; margin-right: 10px"><</h2>
+         </div>
+         <h1 style="display: inline-block; float: left; margin-left: 30px; margin-top: 50px;">Total:</h1>
+         <h1 style="display: inline-block; float: right; margin-right: 30px; margin-top: 50px;">1704$</h1>
+         <button type="button" id="button-go-to-contact" style="margin-top: 120px; margin-left: 20px">Go to contact details</button>
      </div>
      <div id="delivery-and-payment" class="tabcontent">
          <div class="delivery-payment-tab">
@@ -81,6 +71,7 @@
                  <input type="radio" id="cash" name="payment-method" value="cash" checked>
                  <label for="cash" style="font-size: 16px; font-weight: bolder">Cash</label>
              </div>
+             <button type="button" id="button-checkout" style="margin-top: 40px">Checkout</button>
          </div>
      </div>
 {% endblock content%}

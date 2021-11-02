@@ -36,10 +36,9 @@ menuBtn.addEventListener('click', () => {
 
 // --------------  order page --------------
 
-
+//=========== OrderPage =============
 
 function openTab(evt, tabName) {
-  // Declare all variables
   var i, tabcontent, tablinks;
 
   // Get all elements with class="tabcontent" and hide them
@@ -60,3 +59,15 @@ function openTab(evt, tabName) {
 }
 
 document.getElementById("defaultOpen").click();
+
+// function to redirect to Delivery tab by pressing on button
+document.getElementById("button-go-to-delivery").onclick = function()
+{
+    document.getElementById("deliveryOpen").click();
+}
+
+// function to redirect to Contact details tab by pressing on button
+document.getElementById("button-go-to-contact").onclick = function()
+{
+    document.getElementById("contactOpen").click();
+}
