@@ -123,6 +123,10 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse("product-detail", kwargs={"slug": self.slug})
 
+    @classmethod
+    def get_product_by_id(cls, product_id=1):
+        return cls.objects.get(id=product_id)
+
     @property
     def short_description(self):
         return truncatewords(self.description, 20)
@@ -153,6 +157,11 @@ class Review(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_review_by_product(cls, product):
+        objects = cls.objects.filter(product=product)
+        return objects
 
     @property
     def name(self):
@@ -217,6 +226,16 @@ class ProductImage(models.Model):
             '<img href="{0}" src="{0}" width="50" height="50" />'.format(self.image.url)
         )
 
+    @classmethod
+    def get_media_by_product(cls, product):
+        objects = cls.objects.filter(product=product)
+        return objects
+
+    # @classmethod
+    # def get_all_products(cls, product_id = 1):
+    #     objects = cls.objects.get(id != product_id)
+    #     return objects
+
     small_image_tag.allow_tags = True
     small_image_tag.short_description = _("Image")
 
@@ -260,6 +279,11 @@ class ProductVideo(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_media_video_by_product(cls, product):
+        objects = cls.objects.filter(product=product)
+        return objects
 
     @property
     def name(self):
