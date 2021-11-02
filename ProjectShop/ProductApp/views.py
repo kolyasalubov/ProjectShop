@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import generic, View
 
+from django.http import JsonResponse
+
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
@@ -34,16 +36,40 @@ from ProductApp.forms import ReviewForm
 from django.db.models import Q
 
 
+class ProductJsonListView(View):
+    def get(self, *args, **kwargs):
+        upper = kwargs.get('num_products')
+        lower = upper - 4
+        products = list(Product.objects.values()[lower:upper])
+        products_size = len(Product.objects.all())
+        max_size = True if upper >= products_size else False
+        return JsonResponse({'data': products, 'max': max_size}, safe=False)
+
+
+
+
+
 class HomePageView(FilterView):
     filterset_class = ProductFilter
     template_name = 'ProductApp/homepage.html'
-    context_object_name = 'products'
-    paginate_by = 12
+    # context_object_name = 'products'
+    # paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         categories = ProductCategory.objects.order_by('name')[:20]
+        product_images = ProductImage.objects.all()
         context['categories'] = categories
+        # context['product_images'] = product_images
+        context['product_images'] = json.dumps(
+            [
+                {
+                    'id': obj.id,
+                    'image_url': obj.image.url,
+                }
+                for obj in ProductImage.objects.all()
+            ]
+        )
         return context
 
 

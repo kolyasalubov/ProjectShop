@@ -1,68 +1,95 @@
 /*nav-menu*/
-.nav-menu {
+
+header {
     background-color: black;
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     align-items: center;
-    height: 50px;
+    height: 3rem;
 }
 
-.nav-menu_actions {
+header .left-container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    width: 600px;
+    width: 20%;
+}
+
+header .hamburger {
+    display: flex;
+    /*justify-content: flex-start;*/
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    background: transparent;
+    border-color: transparent;
+}
+
+header .logo {
+    display: flex;
+    justify-self: flex-end;
+    font-size: 1.9rem;
+    font-weight: bold;
+    color: #F6E37B;
+}
+
+header .left-container .search-container {
+    display: none;
+    align-items: center;
+    flex-direction: row;
+}
+
+header .right-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+}
+
+header .links-container {
+    display: flex;
     justify-content: space-around;
+    align-items: center;
+    width: 40%;
+    padding-right: 3rem;
 }
 
-.nav-icons {
-    height: 50px;
+header .links-container a {
     display: flex;
+    /*justify-content: space-around;*/
     align-items: center;
 }
 
-.nav-icon {
-    height: 34px;
-    width: 34px;
-}
-
-.nav-link {
-    margin: 0 5px 0 5px;
-    padding-left: 15px;
-}
-
-.nav-image {
-    width: 34px;
-    height: 34px;
+header .search-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 .search-box {
-    height: 27px;
-    background-color:#F6E37B;
+    height: 1.8rem;
+    width: 10rem;
+    background-color: #F6E37B;
     border: none;
     border-radius: 0 50px 50px 0;
-    font-size: 15px;
+    font-size: 1rem;
 }
 
 .search-button {
-    width: 27px;
-    height: 27px;
-    background-color: white;
+    width: 1.5rem;
+    height: 1.8rem;
+    background-color: #F6E37B;
     border: none;
-    padding-top: 9px;
     border-radius: 50px 0 0 50px;
     cursor: pointer;
     margin-right: -5px;
 }
 
-.site-logo {
-    color: #F6E37B;
-    font-size: 1.8rem;
-    position: absolute;
-    top: 4px;
-    left: 45px;
+.nav-image,
+.nav-link {
+    height: 2rem;
+    width: 2rem;
 }
-
-
 
 
 /*
@@ -70,7 +97,10 @@
         Hamburger button
         Hamburger menu
 */
+
+
 /* HAMBURGER BUTTON */
+
 .appeared {
     visibility: visible;
 }
@@ -83,18 +113,7 @@
     overflow: hidden;
 }
 
-.hamburger {
-    position: absolute;
-    top: 0px;
-    left: 5px;
-    width: 50px;
-    height: 50px;
-    background: transparent;
-    border-color: transparent;
-}
-
-.hamburger:hover {
-}
+.hamburger:hover {}
 
 .hamburger-box {
     width: 40px;
@@ -140,18 +159,25 @@
     background-color: #9698FE !important;
 }
 
+
 /*making header fixed */
+
+
 /* The sticky class is added to the header with JS when it reaches its scroll position */
+
 .sticky {
-  position: fixed;
-  top: 0;
-  width: 100%
+    position: fixed;
+    top: 0;
+    width: 100%
 }
 
+
 /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
-  padding-top: 102px;
+
+.sticky+.content {
+    padding-top: 102px;
 }
+
 
 /* HAMBURGER MENU */
 
@@ -160,41 +186,67 @@
     left: 0;
     top: 0;
     height: 100%;
-    width: 300px;
+    width: 16rem;
     margin: 50px 0 0 0;
     background-color: black;
-    color: rgb(148, 130, 130);
+    color: white;
     border-right: 3px solid black;
 }
 
 .burger-profile_items {
     display: flex;
     flex-direction: column;
+    color: white;
 }
 
 .burger-profile_section a,
-.burger-profile_section
-{
+.burger-profile_section {
     /*color: #5d52c1;*/
 }
 
-
 .burger-profile_section {
     margin: 20px 0 50px 0;
-    color: #F6E37B;
+    color: white;
 }
 
 .burger-header {
     padding-left: 15px;
+    font-size: 1.8rem;
 }
-
 
 .burger-profile_items {
     margin: 10px 0 0 15px;
-    color: #F6E37B;
+    color: white;
 }
 
 .item-link {
     padding: 5px 0 0 10px;
-    color: #F6E37B;
+    color: white;
+}
+
+@media only screen and (max-width:630px) {
+    header .burger-nav {
+        width: 45%;
+    }
+    header .burger-header {
+        font-size: 1.4rem;
+    }
+}
+
+@media only screen and (max-width:560px) {
+    header .right-container .links-container {
+        display: none;
+    }
+    header .logo {
+        font-size: 1.3rem;
+    }
+    header .search-box {
+        width: 70%;
+    }
+}
+
+@media only screen and (max-width:350px) {
+    header .logo {
+        font-size: 1rem;
+    }
 }

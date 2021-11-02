@@ -22,6 +22,7 @@ load_dotenv(".env.django")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -47,7 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.flatpages",
-  
+
     # 3rd-party apps
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
@@ -57,12 +58,13 @@ INSTALLED_APPS = [
     "crispy_forms",
     "drf_yasg",
     'debug_toolbar',
-  
+
     # local apps
     'UserApp',
     'Shipping',
     'order',
     'ProductApp',
+    'WishList',
     ]
 
 MIDDLEWARE = [
@@ -74,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 ROOT_URLCONF = "ProjectShop.urls"
@@ -94,17 +97,30 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "ProjectShop.wsgi.application"
+WSGI_APPLICATION = 'ProjectShop.wsgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE"),
+        "NAME": os.environ.get("SQL_DATABASE"),
+        "USER": os.environ.get("SQL_USER"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD"),
+        "HOST": os.environ.get("SQL_HOST"),
+        "PORT": os.environ.get("SQL_PORT"),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -124,6 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -140,10 +157,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+STATIC_ROOT = ''
+STATIC_URL = '/static/'
+STATICFILES_DIRS = ( os.path.join('static'), )
+
+# STATIC_URL = "/static/"
+# STATICFILES_DIR = [str(BASE_DIR) + "/static"]
 # media files will be stored in 'media' folder
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR) + "/media"

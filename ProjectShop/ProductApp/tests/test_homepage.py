@@ -4,6 +4,7 @@ from django.urls import reverse, resolve
 from ProductApp.views import HomePageView
 from ProductApp.models import Product, ProductCategory
 from ProductApp.tests.factories import ProductCategoryFactory, ProductFactory
+from ProductApp.filters import ProductFilter
 
 
 class HomePageTest(TestCase):
@@ -39,8 +40,10 @@ class HomePageViewTest(TestCase):
         ProductFactory.create_batch(20)
 
     def test_attrs(self):
+        self.assertEqual(self.view.filterset_class, ProductFilter)
         self.assertEqual(self.view.context_object_name, 'products')
         self.assertEqual(self.view.template_name, 'ProductApp/homepage.html')
+        self.assertEqual(self.view.paginate_by, 12)
 
     def test_environment_set_in_context(self):
         self.assertIn('products', self.context)
@@ -53,10 +56,3 @@ class HomePageViewTest(TestCase):
         self.assertCountEqual(self.context['categories'],
                               ProductCategory.objects.order_by('name')[:20]
                               )
-
-    def test_query_sets_products(self):
-        self.assertQuerysetEqual(self.view.get_queryset(),
-                                 Product.objects.all(),
-                                 ordered=False
-                                 )
-        self.assertCountEqual(self.view.get_queryset(), Product.objects.all())
