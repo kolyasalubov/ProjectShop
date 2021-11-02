@@ -41,7 +41,7 @@
                 {% for x in product_media|slice:"1:" %}
                     <div class="additional_photos1">
 
-                        <img src="{{ x.image.url }}" style="max-width:100%;cursor:pointer" onclick="onClick(this)" class="modal-hover-opacity">
+                        <img src="{{ x.image.url }}" style="width:100%;cursor:pointer; height:100%" onclick="onClick(this)" class="modal-hover-opacity">
 
                     <div id="modal01" class="modal" onclick="this.style.display='none'">
                       <span class="close">&times;&nbsp;&nbsp;&nbsp;&nbsp;</span>
