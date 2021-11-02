@@ -57,8 +57,9 @@ footer {
 
 .footer-right .footer-second-container {
     display: flex;
+    flex-flow: column wrap;
     justify-content: flex-end;
-    align-self: flex-end;
+    align-self: center;
     padding-right: 2rem;
     padding-bottom: 0.9rem;
 }

@@ -101,14 +101,14 @@
                 </div>
             </div>
             <div class="footer-second-container">
-                <br><br>
-                    <span>
+{#                <br><br>#}
+{#                    <span>#}
                       {% for page in flatpages %}
                             <a href="/pages{{ page.url }}" class=flatpage-link" style="color:#F6E37B;">
                                 {% blocktranslate with flatpage_title=page.title %} {{ flatpage_title }} {% endblocktranslate %}
                             </a>
                       {% endfor %}
-                    </span>
+{#                    </span>#}
 
             </div>
         </div>

@@ -85,6 +85,11 @@ header .search-container {
     margin-right: -5px;
 }
 
+.fa .fa-search {
+    height:1.5rem;
+    width: 1.8rem;
+}
+
 .nav-image,
 .nav-link {
     height: 2rem;
