@@ -1,4 +1,6 @@
 from django.views import generic
+from django.http import JsonResponse
+from django.views.generic.base import TemplateView, View
 
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
@@ -27,6 +29,16 @@ from ProductApp.serializers import (
     ReviewSerializer,
     TagSerializer,
 )
+
+
+class ProductJsonListView(View):
+    def get(self, *args, **kwargs):
+        upper = kwargs.get('num_products')
+        lower = upper - 4
+        products = list(Product.objects.values()[lower:upper])
+        products_size = len(Product.objects.all())
+        max_size = True if upper >= products_size else False
+        return JsonResponse({'data': products, 'max': max_size}, safe=False)
 
 
 class HomePageView(FilterView):

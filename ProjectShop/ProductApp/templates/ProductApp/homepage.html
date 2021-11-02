@@ -1,56 +1,94 @@
-{% extends "UserApp/_base.html" %}
-
-{% load pagination_tags %}
-
-{% load i18n %}
-
-
-{% block category %}
-
-    {% for category in categories %}
-
-        <a href="#">{{ category.name }}</a>
-
-    {% endfor %}
-
-{% endblock category %}
-
-
-{% block content %}
-
-    <h1>{% translate "Home page" %}</h1>
-
-    {% for product in products %}
-
-        {% if product.images.first %}
-        <img src="{{ product.images.first.image.url }}" style="width:200px" alt="A product image">
-        {% endif %}
-        <a href="{{ product.get_absolute_url }}"><p>{{ product.name }}</p></a>
-        <p>{% translate "Product price:" %} {{ product.price }}</p>
-        <hr>
-
-    {% endfor %}
-
-    {% if is_paginated %}
-
-        {% if page_obj.has_previous %}
-            <a href="?{% url_replace request 'page' 1 %}">{% translate "First" %}</a>
-            <a href="?{% url_replace request 'page' page_obj.previous_page_number %}">{% translate "Previous" %}</a>
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-                <a href="?{% url_replace request 'page' num %}">{{ num }}</a>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a href="?{% url_replace request 'page' num %}">{{ num }}</a>
-            {% endif %}
+{% extends 'UserApp/_base.html' %}
+  {% block title %} Homepage {% endblock title %}
+  {% block content %}
+  {% load static %}
+    <div class="categories-scroller">
+        <div class="left-button-container" id="btnLeft">
+            <button class="scroll-left-button"> < </button>
+        </div>
+        {% for category in categories %}
+            <div class="category-section">
+                {{ category.name }}
+            </div>
         {% endfor %}
+        <div class="right-button-container" id="btnRight">
+            <button class="scroll-right-button"> > </button>
+        </div>
+    </div>
+    <div class="banner">
+        <img src="http://shop242.com/wp-content/uploads/2015/10/tech-banner2.jpg-1.jpg">
+    </div>
 
-        {% if page_obj.has_next %}
-            <a href="?{% url_replace request 'page' page_obj.next_page_number %}">{% translate "Next" %}</a>
-            <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">{% translate "Last" %}</a>
-        {% endif %}
 
-    {% endif %}
+    <div id="products-box" class="products-box"></div>
 
-{% endblock content %}
+
+    <div class="button-wrapper">
+        <div id="spinner-box" class="not-visible">
+            <div class="spinner-border text-primary" role="status"></div>
+        </div>
+        <div class="button-container" id="loading-box">
+            <button class="view-more-button" id="load-btn">View more</button>
+        </div>
+    </div>
+
+  {% endblock content%}
+
+
+
+{#{% extends "UserApp/_base.html" %}#}
+{##}
+{#{% load pagination_tags %}#}
+{##}
+{#{% load i18n %}#}
+{##}
+{##}
+{#{% block category %}#}
+{##}
+{#    {% for category in categories %}#}
+{##}
+{#        <a href="#">{{ category.name }}</a>#}
+{##}
+{#    {% endfor %}#}
+{##}
+{#{% endblock category %}#}
+{##}
+{##}
+{#{% block content %}#}
+{##}
+{#    <h1>{% translate "Home page" %}</h1>#}
+{##}
+{#    {% for product in products %}#}
+{##}
+{#        {% if product.images.first %}#}
+{#        <img src="{{ product.images.first.image.url }}" style="width:200px" alt="A product image">#}
+{#        {% endif %}#}
+{#        <a href="{{ product.get_absolute_url }}"><p>{{ product.name }}</p></a>#}
+{#        <p>{% translate "Product price:" %} {{ product.price }}</p>#}
+{#        <hr>#}
+{##}
+{#    {% endfor %}#}
+{##}
+{#    {% if is_paginated %}#}
+{##}
+{#        {% if page_obj.has_previous %}#}
+{#            <a href="?{% url_replace request 'page' 1 %}">{% translate "First" %}</a>#}
+{#            <a href="?{% url_replace request 'page' page_obj.previous_page_number %}">{% translate "Previous" %}</a>#}
+{#        {% endif %}#}
+{##}
+{#        {% for num in page_obj.paginator.page_range %}#}
+{#            {% if page_obj.number == num %}#}
+{#                <a href="?{% url_replace request 'page' num %}">{{ num }}</a>#}
+{#            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}#}
+{#                <a href="?{% url_replace request 'page' num %}">{{ num }}</a>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{##}
+{#        {% if page_obj.has_next %}#}
+{#            <a href="?{% url_replace request 'page' page_obj.next_page_number %}">{% translate "Next" %}</a>#}
+{#            <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">{% translate "Last" %}</a>#}
+{#        {% endif %}#}
+{##}
+{#    {% endif %}#}
+{##}
+{#{% endblock content %}#}
