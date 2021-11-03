@@ -145,7 +145,6 @@ class User(BaseModel):
 
     @classmethod
     def _validate_fields(cls, **kwargs):
-        print(kwargs)
         """
         Validate value for field. Raise ValidationError
         :param kwargs: dict
@@ -197,7 +196,7 @@ class User(BaseModel):
         super().__setattr__(key, value)
 
     @validator("phone_number")
-    def name_must_contain_space(cls, value):
+    def phone_number_must_be_valid(cls, value):
         """
         Validate phone number field. Raise ValidationError if not valid.
         :param value: str
