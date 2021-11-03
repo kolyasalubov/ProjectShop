@@ -80,6 +80,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "order.context_processors.cart"
             ],
         },
     },
@@ -132,7 +133,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [str(BASE_DIR) + "/static"]
+STATICFILES_DIR = [str(BASE_DIR) + "/static"]
+STATICFILES_DIRS = [
+    str(BASE_DIR) + '/static'
+]
 # media files will be stored in 'media' folder
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR) + "/media"
@@ -189,6 +193,8 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "UserApp.backends.EmailBackend",
 ]
+
+
 
 LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "login"

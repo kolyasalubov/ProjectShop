@@ -72,7 +72,7 @@ class ReviewViewSet(ModelViewSet):
         serializer.save(product=Product.objects.get(pk=product_id))
 
 
-def product_detail_view(request):
+def category_detail_view(request):
     obj = Product.objects.get(id=1)
     img = ProductMedia.objects.get(id=1)
     context = {
@@ -80,3 +80,12 @@ def product_detail_view(request):
         "product_img": img,
     }
     return render(request, "order/make_order.html", context)
+
+def product_detail_view(request):
+    obj = Product.objects.get(id=1)
+    img = ProductMedia.objects.get(id=1)
+    context = {
+        "product": obj,
+        "product_img": img,
+    }
+    return render(request, "order/test_products.html", context)

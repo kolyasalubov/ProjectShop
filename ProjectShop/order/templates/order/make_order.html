@@ -1,77 +1,135 @@
 {% extends 'UserApp/_base.html' %}
 {% block title %} Checkout {% endblock title %}
 
-{% load static %}
-{% load i18n %}
+
+{% block header %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/order/cart-styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/get_csrf.js' %}"></script>
+{% endblock header %}
 
 {% block content %}
-     <div class="tab">
-         <button class="tablinks" onclick="openTab(event, 'your-order')" id="defaultOpen">Your order</button>
-         <button class="tablinks" onclick="openTab(event, 'contact-details')" id="contactOpen">Contact details</button>
-         <button class="tablinks" onclick="openTab(event, 'delivery-and-payment')" id="deliveryOpen">Delivery & Payment</button>
-     </div>
-     <div id="contact-details" class="tabcontent">
-         <div class="contact-tab">
-             <h4 class="h4-tabs">Name</h4>
-             <input class="input-tabs" type="text" id="name" name="name" required minlength="4" maxlength="20" size="45" placeholder="Enter your name">
-             <h4 class="h4-tabs">Surname</h4>
-             <input class="input-tabs" type="text" id="surname" name="surname" required minlength="4" maxlength="20" size="45">
-             <h4 class="h4-tabs">Middle name</h4>
-             <input class="input-tabs" type="text" id="middle-name" name="middle-name" required minlength="4" maxlength="20" size="45">
-             <h4 class="h4-tabs">Email</h4>
-             <input class="input-tabs" type="email" id="email" pattern=".+@globex\.com" size="45" required>
-             <h4 class="h4-tabs">Phone number</h4>
-             <input class="input-tabs" type="tel" id="phone" name="phone" size="45" required>
-             <button type="button" id="button-go-to-delivery">Go to delivery & payment section</button>
-         </div>
-     </div>
-     <div id="your-order" class="tabcontent">
-         <div class="product-one">
-             <img class="product-image" src="{{ media.image.url }}">
-             <h2 style="display: inline-block; position: absolute; margin-top: 50px; margin-left: 50px">{{ object.media.image.url }}</h2>
-             <h2 style="display: inline-block; position: absolute; margin-top: 80px; margin-left: 50px; color: #9698FE">{{product.price}}$</h2>
-             <img class="trash-icon" src={% static 'assets/TrashClosed.svg' %}>
-             <h2 style="display: inline-block; float: right; margin-top: 55px; margin-left: 10px">></h2>
-             <h2 style="display: inline-block; float: right; margin-top: 55px; color: #9698FE">2</h2>
-             <h2 style="display: inline-block; float: right; margin-top: 55px; margin-right: 10px"><</h2>
-         </div>
-         <div class="product-two">
-             <img class="product-image" src={% static 'assets/product2.jpg' %}>
-             <h2 style="display: inline-block; position: absolute; margin-top: 50px; margin-left: 50px">Artline Gaming X77</h2>
-             <h2 style="display: inline-block; position: absolute; margin-top: 80px; margin-left: 50px; color: #9698FE">1674$</h2>
-             <img class="trash-icon" src={% static 'assets/TrashClosed.svg' %}>
-             <h2 style="display: inline-block; float: right; margin-top: 55px; margin-left: 10px">></h2>
-             <h2 style="display: inline-block; float: right; margin-top: 55px; color: #9698FE">1</h2>
-             <h2 style="display: inline-block; float: right; margin-top: 55px; margin-right: 10px"><</h2>
-         </div>
-         <h1 style="display: inline-block; float: left; margin-left: 30px; margin-top: 50px;">Total:</h1>
-         <h1 style="display: inline-block; float: right; margin-right: 30px; margin-top: 50px;">1704$</h1>
-         <button type="button" id="button-go-to-contact" style="margin-top: 120px; margin-left: 20px">Go to contact details</button>
-     </div>
-     <div id="delivery-and-payment" class="tabcontent">
-         <div class="delivery-payment-tab">
-             <h3 style="margin-bottom: 25px">Enter a new address for delivery</h3>
-             <h4 class="h4-tabs">Country</h4>
-             <input class="input-tabs" type="text" id="country" name="country" required minlength="4" maxlength="20" size="45">
-             <h4 class="h4-tabs">City</h4>
-             <input class="input-tabs" type="text" id="city" name="country" required minlength="4" maxlength="20" size="45">
-             <h4 class="h4-tabs">Region</h4>
-             <input class="input-tabs" type="text" id="region" name="country" required minlength="4" maxlength="20" size="45">
-             <h4 class="h4-tabs">Postal code</h4>
-             <input class="input-tabs" type="text" id="postal-code" name="country" required minlength="4" maxlength="20" size="45">
-             <h4 class="h4-tabs">Post office</h4>
-             <input class="input-tabs" type="text" id="post-office" name="country" required minlength="4" maxlength="20" size="45">
-             <hr style="margin-top: 30px">
-             <h3 style="margin-bottom: 25px; margin-top: 60px;">Chose payment method</h3>
-             <div class="payment-radio-buttons" style="float: left; margin-right: 100px">
-                 <input type="radio" id="card" name="payment-method" value="card">
-                 <label for="card" style="font-size: 16px; font-weight: bolder">Card</label>
+     <div class="main-section">
+         <div style="background: #fbf8f8;"></div>
+         <div class="tabs_and_content">
+             <div class="tab">
+                 <button class="tablinks" onclick="openTab(event, 'your-order')" id="defaultOpen">Your order</button>
+                 <button class="tablinks" onclick="openTab(event, 'contact-details')" id="contactOpen">Contact details</button>
+                 <button class="tablinks" onclick="openTab(event, 'delivery-and-payment')" id="deliveryOpen">Delivery & Payment</button>
              </div>
-             <div class="payment-radio-buttons">
-                 <input type="radio" id="cash" name="payment-method" value="cash" checked>
-                 <label for="cash" style="font-size: 16px; font-weight: bolder">Cash</label>
+             <div id="contact-details" class="tabcontent">
+                 <div class="contact-tab">
+                     <h4 class="h4-tabs">Name</h4>
+                     <input class="input-tabs" type="text" id="name" name="name" required minlength="4" maxlength="20" size="45" placeholder="Enter your name">
+                     <h4 class="h4-tabs">Surname</h4>
+                     <input class="input-tabs" type="text" id="surname" name="surname" required minlength="4" maxlength="20" size="45">
+                     <h4 class="h4-tabs">Middle name</h4>
+                     <input class="input-tabs" type="text" id="middle-name" name="middle-name" required minlength="4" maxlength="20" size="45">
+                     <h4 class="h4-tabs">Email</h4>
+                     <input class="input-tabs" type="email" id="email" pattern=".+@globex\.com" size="45" required>
+                     <h4 class="h4-tabs">Phone number</h4>
+                     <input class="input-tabs" type="tel" id="phone" name="phone" size="45" required>
+                     <hr>
+                     <button type="button" id="button-go-to-delivery">Go to delivery & payment section</button>
+                 </div>
              </div>
-             <button type="button" id="button-checkout" style="margin-top: 40px">Checkout</button>
+             <div id="your-order" class="tabcontent">
+                 <div class="product-one">
+                     <img class="product-image" src={% static 'assets/product1.jpg' %}>
+                     <h2 style="display: inline-block; position: absolute; margin-top: 50px; margin-left: 50px">ColorWay</h2>
+                     <h2 style="display: inline-block; position: absolute; margin-top: 80px; margin-left: 50px; color: #9698FE">15$</h2>
+                     <img class="trash-icon" src={% static 'assets/TrashClosed.svg' %}>
+                     <h2 style="display: inline-block; float: right; margin-top: 55px; margin-left: 10px">></h2>
+                     <h2 style="display: inline-block; float: right; margin-top: 55px; color: #9698FE">2</h2>
+                     <h2 style="display: inline-block; float: right; margin-top: 55px; margin-right: 10px"><</h2>
+                 </div>
+                 <div class="product-two">
+                     <img class="product-image" src={% static 'assets/product2.jpg' %}>
+                     <h2 style="display: inline-block; position: absolute; margin-top: 50px; margin-left: 50px">Artline Gaming X77</h2>
+                     <h2 style="display: inline-block; position: absolute; margin-top: 80px; margin-left: 50px; color: #9698FE">1674$</h2>
+                     <img class="trash-icon" src={% static 'assets/TrashClosed.svg' %}>
+                     <h2 style="display: inline-block; float: right; margin-top: 55px; margin-left: 10px">></h2>
+                     <h2 style="display: inline-block; float: right; margin-top: 55px; color: #9698FE">1</h2>
+                     <h2 style="display: inline-block; float: right; margin-top: 55px; margin-right: 10px"><</h2>
+                 </div>
+                 <h1 style="display: inline-block; float: left; margin-left: 30px; margin-top: 50px;">Total:</h1>
+                 <h1 style="display: inline-block; float: right; margin-right: 30px; margin-top: 50px;">1704$</h1>
+                 <button type="button" id="button-go-to-contact" style="margin-top: 120px; margin-left: 20px">Go to contact details</button>
+             </div>
+<!--             <div class="order">-->
+
+<!--                    &lt;!&ndash;-Order row-&ndash;&gt;-->
+<!--                    {% if objects %}-->
+<!--                    {% for object in objects %}-->
+<!--                    <div class="order-item" id="{{ object.product.id }}">-->
+
+<!--                        &lt;!&ndash;-Image of a product-&ndash;&gt;-->
+<!--                        <div class="order-item-image-div">-->
+<!--                            <img src="{{ object.media.image.url }}" class="order-item-image">-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash;- -&#45;&#45; -&ndash;&gt;-->
+
+<!--                        &lt;!&ndash;- Order item info(Product name, price) -&ndash;&gt;-->
+<!--                        <div class="order-item-info">-->
+<!--                            <div class="order-item-info-name">-->
+<!--                                    {{ object.product.name }}-->
+<!--                            </div>-->
+<!--                            <div class="order-item-info-price" id="price{{ object.product.id }}">-->
+<!--                                    {{ object.price }}$-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash;- -&#45;&#45; -&ndash;&gt;-->
+
+<!--                        <div class="order-item-count" style="display: flex">-->
+<!--                            <a data-id="{{ object.product.id }}" data-action="{% url 'order:cart-subtract' %}" class="subtract-from-cart">-->
+<!--                                <-->
+<!--                            </a>-->
+<!--                            <div id="order-item-count-num{{object.product.id}}">-->
+<!--                            {{ object.qty }}-->
+<!--                            </div>-->
+<!--                            <a data-id="{{ object.product.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart">-->
+<!--                                >-->
+<!--                            </a>-->
+<!--                        </div>-->
+
+<!--                        <div class="order-item-trash">-->
+<!--                            <img src="{% static 'assets/cart/remove.svg' %}" data-id="{{ object.product.id }}" data-action="{% url 'order:cart-remove' %}" class="item-delete">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    {% endfor %}-->
+<!--                    {% endif %}-->
+<!--             </div>-->
+             <div id="delivery-and-payment" class="tabcontent">
+                 <div class="delivery-payment-tab">
+                     <h3 style="margin-bottom: 25px">Enter a new address for delivery</h3>
+                     <h4 class="h4-tabs">Country</h4>
+                     <input class="input-tabs" type="text" id="country" name="country" required minlength="4" maxlength="20" size="45">
+                     <h4 class="h4-tabs">City</h4>
+                     <input class="input-tabs" type="text" id="city" name="country" required minlength="4" maxlength="20" size="45">
+                     <h4 class="h4-tabs">Region</h4>
+                     <input class="input-tabs" type="text" id="region" name="country" required minlength="4" maxlength="20" size="45">
+                     <h4 class="h4-tabs">Postal code</h4>
+                     <input class="input-tabs" type="text" id="postal-code" name="country" required minlength="4" maxlength="20" size="45">
+                     <h4 class="h4-tabs">Post office</h4>
+                     <input class="input-tabs" type="text" id="post-office" name="country" required minlength="4" maxlength="20" size="45">
+                     <hr style="margin-top: 30px">
+                     <h3 style="margin-bottom: 25px; margin-top: 60px;">Chose payment method</h3>
+                     <div class="payment-radio-buttons" style="float: left; margin-right: 100px">
+                         <input type="radio" id="card" name="payment-method" value="card">
+                         <label for="card" style="font-size: 16px; font-weight: bolder">Card</label>
+                     </div>
+                     <div class="payment-radio-buttons">
+                         <input type="radio" id="cash" name="payment-method" value="cash" checked>
+                         <label for="cash" style="font-size: 16px; font-weight: bolder">Cash</label>
+                     </div>
+                     <button type="button" id="button-checkout" onclick="location.href = '/order-confirmation'">Checkout</button>
+                 </div>
+             </div>
          </div>
+         <div style="background: #fbf8f8;"></div>
      </div>
+    <script src="{% static 'js/order/cart/remove_from_cart.js' %}"></script>
+    <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>
+    <script src="{% static 'js/order/cart/subtract_quantity.js' %}"></script>
 {% endblock content%}

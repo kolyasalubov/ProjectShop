@@ -25,7 +25,8 @@ from drf_yasg import openapi
 
 from .router import router
 from UserApp.views import TemporalHomePageView
-from ProductApp.views import product_detail_view
+from ProductApp.views import product_detail_view, category_detail_view
+from order.views import MakeAnOrder, OrderConfirmation
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -43,6 +44,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("order/", include("order.urls")),
     path("users/", include("UserApp.urls")),
     path("pages/", include("django.contrib.flatpages.urls")),
     path("api/v1/", include(router.urls)),
@@ -53,8 +55,11 @@ urlpatterns = [
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("", TemporalHomePageView.as_view(), name="home"),
-    path('checkout/', product_detail_view, name='make_order'),
+    path('checkout/', MakeAnOrder.as_view(), name='checkout'),
+    path('order-confirmation/', OrderConfirmation.as_view(), name="order-confirmation"),
+    path("test/", product_detail_view),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

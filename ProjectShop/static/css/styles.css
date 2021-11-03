@@ -13,8 +13,6 @@ body {
     /*background-color: #9698FE;*/
 }
 
-/*homepage*/
-
 .banner {
     height: 120px;
     width: 100%;
@@ -82,9 +80,9 @@ body {
 
 
 .tab {
-    background: #FFFFFF;
+    background: #fbf8f8;
     margin-top: 40px;
-    margin-left: auto;
+    margin-left: 0;
     margin-right: auto;
     width: 920px;
 }
@@ -114,16 +112,29 @@ body {
 }
 
 .tabcontent {
-    width: 920px;
+    /*width: 920px;*/
     height: auto;
-    margin-left: auto;
-    margin-right: auto;
+    /*margin-left: auto;*/
+    margin-right: 12px;
     margin-top: 100px;
     padding: 60px 0 60px 0;
 
     background: #FFFFFF;
     box-shadow: -4px -4px 10px rgba(0, 0, 0, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
     border-radius: 0 50px 0 0;
+}
+
+.tabcontent2 {
+    /*width: 920px;*/
+    height: 550px;
+    /*margin-left: auto;*/
+    margin-right: 12px;
+    margin-top: 100px;
+    padding: 60px 0 60px 0;
+
+    background: #FFFFFF;
+    box-shadow: -4px -4px 10px rgba(0, 0, 0, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px 50px 0 0;
 }
 
 .tablinks {
@@ -133,7 +144,7 @@ body {
 
 .contact-tab {
     background: #FFFFFF;
-    width: auto;
+    /*width: auto;*/
     margin-right: auto;
     margin-left: auto;
     padding: 20px 50px 20px 50px;
@@ -144,7 +155,7 @@ body {
 
 .product-one {
     background: #FFFFFF;
-    width: auto;
+    /*width: auto;*/
     margin-right: auto;
     margin-left: auto;
 
@@ -154,7 +165,7 @@ body {
 
 .product-two {
     background: #FFFFFF;
-    width: auto;
+    /*width: auto;*/
     margin-right: auto;
     margin-left: auto;
 
@@ -242,15 +253,21 @@ body {
     width: 100%;
     font-size: 17px;
     font-weight: bold;
+    margin-top: 40px;
 }
 
 .delivery-payment-tab {
     background: #FFFFFF;
-    width: auto;
+    /*width: auto;*/
     margin-right: auto;
     margin-left: auto;
     padding: 20px 50px 20px 50px;
 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.25);
     border-radius: 50px;
+}
+
+.main-section {
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
 }
