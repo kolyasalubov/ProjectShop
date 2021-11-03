@@ -39,7 +39,7 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("start", start_command))
     dp.add_handler(
         ConversationHandler(
-            entry_points=[MessageHandler(Filters.text("search products"), search_type)],
+            entry_points=[MessageHandler(Filters.text("Go to products"), search_type)],
             states={
                 ProductStates.SEARCH: [
                     CallbackQueryHandler(
@@ -57,14 +57,14 @@ def setup_dispatcher(dp):
                 ],
                 ProductStates.NAME: [MessageHandler(Filters.text, ProductCallbacks.first_page)],
                 ProductStates.PRODUCTS: [
+                    CallbackQueryHandler(ProductCallbacks.description, pattern=Product),
                     CallbackQueryHandler(
                         ProductCallbacks.turn_page, pattern=r"^http://.+/products/.+$"
                     ),
-                    CallbackQueryHandler(ProductCallbacks.description, pattern=Product),
                 ],
                 ProductStates.DESCRIPTION: [
                     CallbackQueryHandler(
-                        ProductCallbacks.go_back, pattern=r"product=Go-back"
+                        ProductCallbacks.go_back, pattern=r"product=Back"
                     )
                 ],
             },

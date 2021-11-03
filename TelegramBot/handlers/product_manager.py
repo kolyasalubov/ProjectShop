@@ -2,6 +2,7 @@ from enum import Enum
 
 from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler
+from telegram.utils.helpers import escape_markdown
 
 from client.models import Category, Page, Product
 from handlers.utils import KeyboardBuilder
@@ -35,7 +36,7 @@ class PageCallbacks:
         """
         page = cls.return_class.get()
         last_message = update.message or update.callback_query.message
-        message = context.bot.send_message(
+        context.bot.send_message(
             chat_id=last_message.chat_id,
             text=cls.text,
             reply_markup=cls._build_keyboard(page).keyboard,
@@ -64,9 +65,9 @@ def search_type(update: Update, context: CallbackContext):
     keyboard_builder = KeyboardBuilder(
         Page(results=["Search by category", "Search by name"]), "search"
     )
-    keyboard_builder.create_keyboard(columns=3)
+    keyboard_builder.create_keyboard(columns=2)
     context.bot.send_message(
-        chat_id=update.callback_query.message.chat_id,
+        chat_id=update.message.chat_id,
         text="What type of search would you like?",
         reply_markup=keyboard_builder.keyboard,
     )
@@ -79,7 +80,9 @@ def name_search(update: Update, context: CallbackContext):
     """
     update.callback_query.delete_message()
 
-    context.bot.send_message("Enter your search query, please:")
+    context.bot.send_message(
+        chat_id=update.callback_query.message.chat_id,
+        text="Enter your search query, please:")
 
     return ProductStates.NAME
 
@@ -143,30 +146,41 @@ class ProductCallbacks:
         context.chat_data[Product] = []
 
         for product in page.results:
-            keyboard_builder = KeyboardBuilder(Page(results=[product])).create_keyboard(
+            keyboard_builder = KeyboardBuilder(Page(results=[product]))
+            keyboard_builder.create_keyboard(
                 text="Description"
             )
-            message = context.bot.send_photo(
+
+            # message = context.bot.send_photo(
+            #     chat_id=update.callback_query.message.chat_id,
+            #     caption=escape_markdown(product.name, version=2),
+            #     photo=product.images[0]["image"],
+            #     reply_markup=keyboard_builder.keyboard,
+            # )
+            message = context.bot.send_message(
                 chat_id=update.callback_query.message.chat_id,
-                caption=product.name,
-                photo=product.images[0],
-                reply_markup=keyboard_builder.keyboard,
+                text=f"*{escape_markdown(product.name, version=2)}*",
+                reply_markup=keyboard_builder.keyboard
             )
             context.chat_data[Product].append(message)
 
         #       We need to add page changing buttons to the end of the list
         page.results = page.results[-1:]
-        keyboard_builder = KeyboardBuilder(page=page).create_keyboard(
+        keyboard_builder = KeyboardBuilder(page=page)
+        keyboard_builder.create_keyboard(
             text="Description"
         )
         context.chat_data[Product][-1].edit_reply_markup(
             reply_markup=keyboard_builder.keyboard
         )
 
+
     @staticmethod
     def first_page(update: Update, context: CallbackContext):
-        update.callback_query.delete_message()
+        message = update.message or update.callback_query.message
+        message.delete()
         ProductCallbacks._product_list(update, context)
+        return ProductStates.PRODUCTS
 
     @staticmethod
     def turn_page(update: Update, context: CallbackContext):
@@ -186,39 +200,40 @@ class ProductCallbacks:
         """
         product: Product = update.callback_query.data
 
-        album_message = context.bot.send_media_group(
-            chat_id=update.callback_query.message.chat_id, media=product.images
-        )
+        # album_message = context.bot.send_media_group(
+        #     chat_id=update.callback_query.message.chat_id, media=[i["image"] for i in product.images]
+        # )
 
-        keyboard = KeyboardBuilder(
+        keyboard_builder = KeyboardBuilder(
             Page(results=["Add to wishlist", "Add to order", "Back"]), "product"
-        ).create_keyboard()
+        )
+        keyboard_builder.create_keyboard()
 
         description_message = context.bot.send_message(
             chat_id=update.callback_query.message.chat_id,
             text=f"""
-            *{product.name}*
+            *{escape_markdown(product.name, version=2)}*
 
-            {product.description}
+            {escape_markdown(product.description, version=2)}
             
-            _{chr(9).join(str(tag) for tag in product.tags)}_
+            _{escape_markdown(chr(9).join(str(tag) for tag in product.tags), version=2)}_
 
-            *${product.price}*
+            *${escape_markdown(str(product.price), version=2)}*
 
-            {product.video_links[0]}""",
-            reply_markup=keyboard,
+            {escape_markdown(product.video_links[0]["video_link"], version=2)}""",
+            reply_markup=keyboard_builder.keyboard,
         )
 
         for message in context.chat_data[Product]:
             message.delete()
 
-        context.chat_data[Product] = [album_message, description_message]
+        context.chat_data["delete"] = [description_message]
 
         return ProductStates.DESCRIPTION
 
     @staticmethod
     def go_back(update: Update, context: CallbackContext):
-        for message in context.chat_data[Product]:
+        for message in context.chat_data["delete"]:
             message.delete()
 
         ProductCallbacks._product_list(update, context)

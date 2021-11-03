@@ -10,7 +10,7 @@ import datetime
 from enum import Enum
 
 import phonenumbers
-from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator
+from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator, AnyUrl
 from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
 
@@ -385,8 +385,8 @@ class Product(PaginatedModel):
     stock_quantity: PositiveInt
     categories: List[Category]
     tags: List[Tag]
-    images: List[str]
-    video_links: List[str]
+    images: list
+    video_links: list
 
     class Config:
         arbitrary_types_allowed = True
