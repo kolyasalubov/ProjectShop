@@ -14,16 +14,12 @@ from telegram.ext import (
 from TOKEN import TELEGRAM_TOKEN
 from client.models import Category, Product
 from handlers.product_manager import (
-    search_type,
-    SEARCH,
     CategoryCallbacks,
-    name_search,
-    CATEGORY,
     ProductCallbacks,
-    NAME,
-    PRODUCTS,
+    ProductStates,
+    search_type,
+    name_search,
     close_products,
-    DESCRIPTION,
 )
 from handlers.user_menu import get_base_reply_keyboard
 
@@ -45,28 +41,28 @@ def setup_dispatcher(dp):
         ConversationHandler(
             entry_points=[MessageHandler(Filters.text("search products"), search_type)],
             states={
-                SEARCH: [
+                ProductStates.SEARCH: [
                     CallbackQueryHandler(
                         CategoryCallbacks.propose_page,
                         pattern=r"search=Search-by-category",
                     ),
                     CallbackQueryHandler(name_search, pattern=r"search=Search-by-name"),
                 ],
-                CATEGORY: [
+                ProductStates.CATEGORY: [
                     CallbackQueryHandler(ProductCallbacks.first_page, pattern=Category),
                     CallbackQueryHandler(
                         CategoryCallbacks.turn_page,
                         pattern=r"^http://.+/categories/.+$",
                     ),
                 ],
-                NAME: [MessageHandler(Filters.text, ProductCallbacks.first_page)],
-                PRODUCTS: [
+                ProductStates.NAME: [MessageHandler(Filters.text, ProductCallbacks.first_page)],
+                ProductStates.PRODUCTS: [
                     CallbackQueryHandler(
                         ProductCallbacks.turn_page, pattern=r"^http://.+/products/.+$"
                     ),
                     CallbackQueryHandler(ProductCallbacks.description, pattern=Product),
                 ],
-                DESCRIPTION: [
+                ProductStates.DESCRIPTION: [
                     CallbackQueryHandler(
                         ProductCallbacks.go_back, pattern=r"product=Go-back"
                     )

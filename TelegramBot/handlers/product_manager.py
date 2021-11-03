@@ -1,11 +1,15 @@
+from enum import Enum
+
 from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler
 
 from client.models import Category, Page, Product
 from handlers.utils import KeyboardBuilder
 
+
 # constants for conversation states
-SEARCH, CATEGORY, NAME, PRODUCTS, DESCRIPTION = range(5)
+class ProductStates(Enum):
+    SEARCH, CATEGORY, NAME, PRODUCTS, DESCRIPTION = range(5)
 
 
 class PageCallbacks:
@@ -66,7 +70,7 @@ def search_type(update: Update, context: CallbackContext):
         text="What type of search would you like?",
         reply_markup=keyboard_builder.keyboard,
     )
-    return SEARCH
+    return ProductStates.SEARCH
 
 
 def name_search(update: Update, context: CallbackContext):
@@ -77,7 +81,7 @@ def name_search(update: Update, context: CallbackContext):
 
     context.bot.send_message("Enter your search query, please:")
 
-    return NAME
+    return ProductStates.NAME
 
 
 def close_products(update: Update, context: CallbackContext):
@@ -96,7 +100,7 @@ def close_products(update: Update, context: CallbackContext):
 class CategoryCallbacks(PageCallbacks):
     return_class = Category
     text = "Choose category:"
-    propose_state = CATEGORY
+    propose_state = ProductStates.CATEGORY
 
 
 class ProductCallbacks:
@@ -210,7 +214,7 @@ class ProductCallbacks:
 
         context.chat_data[Product] = [album_message, description_message]
 
-        return DESCRIPTION
+        return ProductStates.DESCRIPTION
 
     @staticmethod
     def go_back(update: Update, context: CallbackContext):
@@ -219,4 +223,4 @@ class ProductCallbacks:
 
         ProductCallbacks._product_list(update, context)
 
-        return PRODUCTS
+        return ProductStates.PRODUCTS
