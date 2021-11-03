@@ -3,7 +3,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from client.models import Page
 
 
-class KeyboardBuilder:
+class InlineKeyboardBuilder:
     """
     This is a builder class for a keyboard
     """

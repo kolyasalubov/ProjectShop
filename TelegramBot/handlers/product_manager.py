@@ -5,7 +5,7 @@ from telegram.ext import CallbackContext, ConversationHandler
 from telegram.utils.helpers import escape_markdown
 
 from client.models import Category, Page, Product
-from handlers.utils import KeyboardBuilder
+from handlers.utils import InlineKeyboardBuilder
 
 
 # constants for conversation states
@@ -24,8 +24,8 @@ class PageCallbacks:
     propose_state = 0
 
     @classmethod
-    def _build_keyboard(cls, page: Page) -> KeyboardBuilder:
-        keyboard_builder = KeyboardBuilder(page=page)
+    def _build_keyboard(cls, page: Page) -> InlineKeyboardBuilder:
+        keyboard_builder = InlineKeyboardBuilder(page=page)
         keyboard_builder.create_keyboard()
         return keyboard_builder
 
@@ -62,7 +62,7 @@ def search_type(update: Update, context: CallbackContext):
 
     update.message.delete()
 
-    keyboard_builder = KeyboardBuilder(
+    keyboard_builder = InlineKeyboardBuilder(
         Page(results=["Search by category", "Search by name"]), "search"
     )
     keyboard_builder.create_keyboard(columns=2)
@@ -146,7 +146,7 @@ class ProductCallbacks:
         context.chat_data[Product] = []
 
         for product in page.results:
-            keyboard_builder = KeyboardBuilder(Page(results=[product]))
+            keyboard_builder = InlineKeyboardBuilder(Page(results=[product]))
             keyboard_builder.create_keyboard(
                 text="Description"
             )
@@ -166,7 +166,7 @@ class ProductCallbacks:
 
         #       We need to add page changing buttons to the end of the list
         page.results = page.results[-1:]
-        keyboard_builder = KeyboardBuilder(page=page)
+        keyboard_builder = InlineKeyboardBuilder(page=page)
         keyboard_builder.create_keyboard(
             text="Description"
         )
@@ -204,7 +204,7 @@ class ProductCallbacks:
         #     chat_id=update.callback_query.message.chat_id, media=[i["image"] for i in product.images]
         # )
 
-        keyboard_builder = KeyboardBuilder(
+        keyboard_builder = InlineKeyboardBuilder(
             Page(results=["Add to wishlist", "Add to order", "Back"]), "product"
         )
         keyboard_builder.create_keyboard()
