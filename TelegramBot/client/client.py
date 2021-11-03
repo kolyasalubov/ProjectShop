@@ -1,7 +1,9 @@
 import os
 
 import requests
+from dotenv import load_dotenv
 
+load_dotenv("../.env")
 
 PHONE_NUMBER = os.environ.get(
     "BOT_PHONE_NUMBER"
@@ -153,6 +155,7 @@ class RestClient:
 
         if self.server_host not in url:
             url = self.server_host + self.api_root + url
+
         response = request_method(url, headers=headers, data=data, params=params)
 
         if response.status_code == 401:
@@ -173,7 +176,7 @@ bot_client = RestClient(
     phone_number=PHONE_NUMBER,
     password=PASSWORD,
     server_host=SERVER_HOST,
-    api_root=API_ROOT
+    api_root=API_ROOT,
     token_url=TOKEN_URL,
     token_refresh_url=TOKEN_REFRESH_URL,
     logout_url=LOGOUT_URL,
