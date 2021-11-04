@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from django_extensions.db.fields import AutoSlugField
+from ckeditor.fields import RichTextField
 
 from UserApp.models import User
 
@@ -264,4 +265,14 @@ class ProductVideo(models.Model):
     @property
     def name(self):
         return f"Video {self.id} of {self.product}"
- 
+
+
+class AdvancedProductDescription(models.Model):
+    product = models.OneToOneField(
+        Product,
+        on_delete=models.CASCADE,
+    )
+    content = RichTextField()
+
+    class Meta:
+        verbose_name_plural = _("Product advanced description")
