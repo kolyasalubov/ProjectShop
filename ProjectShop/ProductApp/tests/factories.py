@@ -7,10 +7,19 @@ from ProductApp.models import (
     ProductCategory,
     ProductSubcategory,
     Tag,
-    ProductMedia,
+    TagGroup,
     Review,
 )
 from UserApp.tests.factories import UserFactory
+
+
+class TagGroupFactory(factory.django.DjangoModelFactory):
+    """Factory for TagGroup model"""
+
+    class Meta:
+        model = TagGroup
+
+    name = factory.Faker("word")
 
 
 class TagFactory(factory.django.DjangoModelFactory):
@@ -20,6 +29,7 @@ class TagFactory(factory.django.DjangoModelFactory):
         model = Tag
 
     name = factory.Faker("word")
+    group = factory.SubFactory(TagGroupFactory)
 
 
 class ProductCategoryFactory(factory.django.DjangoModelFactory):
@@ -80,19 +90,6 @@ class ProductFactory(factory.django.DjangoModelFactory):
         )
         for tag in tags:
             self.tags.add(tag)
-
-
-class ProductMediaFactory(factory.django.DjangoModelFactory):
-    """Factory for ProductMedia model"""
-
-    class Meta:
-        model = ProductMedia
-
-    media_type = factory.Faker("random_int", min=0, max=1)
-    # image = factory.Faker('image', size=(256, 256), image_format='png')
-    video_link = factory.Faker("url")
-
-    product = factory.SubFactory(ProductFactory)
 
 
 class ReviewFactory(factory.django.DjangoModelFactory):

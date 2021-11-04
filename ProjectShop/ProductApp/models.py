@@ -55,6 +55,20 @@ class ProductSubcategory(models.Model):
         return reverse("subcategory-detail", kwargs={"slug": self.slug})
 
 
+class TagGroup(models.Model):
+    """
+    A database object that represents a group for grouping Tag instances.
+
+    Attributes:
+        name: group name.
+    """
+
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Tag(models.Model):
     """
     A database object that represents a string-like tag bound to items.
@@ -67,6 +81,7 @@ class Tag(models.Model):
 
     name = models.CharField(max_length=100, null=False, blank=False)
     slug = AutoSlugField(populate_from='name', editable=True)
+    group = models.ForeignKey(TagGroup, on_delete=models.CASCADE, related_name="tags")
 
     def __str__(self):
         return self.name
@@ -194,8 +209,7 @@ class ProductImage(models.Model):
     image = models.ImageField(
         upload_to="product_media_image", default="default_image/default_image.png"
     )
-    
-    
+
     class Meta:
         verbose_name_plural = _("Product image")
 
@@ -244,7 +258,6 @@ class ProductVideo(models.Model):
     )
 
     video_link = models.URLField(null=True, blank=True)
-
 
     def __str__(self):
         return self.name

@@ -9,6 +9,7 @@ from ProductApp.models import (
     ProductCategory,
     ProductSubcategory,
     Tag,
+    TagGroup,
     Review,
     ProductImage,
     ProductVideo,
@@ -115,6 +116,12 @@ class ProductSubcategoryAdmin(ForeignKeyAutocompleteAdmin):
 
 class TagAdmin(ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
+    list_filter = ("group__name",)
+
+
+class TagGroupAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
 
 
 admin.site.register(Product, ProductAdmin)
@@ -125,3 +132,4 @@ admin.site.register(Review, ReviewAdmin)
 admin.site.register(ProductImage, ProductImageAdmin)
 admin.site.register(ProductVideo, ProductVideoAdmin)
 admin.site.register(AdvancedProductDescription, AdvancedDescriptionAdmin)
+admin.site.register(TagGroup, TagGroupAdmin)
