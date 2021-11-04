@@ -1,10 +1,10 @@
 from enum import Enum
 
-from telegram import Update
+from telegram import Update, InputMediaPhoto
 from telegram.ext import CallbackContext, ConversationHandler
 from telegram.utils.helpers import escape_markdown
 
-from client.models import Category, Page, Product
+from client.models import Category, Page, Product, Image
 from handlers.utils import InlineKeyboardBuilder
 
 
@@ -41,6 +41,8 @@ class PageCallbacks:
             text=cls.text,
             reply_markup=cls._build_keyboard(page).keyboard,
         )
+
+        last_message.delete()
 
         return cls.propose_state
 
@@ -151,20 +153,17 @@ class ProductCallbacks:
                 text="Description"
             )
 
-            # message = context.bot.send_photo(
-            #     chat_id=update.callback_query.message.chat_id,
-            #     caption=escape_markdown(product.name, version=2),
-            #     photo=product.images[0]["image"],
-            #     reply_markup=keyboard_builder.keyboard,
-            # )
-            message = context.bot.send_message(
+            message = context.bot.send_photo(
                 chat_id=update.callback_query.message.chat_id,
-                text=f"*{escape_markdown(product.name, version=2)}*",
-                reply_markup=keyboard_builder.keyboard
+                caption=f"*{escape_markdown(product.name, version=2)}*",
+                photo=product.images[0].get(),
+                reply_markup=keyboard_builder.keyboard,
             )
+
             context.chat_data[Product].append(message)
 
         #       We need to add page changing buttons to the end of the list
+        page = page.copy()
         page.results = page.results[-1:]
         keyboard_builder = InlineKeyboardBuilder(page=page)
         keyboard_builder.create_keyboard(
@@ -173,7 +172,6 @@ class ProductCallbacks:
         context.chat_data[Product][-1].edit_reply_markup(
             reply_markup=keyboard_builder.keyboard
         )
-
 
     @staticmethod
     def first_page(update: Update, context: CallbackContext):
@@ -200,9 +198,10 @@ class ProductCallbacks:
         """
         product: Product = update.callback_query.data
 
-        # album_message = context.bot.send_media_group(
-        #     chat_id=update.callback_query.message.chat_id, media=[i["image"] for i in product.images]
-        # )
+        album_message = context.bot.send_media_group(
+            chat_id=update.callback_query.message.chat_id,
+            media=[*map(lambda image: InputMediaPhoto(image), Image.get_list(product.images))]
+        )
 
         keyboard_builder = InlineKeyboardBuilder(
             Page(results=["Add to wishlist", "Add to order", "Back"]), "product"
@@ -220,14 +219,14 @@ class ProductCallbacks:
 
             *${escape_markdown(str(product.price), version=2)}*
 
-            {escape_markdown(product.video_links[0]["video_link"], version=2)}""",
+            {escape_markdown(product.video_links[0].video_link, version=2)}""",
             reply_markup=keyboard_builder.keyboard,
         )
 
         for message in context.chat_data[Product]:
             message.delete()
 
-        context.chat_data["delete"] = [description_message]
+        context.chat_data["delete"] = [*album_message, description_message]
 
         return ProductStates.DESCRIPTION
 

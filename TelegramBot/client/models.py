@@ -5,6 +5,7 @@ For more info, read https://pydantic-docs.helpmanual.io
 Methods in models are facades for all api requests required by telegram bot
 """
 
+from __future__ import annotations
 import os
 import datetime
 from enum import Enum
@@ -30,6 +31,9 @@ class Page(BaseModel):
     next: AnyUrl = None
     previous: AnyUrl = None
     results: list
+
+    def copy(self, *args, **kwargs) -> Page:
+        return Page(count=self.count, next=self.next, previous=self.previous, results=self.results.copy())
 
 
 class PaginatedModel(BaseModel):
@@ -377,6 +381,21 @@ class Review(PaginatedModel):
         return response.json()
 
 
+class Image(BaseModel):
+    image: str
+
+    def get(self) -> bytes:
+        return bot_client.send_request("GET", url=self.image).content
+
+    @staticmethod
+    def get_list(image_list: List[Image]) -> map:
+        return map(lambda image: image.get(), image_list)
+
+
+class Video(BaseModel):
+    video_link: str
+
+
 class Product(PaginatedModel):
     id = PositiveInt
     name: constr(max_length=100)
@@ -385,8 +404,8 @@ class Product(PaginatedModel):
     stock_quantity: PositiveInt
     categories: List[Category]
     tags: List[Tag]
-    images: list
-    video_links: list
+    images: List[Image]
+    video_links: List[Video]
 
     class Config:
         arbitrary_types_allowed = True
@@ -397,9 +416,10 @@ class Product(PaginatedModel):
         Get paginated list of products by some filters.
         If filters aren't specified, list should be sorted by popularity
         """
+        params = {}
         if category:
-            params = {"category": category}
-        elif query:
+            params = {"category": str(category)}
+        if query:
             params = {"query": query}
         response = bot_client.send_request("GET", f"/products", params=params)
         return cls.page(response.json())
