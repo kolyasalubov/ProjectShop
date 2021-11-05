@@ -1,4 +1,5 @@
 from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
@@ -35,6 +36,9 @@ class HomePageView(FilterView):
     context_object_name = 'products'
     paginate_by = 12
 
+    def get_queryset(self):
+        return Product.objects.all().order_by('-stock_quantity')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         categories = ProductCategory.objects.order_by('name')[:20]
@@ -53,6 +57,37 @@ class CategoriesView(generic.ListView):
     context_object_name = 'categories'
     template_name = 'ProductApp/categories.html'
     paginate_by = 12
+
+
+class CategoryDetailView(generic.DetailView):
+    model = ProductCategory
+    context_object_name = 'category_detail'
+    template_name = 'ProductApp/category_detail.html'
+
+    def get_queryset(self):
+        return ProductCategory.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products = self.get_related_products()
+        context['products'] = products
+        context['page_obj'] = products
+        categories = ProductCategory.objects.order_by('name')[:20]
+        context['categories'] = categories
+        return context
+
+    def get_related_products(self):
+        queryset = Product.objects.filter(categories=self.object)
+        ordered_queryset = queryset.order_by('-stock_quantity')
+        paginator = Paginator(ordered_queryset, 2)
+        try:
+            page = self.request.GET.get('page')
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+        products = paginator.get_page(page)
+        return products
 
 
 class ProductViewSet(ReadOnlyModelViewSet):
