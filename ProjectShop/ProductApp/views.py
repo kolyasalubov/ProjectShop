@@ -79,7 +79,7 @@ class CategoryDetailView(generic.DetailView):
     def get_related_products(self):
         queryset = Product.objects.filter(categories=self.object)
         ordered_queryset = queryset.order_by('-stock_quantity')
-        paginator = Paginator(ordered_queryset, 2)
+        paginator = Paginator(ordered_queryset, 12)
         try:
             page = self.request.GET.get('page')
         except PageNotAnInteger:
