@@ -4,7 +4,7 @@ from ProductApp.views import (
     HomePageView,
     CategoriesView,
     ProductDetailView,
-    CategoryDetailView
+    CategoryDetailView,
 )
 
 
