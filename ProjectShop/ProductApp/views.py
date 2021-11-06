@@ -30,7 +30,15 @@ from ProductApp.serializers import (
 )
 
 
-class HomePageView(FilterView):
+class CategoryListMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = ProductCategory.objects.order_by('name')[:20]
+        context['categories'] = categories
+        return context
+
+
+class HomePageView(CategoryListMixin, FilterView):
     filterset_class = ProductFilter
     template_name = 'ProductApp/homepage.html'
     context_object_name = 'products'
@@ -38,12 +46,6 @@ class HomePageView(FilterView):
 
     def get_queryset(self):
         return Product.objects.all().order_by('-stock_quantity')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        categories = ProductCategory.objects.order_by('name')[:20]
-        context['categories'] = categories
-        return context
 
 
 class ProductDetailView(generic.DetailView):
@@ -59,7 +61,7 @@ class CategoriesView(generic.ListView):
     paginate_by = 12
 
 
-class CategoryDetailView(generic.DetailView):
+class CategoryDetailView(CategoryListMixin, generic.DetailView):
     model = ProductCategory
     context_object_name = 'category_detail'
     template_name = 'ProductApp/category_detail.html'
@@ -72,8 +74,6 @@ class CategoryDetailView(generic.DetailView):
         products = self.get_related_products()
         context['products'] = products
         context['page_obj'] = products
-        categories = ProductCategory.objects.order_by('name')[:20]
-        context['categories'] = categories
         return context
 
     def get_related_products(self):
