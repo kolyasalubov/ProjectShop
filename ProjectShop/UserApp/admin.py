@@ -80,7 +80,7 @@ class UserAdmin(BaseUserAdmin):
     )
     list_filter = ("is_superuser", "is_active", "role")
     fieldsets = (
-        (None, {"fields": ("phone_number",)}),
+        (None, {"fields": ("phone_number", "wishlist", )}),
         (
             "Personal info",
             {
