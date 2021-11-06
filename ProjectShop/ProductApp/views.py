@@ -33,38 +33,38 @@ from ProductApp.serializers import (
 class CategoryListMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        categories = ProductCategory.objects.order_by('name')[:20]
-        context['categories'] = categories
+        categories = ProductCategory.objects.order_by("name")[:20]
+        context["categories"] = categories
         return context
 
 
 class HomePageView(CategoryListMixin, FilterView):
     filterset_class = ProductFilter
-    template_name = 'ProductApp/homepage.html'
-    context_object_name = 'products'
+    template_name = "ProductApp/homepage.html"
+    context_object_name = "products"
     paginate_by = 12
 
     def get_queryset(self):
-        return Product.objects.all().order_by('-stock_quantity')
+        return Product.objects.all().order_by("-stock_quantity")
 
 
 class ProductDetailView(generic.DetailView):
     model = Product
-    context_object_name = 'product_detail'
-    template_name = 'ProductApp/product_detail.html'
+    context_object_name = "product_detail"
+    template_name = "ProductApp/product_detail.html"
 
 
 class CategoriesView(generic.ListView):
     model = ProductCategory
-    context_object_name = 'categories'
-    template_name = 'ProductApp/categories.html'
+    context_object_name = "categories"
+    template_name = "ProductApp/categories.html"
     paginate_by = 12
 
 
 class CategoryDetailView(CategoryListMixin, generic.DetailView):
     model = ProductCategory
-    context_object_name = 'category_detail'
-    template_name = 'ProductApp/category_detail.html'
+    context_object_name = "category_detail"
+    template_name = "ProductApp/category_detail.html"
 
     def get_queryset(self):
         return ProductCategory.objects.all()
@@ -72,16 +72,16 @@ class CategoryDetailView(CategoryListMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         products = self.get_related_products()
-        context['products'] = products
-        context['page_obj'] = products
+        context["products"] = products
+        context["page_obj"] = products
         return context
 
     def get_related_products(self):
         queryset = Product.objects.filter(categories=self.object)
-        ordered_queryset = queryset.order_by('-stock_quantity')
+        ordered_queryset = queryset.order_by("-stock_quantity")
         paginator = Paginator(ordered_queryset, 12)
         try:
-            page = self.request.GET.get('page')
+            page = self.request.GET.get("page")
         except PageNotAnInteger:
             page = paginator.page(1)
         except EmptyPage:
