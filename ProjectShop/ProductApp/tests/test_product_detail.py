@@ -22,7 +22,7 @@ class ProductDetailTest(TestCase):
                                 )
 
     def test_product_detail_contains_correct_html(self):
-        self.assertContains(self.response, f"{self.product.name}")
+        self.assertContains(self.response, f"{self.product}")
         self.assertContains(self.response, f"{self.product.price}")
         self.assertContains(self.response, f"{self.product.description}")
 
