@@ -1,10 +1,20 @@
 import os
+
 import requests
+from dotenv import load_dotenv
 
+load_dotenv("../.env")
 
-PHONE_NUMBER = os.environ.get("BOT_PHONE_NUMBER")      # Crete admin is_bot user and insert his/her phone_number
-PASSWORD = os.environ.get("BOT_PASSWORD")          # Crete admin is_bot user and insert his/her password
-SERVER_HOST = os.environ.get("SERVER_HOST")         # "http://localhost:8000/" insert for local testing
+PHONE_NUMBER = os.environ.get(
+    "BOT_PHONE_NUMBER"
+)  # Crete admin is_bot user and insert his/her phone_number
+PASSWORD = os.environ.get(
+    "BOT_PASSWORD"
+)  # Crete admin is_bot user and insert his/her password
+SERVER_HOST = os.environ.get(
+    "SERVER_HOST"
+)  # "http://localhost:8000/" insert for local testing
+API_ROOT = os.environ.get("API_ROOT")
 TOKEN_URL = os.environ.get("TOKEN_URL")
 TOKEN_REFRESH_URL = os.environ.get("TOKEN_REFRESH_URL")
 LOGOUT_URL = os.environ.get("LOGOUT_URL")
@@ -41,6 +51,7 @@ class RestClient:
         phone_number,
         password,
         server_host,
+        api_root,
         token_url,
         token_refresh_url,
         logout_url,
@@ -48,6 +59,7 @@ class RestClient:
         self.phone_number = phone_number
         self.password = password
         self.server_host = server_host
+        self.api_root = api_root
         self.token_url = token_url
         self.token_refresh_url = token_refresh_url
         self.logout_url = logout_url
@@ -141,7 +153,9 @@ class RestClient:
             response.status_code = 405
             return response
 
-        url = self.server_host + url
+        if self.server_host not in url:
+            url = self.server_host + self.api_root + url
+
         response = request_method(url, headers=headers, data=data, params=params)
 
         if response.status_code == 401:
@@ -162,6 +176,7 @@ bot_client = RestClient(
     phone_number=PHONE_NUMBER,
     password=PASSWORD,
     server_host=SERVER_HOST,
+    api_root=API_ROOT,
     token_url=TOKEN_URL,
     token_refresh_url=TOKEN_REFRESH_URL,
     logout_url=LOGOUT_URL,
