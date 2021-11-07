@@ -32,6 +32,7 @@
 
     {% endfor %}
 
+    {% if products.paginator.num_pages != 1 %}
 
         {% if products.has_previous %}
             <a href="?page=1">{% translate "First" %}</a>
@@ -50,6 +51,8 @@
             <a href="?page={{ products.next_page_number }}">{% translate "Next" %}</a>
             <a href="?page={{ products.paginator.num_pages }}">{% translate "Last" %}</a>
         {% endif %}
+
+    {% endif %}
 
 
 {% endblock content %}
