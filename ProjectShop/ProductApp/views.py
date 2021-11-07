@@ -66,14 +66,10 @@ class CategoryDetailView(CategoryListMixin, generic.DetailView):
     context_object_name = "category_detail"
     template_name = "ProductApp/category_detail.html"
 
-    def get_queryset(self):
-        return ProductCategory.objects.all()
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         products = self.get_related_products()
         context["products"] = products
-        context["page_obj"] = products
         return context
 
     def get_related_products(self):

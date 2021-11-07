@@ -33,22 +33,22 @@
     {% endfor %}
 
 
-        {% if page_obj.has_previous %}
+        {% if products.has_previous %}
             <a href="?page=1">{% translate "First" %}</a>
-            <a href="?page={{ page_obj.previous_page_number }}">{% translate "Previous" %}</a>
+            <a href="?page={{ products.previous_page_number }}">{% translate "Previous" %}</a>
         {% endif %}
 
-        {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
+        {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
                 <a href="?page={{ num }}">{{ num }}</a>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
                 <a href="?page={{ num }}">{{ num }}</a>
             {% endif %}
         {% endfor %}
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">{% translate "Next" %}</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">{% translate "Last" %}</a>
+        {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}">{% translate "Next" %}</a>
+            <a href="?page={{ products.paginator.num_pages }}">{% translate "Last" %}</a>
         {% endif %}
 
 
