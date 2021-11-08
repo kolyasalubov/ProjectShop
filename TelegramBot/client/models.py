@@ -5,7 +5,6 @@ For more info, read https://pydantic-docs.helpmanual.io
 Methods in models are facades for all api requests required by telegram bot
 """
 
-from __future__ import annotations
 import os
 import datetime
 from enum import Enum
@@ -16,13 +15,15 @@ from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
 
 from client.status_check import bot_client
+from utils.Page import IPage
+from utils.image import IImage
 
 USER_URL = os.environ.get("USER_URL")  # add url to obtain and manage user by phone number
 USER_INIT_KEY = os.environ.get("USER_INIT_KEY")   # key for User.__init__  access, set None to switch off
 USER_BY_TELEGRAM_ID_URL = os.environ.get("USER_BY_TELEGRAM_ID_URL")  # add url to obtain user by telegram id
 
 
-class Page(BaseModel):
+class Page(BaseModel, IPage):
     """
     This model is used to transform gathered data into object
     """
@@ -32,8 +33,16 @@ class Page(BaseModel):
     previous: AnyUrl = None
     results: list
 
-    def copy(self, *args, **kwargs) -> Page:
+    def copy(self, *args, **kwargs):
         return Page(count=self.count, next=self.next, previous=self.previous, results=self.results.copy())
+
+    @property
+    def body(self):
+        return self.results
+
+
+    def __str__(self):
+
 
 
 class PaginatedModel(BaseModel):
@@ -381,15 +390,11 @@ class Review(PaginatedModel):
         return response.json()
 
 
-class Image(BaseModel):
+class Image(BaseModel, IImage):
     image: str
 
     def get(self) -> bytes:
         return bot_client.send_request("GET", url=self.image).content
-
-    @staticmethod
-    def get_list(image_list: List[Image]) -> map:
-        return map(lambda image: image.get(), image_list)
 
 
 class Video(BaseModel):

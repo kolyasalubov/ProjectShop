@@ -100,7 +100,7 @@ class BlacklistRefreshViewSet(viewsets.GenericViewSet):
     
     def create(self, request):
         try:
-            refresh_token = RefreshToken(request.data.get("refresh"))
+            refresh_token = RefreshToken(request.body.get("refresh"))
             refresh_token.blacklist()
         except TokenError as error:
             return Response(str(error), status=status.HTTP_202_ACCEPTED)
@@ -144,7 +144,7 @@ class WishListViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     
     def partial_update(self, request, *args, **kwargs):
         user = self.get_object()
-        data = request.data
+        data = request.body
         
         products = Product.objects.filter(name=data['name']).first()
         if not products:
@@ -157,7 +157,7 @@ class WishListViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     
     def destroy(self, request, *args, **kwargs):
         user = self.get_object()
-        data = request.data
+        data = request.body
     
         product = Product.objects.filter(name=data.get('name')).first()
         if not product:
