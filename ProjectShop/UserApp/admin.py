@@ -32,7 +32,7 @@ class UserAdmin(BaseUserAdmin):
         if is_superuser:
             enabled_fields |= set(
                 form.base_fields.keys()
-            )  # going to enable all fields except 'role'
+            )  # going to enable all fields except "role"
             if obj:
                 enabled_fields.remove(
                     "role"
@@ -117,9 +117,9 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-    search_fields = ('phone_number',)
-    ordering = ('phone_number',)
-    filter_horizontal = ('wishlist',)
+    search_fields = ("phone_number",)
+    ordering = ("phone_number",)
+    filter_horizontal = ("wishlist",)
 
 
 # registering new django admin...
