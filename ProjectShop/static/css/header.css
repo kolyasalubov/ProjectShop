@@ -6,6 +6,9 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 3rem;
+
+    z-index: 1000;
+
 }
 
 header .left-container {

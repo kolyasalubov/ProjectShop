@@ -4,7 +4,6 @@ body{
 
 #wrapper{
     display: grid;
-/*        background-color: black;*/
 }
 
 #word_cloud{
@@ -214,6 +213,5 @@ body{
 
 .btn-group{
     float: right;
-    position: fixed;
-    z-index: -1;
+    z-index: 1;
 }
