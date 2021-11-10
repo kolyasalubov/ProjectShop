@@ -87,7 +87,7 @@ class CategoriesView(generic.ListView):
 class CategoryDetailView(CategoryListMixin, generic.DetailView):
     model = ProductCategory
     context_object_name = "category_detail"
-    template_name = "ProductApp/category_detail.html"
+    template_name = "ProductApp/ProductsPage.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

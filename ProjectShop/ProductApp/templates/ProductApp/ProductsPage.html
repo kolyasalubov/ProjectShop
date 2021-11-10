@@ -16,7 +16,7 @@
                      Samsung
                 </div>
                 <div class="tag_delete">
-                    <img id="delete_image" src='Layer%2035.png'>
+                    <img id="delete_image" src=" \media\mini_photos\Layer2.png ">
                 </div>
             </div>
 
@@ -26,19 +26,16 @@
         <section id="top">
 
             <div id="name_of_category">
-                Cameras
+                {{ category_detail.name }}
             </div>
 
             <div id="filter">
 
-
-
-
                  <div class="btn-group">
                   <button  type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Right-aligned menu
+                    Filter
                   </button>
-                  <div class="dropdown-menu dropdown-menu-right">
+                  <div class="dropdown-menu dropdown-menu-right" style="width:300px; background-color:#F9F3E5;" >
                     <button class="dropdown-item" type="button">Action</button>
                     <button class="dropdown-item" type="button">Another action</button>
                     <button class="dropdown-item" type="button">Something else here</button>
@@ -54,104 +51,83 @@
 
         <section id="products">
 
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
+
+            {% for product in products %}
+
+                <div class="product">
+                   <div class="product_photo">
+                        {% if product.images.first %}
+                            <a href="{% url 'product_overview' product.id  %}" ><img class="product_photo_radius" width="100%" height="100%" src="{{ product.images.first.image.url }}"></a>
+                        {% endif %}
+                   </div>
+                    <div class="bottom_div">
+                        <div class="name">{{ product.name }} </div>
+                        <div class="extra">
+                            <div class="price"> {{ product.price }}$</div>
+                            <div class="rating"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            {% endfor %}
 
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
+<!--            <div class="product">-->
+<!--              -->
+<!--               <div class="product_photo">    &lt;!&ndash;style="position: relative; z-index: 1;"&ndash;&gt;-->
+<!--                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">-->
+<!--&lt;!&ndash;-->
+<!--                  <span id="overlay_text" style="position: absolute; top: 0px; z-index: 2;">-->
 <!--                      <img class="cart_image" src="Layer%2027.png">-->
 <!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
+<!--&ndash;&gt;-->
+<!--               </div>-->
+<!--               -->
+<!--                <div class="bottom_div">-->
+<!--                    <div class="name">Iphone 13 Pro Max </div>-->
+<!--                    <div class="extra">-->
+<!--                        <div class="price"> 1300$</div>-->
+<!--                        <div class="rating"></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                -->
+<!--            </div>-->
 
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="product">-->
+<!--               <div class="product_photo">-->
+<!--                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">-->
+<!--               </div>-->
+<!--                <div class="bottom_div">-->
+<!--                    <div class="name">Iphone 13 Pro Max </div>-->
+<!--                    <div class="extra">-->
+<!--                        <div class="price"> 1300$</div>-->
+<!--                        <div class="rating"></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
         </section>
+
+        {% if products.paginator.num_pages != 1 %}
+
+        {% if products.has_previous %}
+            <a href="?page=1"> First </a>
+            <a href="?page={{ products.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}">Next</a>
+            <a href="?page={{ products.paginator.num_pages }}">Last</a>
+        {% endif %}
+
+    {% endif %}
 
     </div>
 
