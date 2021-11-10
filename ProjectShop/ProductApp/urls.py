@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from ProductApp.views import HomePageView, CategoriesView, ProductDetailView, ProductOverviewPageView, ProductsByTagGroupView, ProductJsonListView
+from ProductApp.views import HomePageView, CategoriesView, ProductDetailView, ProductOverviewPageView, ProductsByTagGroupView, ProductJsonListView, CategoryDetailView
 
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('overview/<int:product_id>', views.ProductOverviewPageView, name='product_overview'),
     path('', HomePageView.as_view(), name='home'),
     path('products-json/<int:num_products>/', ProductJsonListView.as_view(), name='products-json-view'),
+    path("categories/<slug:slug>/", CategoryDetailView.as_view(), name="category-detail"),
 ]
