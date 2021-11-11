@@ -1,4 +1,8 @@
 from django.shortcuts import render, redirect
+from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import json
+
 from django.views import generic, View
 
 from django.http import JsonResponse
@@ -40,24 +44,11 @@ from ProductApp.forms import ReviewForm
 from django.db.models import Q
 
 
-class ProductJsonListView(View):
-    def get(self, *args, **kwargs):
-        upper = kwargs.get('num_products')
-        lower = upper - 4
-        products = list(Product.objects.values()[lower:upper])
-        products_size = len(Product.objects.all())
-        max_size = True if upper >= products_size else False
-        return JsonResponse({'data': products, 'max': max_size}, safe=False)
-
-
-
-
-
 class CategoryListMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        categories = ProductCategory.objects.order_by("name")[:20]
-        context["categories"] = categories
+        categories = ProductCategory.objects.order_by('name')[:20]
+        context['categories'] = categories
         return context
 
 

@@ -1,7 +1,9 @@
 from django import forms
 from ProductApp.models import Review
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
+
 from ProductApp.models import AdvancedProductDescription
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
 class ReviewForm(forms.ModelForm):

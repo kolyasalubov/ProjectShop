@@ -4,6 +4,7 @@
     {% load static %}
     {% load i18n %}
     {% load flatpages %}
+    {% load pagination_tags %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <!-- Bootstrap CSS -->
@@ -48,12 +49,12 @@
 
         <div class="right-container">
             <div class="search-container">
-
-                    <button class="search-button" type="submit">
+                <form action="{% url 'home' %}" method="get">
+                    <button class="search-button" type="submit" id="submit">
                         <i class="fa fa-search"></i>
                     </button>
-                    <input type="text" name="search" class="search-box">
-
+                    <input class="search-box" name="name__icontains" type="text" placeholder="Search" aria-label="Search" >
+                </form>
             </div>
             <div class="links-container">
                  <a href="" class="nav-link">
@@ -77,8 +78,18 @@
 
       <!--  Flatpages  -->
     {% get_flatpages as flatpages %}
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+              {% blocktranslate %} {{ message }} {% endblocktranslate %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
-    {% block category %}{% endblock category %}
+
+    {# {% block category %}{% endblock category %} #}
     {% block content %}
 
     {% endblock content%}
@@ -103,11 +114,13 @@
             <div class="footer-second-container">
                 <br><br>
                     <span>
+                    <div class="flatpages-container">
                       {% for page in flatpages %}
                             <a href="/pages{{ page.url }}" class=flatpage-link" style="color:#F6E37B;">
                                 {% blocktranslate with flatpage_title=page.title %} {{ flatpage_title }} {% endblocktranslate %}
                             </a>
                       {% endfor %}
+                    </div>
                     </span>
 
             </div>
