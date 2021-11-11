@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "ckeditor_uploader",
     'debug_toolbar',
+    "import_export",
   
     # local apps
     'UserApp',

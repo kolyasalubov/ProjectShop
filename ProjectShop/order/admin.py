@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from import_export.admin import ImportExportActionModelAdmin
 
 from ProjectShop.custom_filters import MultipleChoiceListFilter
-from order.export import export_to_csv
 from order.models import Order, OrderItems
 
 
 class ShippingStatusListFilter(MultipleChoiceListFilter):
     title = _("shipping status")
     parameter_name = "shipping_status__in"
-
+    
     def lookups(self, request, model_admin):
         return Order.ShippingStatus.choices
 
@@ -20,7 +20,7 @@ class OrderItemsInline(admin.TabularInline):
     extra = 1
 
 
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     fields = (
         "user",
         "payment_method",
@@ -48,8 +48,7 @@ class OrderAdmin(admin.ModelAdmin):
         "payment_status",
         "shipping_status",
     )
-    actions = (export_to_csv,)
-
+    
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return self.readonly_fields + (
@@ -58,10 +57,10 @@ class OrderAdmin(admin.ModelAdmin):
                 "shippingAddress_id",
             )
         return self.readonly_fields
-
+    
     def has_add_permission(self, request):
         return request.user.is_superuser
-
+    
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
 
@@ -74,13 +73,13 @@ class OrderItemsAdmin(admin.ModelAdmin):
         "product",
         "order",
     )
-
+    
     def has_add_permission(self, request):
         return False
-
+    
     def has_change_permission(self, request, obj=None):
         return False
-
+    
     def has_delete_permission(self, request, obj=None):
         return False
 
