@@ -56,7 +56,7 @@ class HomePageView(CategoryListMixin, FilterView):
     filterset_class = ProductFilter
     template_name = "ProductApp/homepage.html"
     context_object_name = "products"
-    paginate_by = 12
+    paginate_by = 1
 
     def get_queryset(self):
         return Product.objects.all().order_by("-stock_quantity")
@@ -72,7 +72,7 @@ class CategoriesView(generic.ListView):
     model = ProductCategory
     context_object_name = "categories"
     template_name = "ProductApp/categories.html"
-    paginate_by = 12
+    paginate_by = 1
 
 
 class CategoryDetailView(CategoryListMixin, generic.DetailView):
@@ -89,7 +89,7 @@ class CategoryDetailView(CategoryListMixin, generic.DetailView):
     def get_related_products(self):
         queryset = Product.objects.filter(categories=self.object)
         ordered_queryset = queryset.order_by("-stock_quantity")
-        paginator = Paginator(ordered_queryset, 12)
+        paginator = Paginator(ordered_queryset, 1)
         try:
             page = self.request.GET.get("page")
         except PageNotAnInteger:

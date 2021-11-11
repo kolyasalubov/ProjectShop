@@ -55,15 +55,15 @@
             {% for product in products %}
 
                 <div class="product">
+
                    <div class="product_photo" style="background-size: 100% 100%;
                              background-image: url({{ product.images.first.image.url }});">
-                        {% if product.images.first %}
-                            <a href="{% url 'product_overview' product.id  %}" ></a>
-                        {% endif %}
-
                        <button class="add_to_cart_button_here" type="button" >
                             <img src=" \media\mini_photos\Layer27.png ">
                        </button>
+                        {% if product.images.first %}
+                            <a href="{% url 'product_overview' product.id  %}" ></a>
+                        {% endif %}
 
                    </div>
                     <div class="bottom_div">
@@ -79,11 +79,12 @@
 
         </section>
 
+<div class="product-navigation-container">
         {% if products.paginator.num_pages != 1 %}
 
         {% if products.has_previous %}
-            <a href="?page=1"> First </a>
-            <a href="?page={{ products.previous_page_number }}">Previous</a>
+
+            <a href="?page={{ products.previous_page_number }}"> < </a>
         {% endif %}
 
         {% for num in products.paginator.page_range %}
@@ -95,13 +96,14 @@
         {% endfor %}
 
         {% if products.has_next %}
-            <a href="?page={{ products.next_page_number }}">Next</a>
-            <a href="?page={{ products.paginator.num_pages }}">Last</a>
+            <a href="?page={{ products.next_page_number }}"> > </a>
+
         {% endif %}
 
     {% endif %}
 
-    </div>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
