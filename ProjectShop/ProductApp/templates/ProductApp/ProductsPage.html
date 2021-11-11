@@ -55,10 +55,16 @@
             {% for product in products %}
 
                 <div class="product">
-                   <div class="product_photo">
+                   <div class="product_photo" style="background-size: 100% 100%;
+                             background-image: url({{ product.images.first.image.url }});">
                         {% if product.images.first %}
-                            <a href="{% url 'product_overview' product.id  %}" ><img class="product_photo_radius" width="100%" height="100%" src="{{ product.images.first.image.url }}"></a>
+                            <a href="{% url 'product_overview' product.id  %}" ></a>
                         {% endif %}
+
+                       <button class="add_to_cart_button_here" type="button" >
+                            <img src=" \media\mini_photos\Layer27.png ">
+                       </button>
+
                    </div>
                     <div class="bottom_div">
                         <div class="name">{{ product.name }} </div>
@@ -70,40 +76,6 @@
                 </div>
 
             {% endfor %}
-
-<!--            <div class="product">-->
-<!--              -->
-<!--               <div class="product_photo">    &lt;!&ndash;style="position: relative; z-index: 1;"&ndash;&gt;-->
-<!--                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">-->
-<!--&lt;!&ndash;-->
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; z-index: 2;">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-<!--&ndash;&gt;-->
-<!--               </div>-->
-<!--               -->
-<!--                <div class="bottom_div">-->
-<!--                    <div class="name">Iphone 13 Pro Max </div>-->
-<!--                    <div class="extra">-->
-<!--                        <div class="price"> 1300$</div>-->
-<!--                        <div class="rating"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                -->
-<!--            </div>-->
-
-<!--            <div class="product">-->
-<!--               <div class="product_photo">-->
-<!--                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">-->
-<!--               </div>-->
-<!--                <div class="bottom_div">-->
-<!--                    <div class="name">Iphone 13 Pro Max </div>-->
-<!--                    <div class="extra">-->
-<!--                        <div class="price"> 1300$</div>-->
-<!--                        <div class="rating"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
 
         </section>
 

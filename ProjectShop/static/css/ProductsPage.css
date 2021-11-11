@@ -216,3 +216,13 @@ body{
     float: right;
     z-index: 1;
 }
+
+.add_to_cart_button_here{
+    background-color: black;
+    width: 45px;
+    height: 45px;
+    border-radius: 25px;
+    margin: 10px 10px 200px 180px;
+
+
+}
