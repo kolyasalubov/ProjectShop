@@ -4,6 +4,7 @@ footer {
     bottom: 0;
     width: 100%;
     overflow: hidden;
+    /*position: fixed;*/
 }
 
 .footer-main {
@@ -62,6 +63,11 @@ footer {
     align-self: center;
     padding-right: 2rem;
     padding-bottom: 0.9rem;
+}
+
+.flatpages-container {
+    display: flex;
+    flex-flow: column wrap;
 }
 
 @media only screen and (max-width:650px) {

@@ -54,7 +54,6 @@ const handleGetData = () => {
             maxSize = response.max
             const data = response.data
             spinnerBox.classList.remove('not-visible')
-            data1 = undefined
             setTimeout(()=>{
                 spinnerBox.classList.add('not-visible')
                 data.map(product=>{
@@ -62,9 +61,9 @@ const handleGetData = () => {
                     productsBox.innerHTML += `<div class="product-quarter">
             <!--image supposed to be here-->
             <div class="product-quarter-top" >
-            <a href="/product/overview/${product.id}" class="product-image">
-                <img  class="product-image" src="${loadJson("#jsonData")[product.id - 1]}" alt="${product.name}"/>
-            </a>
+                <a href="/product/overview/${product.id}" class="product-image">
+                    <img  class="product-image" src="${loadJson("#jsonData")[product.id - 1]}" alt="${product.name}"/>
+                </a>
             </div>
             <div class="product-quarter-bottom">
                 <div class="product-quarter-bottom-left">

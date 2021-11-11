@@ -2,6 +2,7 @@
 @import 'footer.css';
 @import 'ProductsPage.css';
 @import 'ProductOverviewPage.css';
+@import 'profile.css';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap');
 
 
@@ -80,6 +81,11 @@ body {
     display: none;
 }
 
+.products-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .products-box {
     display: flex;
     flex-flow: row wrap;
@@ -100,7 +106,7 @@ body {
 .product-quarter-top {
     display: flex;
     height: 60%;
-    flex-flow: column wrap;
+    width: 100%;
 }
 
 .product-image {
@@ -115,10 +121,17 @@ body {
     /*align-self:center;*/
     /*justify-self: center;*/
     background: url("../assets/EmptyCart.svg") black;
+    background-size: 75% 75%;
+    background-position: center;
+    background-repeat: no-repeat;
     width: 2.5rem;
     height: 2.5rem;
-    padding-bottom: 0.5rem;
-    /*border-radius: 50%;*/
+    /*padding-bottom: 0.5rem;*/
+    border-radius: 50%;
+    padding: 1rem;
+    border:none;
+    margin-top: 0.3rem;
+    margin-right: 0.3rem;
 }
 
 .product-header {
@@ -153,6 +166,38 @@ body {
     height: 100%;
     align-items: center;
     justify-content: center;
+}
+
+.product-navigation-container {
+    display: flex;
+    width: 100%;
+    height: 3rem;
+    /*background-color: gray;*/
+    justify-content: center;
+    align-items: center;
+}
+
+.product-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.product-navigation-container a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    color: black;
+    align-self: center;
+    font-size: 1.2rem;
+}
+
+.product-navigation-container a:hover {
+    border: black solid;
+    border-radius: 10%;
 }
 
 .button-wrapper {
@@ -295,5 +340,7 @@ body {
 }
 
 }
+
+
 
 
