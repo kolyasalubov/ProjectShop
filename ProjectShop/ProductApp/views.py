@@ -1,3 +1,5 @@
+from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 
 from django.shortcuts import render, redirect
@@ -33,46 +35,23 @@ from ProductApp.serializers import (
     TagSerializer,
 )
 
-from ProductApp.forms import ReviewForm
 
-from django.db.models import Q
-
-
-class ProductJsonListView(View):
-    def get(self, *args, **kwargs):
-        upper = kwargs.get('num_products')
-        lower = upper - 4
-        products = list(Product.objects.values()[lower:upper])
-        products_size = len(Product.objects.all())
-        max_size = True if upper >= products_size else False
-        return JsonResponse({'data': products, 'max': max_size}, safe=False)
-
-
-
-
-
-class HomePageView(FilterView):
-    filterset_class = ProductFilter
-    template_name = 'ProductApp/homepage.html'
-    context_object_name = 'products'
-    paginate_by = 12
-
+class CategoryListMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         categories = ProductCategory.objects.order_by('name')[:20]
-        product_images = ProductImage.objects.all()
         context['categories'] = categories
-        # context['product_images'] = product_images
-        context['product_images'] = json.dumps(
-            [
-                {
-                    'id': obj.id,
-                    'image_url': obj.image.url,
-                }
-                for obj in ProductImage.objects.all()
-            ]
-        )
         return context
+
+
+class HomePageView(CategoryListMixin, FilterView):
+    filterset_class = ProductFilter
+    template_name = "ProductApp/homepage.html"
+    context_object_name = "products"
+    paginate_by = 12
+
+    def get_queryset(self):
+        return Product.objects.all().order_by("-stock_quantity")
 
 
 class ProductDetailView(generic.DetailView):
@@ -83,9 +62,34 @@ class ProductDetailView(generic.DetailView):
 
 class CategoriesView(generic.ListView):
     model = ProductCategory
-    context_object_name = 'categories'
-    template_name = 'ProductApp/categories.html'
+    context_object_name = "categories"
+    template_name = "ProductApp/categories.html"
     paginate_by = 12
+
+
+class CategoryDetailView(CategoryListMixin, generic.DetailView):
+    model = ProductCategory
+    context_object_name = "category_detail"
+    template_name = "ProductApp/category_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products = self.get_related_products()
+        context["products"] = products
+        return context
+
+    def get_related_products(self):
+        queryset = Product.objects.filter(categories=self.object)
+        ordered_queryset = queryset.order_by("-stock_quantity")
+        paginator = Paginator(ordered_queryset, 12)
+        try:
+            page = self.request.GET.get("page")
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+        products = paginator.get_page(page)
+        return products
 
 
 class ProductViewSet(ReadOnlyModelViewSet):

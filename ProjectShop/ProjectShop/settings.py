@@ -22,7 +22,6 @@ load_dotenv(".env.django")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -48,7 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.flatpages",
-
+  
     # 3rd-party apps
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
@@ -57,14 +56,15 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "crispy_forms",
     "drf_yasg",
+    "ckeditor",
+    "ckeditor_uploader",
     'debug_toolbar',
-
+    "import_export",
     # local apps
     'UserApp',
     'Shipping',
     'order',
     'ProductApp',
-    'WishList',
     ]
 
 MIDDLEWARE = [
@@ -97,8 +97,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ProjectShop.wsgi.application'
-
+WSGI_APPLICATION = "ProjectShop.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -121,7 +120,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -139,7 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -167,6 +164,7 @@ STATICFILES_DIRS = ( os.path.join('static'), )
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR) + "/media"
 
+CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

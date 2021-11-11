@@ -1,5 +1,7 @@
 from django import forms
 from ProductApp.models import Review
+from ProductApp.models import AdvancedProductDescription
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
 class ReviewForm(forms.ModelForm):
@@ -18,3 +20,11 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('comment','rating',)
+
+
+class AdvancedDescriptionForm(forms.ModelForm):
+    content = forms.CharField(widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = AdvancedProductDescription
+        fields = "__all__"

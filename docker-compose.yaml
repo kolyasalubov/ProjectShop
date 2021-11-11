@@ -6,6 +6,8 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
+    volumes:
+      - ./ProjectShop/:/usr/src/ProjectShop
     env_file:
       - ./.env
     depends_on:
@@ -22,7 +24,9 @@ services:
 
   bot:
     build: ./TelegramBot/
-    command: python main.py
+    command: ./bot_devel.sh
+    volumes:
+      - ./TelegramBot/:/usr/src/TelegramBot
     env_file:
       - ./.env
     depends_on:
