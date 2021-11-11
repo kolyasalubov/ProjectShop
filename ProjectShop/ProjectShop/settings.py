@@ -57,7 +57,10 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "crispy_forms",
     "drf_yasg",
+    "ckeditor",
+    "ckeditor_uploader",
     'debug_toolbar',
+    "import_export",
 
     # local apps
     'UserApp',
@@ -97,22 +100,10 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ProjectShop.wsgi.application'
-
+WSGI_APPLICATION = "ProjectShop.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": os.environ.get("SQL_ENGINE"),
-#         "NAME": os.environ.get("SQL_DATABASE"),
-#         "USER": os.environ.get("SQL_USER"),
-#         "PASSWORD": os.environ.get("SQL_PASSWORD"),
-#         "HOST": os.environ.get("SQL_HOST"),
-#         "PORT": os.environ.get("SQL_PORT"),
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -120,6 +111,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 # Password validation
@@ -169,6 +161,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR) + "/media"
 
+CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
