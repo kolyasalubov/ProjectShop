@@ -1,11 +1,15 @@
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 
-from django.shortcuts import render, redirect
 from django.views import generic, View
 
 from django.http import JsonResponse
+import json
+
+from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
@@ -35,6 +39,10 @@ from ProductApp.serializers import (
     TagSerializer,
 )
 
+from ProductApp.forms import ReviewForm
+
+from django.db.models import Q
+
 
 class CategoryListMixin:
     def get_context_data(self, **kwargs):
@@ -56,8 +64,8 @@ class HomePageView(CategoryListMixin, FilterView):
 
 class ProductDetailView(generic.DetailView):
     model = Product
-    context_object_name = 'product_detail'
-    template_name = 'ProductApp/product_detail.html'
+    context_object_name = "product_detail"
+    template_name = "ProductApp/product_detail.html"
 
 
 class CategoriesView(generic.ListView):
@@ -70,7 +78,7 @@ class CategoriesView(generic.ListView):
 class CategoryDetailView(CategoryListMixin, generic.DetailView):
     model = ProductCategory
     context_object_name = "category_detail"
-    template_name = "ProductApp/category_detail.html"
+    template_name = "ProductApp/ProductsPage.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

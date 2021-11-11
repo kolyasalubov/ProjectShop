@@ -16,7 +16,7 @@
                      Samsung
                 </div>
                 <div class="tag_delete">
-                    <img id="delete_image" src='Layer%2035.png'>
+                    <img id="delete_image" src=" \media\mini_photos\Layer2.png ">
                 </div>
             </div>
 
@@ -26,19 +26,16 @@
         <section id="top">
 
             <div id="name_of_category">
-                Cameras
+                {{ category_detail.name }}
             </div>
 
             <div id="filter">
 
-
-
-
                  <div class="btn-group">
                   <button  type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Right-aligned menu
+                    Filter
                   </button>
-                  <div class="dropdown-menu dropdown-menu-right">
+                  <div class="dropdown-menu dropdown-menu-right" style="width:300px; background-color:#F9F3E5;" >
                     <button class="dropdown-item" type="button">Action</button>
                     <button class="dropdown-item" type="button">Another action</button>
                     <button class="dropdown-item" type="button">Something else here</button>
@@ -54,106 +51,59 @@
 
         <section id="products">
 
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
+
+            {% for product in products %}
+
+                <div class="product">
+
+                   <div class="product_photo" style="background-size: 100% 100%;
+                             background-image: url({{ product.images.first.image.url }});">
+                       <button class="add_to_cart_button_here" type="button" >
+                            <img src=" \media\mini_photos\Layer27.png ">
+                       </button>
+                        {% if product.images.first %}
+                            <a href="{% url 'product_overview' product.id  %}" ></a>
+                        {% endif %}
+
+                   </div>
+                    <div class="bottom_div">
+                        <div class="name">{{ product.name }} </div>
+                        <div class="extra">
+                            <div class="price"> {{ product.price }}$</div>
+                            <div class="rating"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product">
-               <div class="product_photo">  <!--style="position: relative; "-->
-                  <img class="product_photo_radius" width="100%" height="100%" src="img.png">
-<!--                  <span id="overlay_text" style="position: absolute; top: 0px; ">-->
-<!--                      <img class="cart_image" src="Layer%2027.png">-->
-<!--                  </span>-->
-               </div>
-                <div class="bottom_div">
-                    <div class="name">Iphone 13 Pro Max </div>
-                    <div class="extra">
-                        <div class="price"> 1300$</div>
-                        <div class="rating"></div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
 
         </section>
 
-    </div>
+<div class="product-navigation-container">
+        {% if products.paginator.num_pages != 1 %}
+
+        {% if products.has_previous %}
+
+            <a href="?page={{ products.previous_page_number }}"> < </a>
+        {% endif %}
+
+        {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}"> > </a>
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

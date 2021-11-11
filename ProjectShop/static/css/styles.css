@@ -4,6 +4,8 @@
 @import 'ProductOverviewPage.css';
 @import 'profile.css';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap');
+@import 'ProductsPage.css';
+@import 'ProductOverviewPage.css';
 
 
 * {
@@ -14,7 +16,6 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-
 }
 /*homepage*/
 

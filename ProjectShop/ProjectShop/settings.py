@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.flatpages",
-  
+
     # 3rd-party apps
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
@@ -60,11 +60,13 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     'debug_toolbar',
     "import_export",
+
     # local apps
     'UserApp',
     'Shipping',
     'order',
     'ProductApp',
+    'WishList',
     ]
 
 MIDDLEWARE = [
@@ -102,6 +104,13 @@ WSGI_APPLICATION = "ProjectShop.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
 # DATABASES = {
 #     "default": {
 #         "ENGINE": os.environ.get("SQL_ENGINE"),
@@ -113,12 +122,6 @@ WSGI_APPLICATION = "ProjectShop.wsgi.application"
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -155,11 +158,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_ROOT = ''
-STATIC_URL = '/static/'
-STATICFILES_DIRS = ( os.path.join('static'), )
+# STATICFILES_DIRS = ( os.path.join('static'), )
 
-# STATIC_URL = "/static/"
-# STATICFILES_DIR = [str(BASE_DIR) + "/static"]
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, 'static')
+]
+
 # media files will be stored in 'media' folder
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR) + "/media"
