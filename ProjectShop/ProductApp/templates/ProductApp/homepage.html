@@ -9,8 +9,8 @@
 {#            <button class="scroll-left-button"> < </button>#}
 {#        </div>#}
         {% for category in categories %}
-            <div class="category-section">
-                {{ category.name }}
+            <div class="category-section" >
+                <a href="{{ category.get_absolute_url }}" style="color: black">{{ category.name }}</a>
             </div>
         {% endfor %}
 {#        <div class="right-button-container" id="btnRight">#}

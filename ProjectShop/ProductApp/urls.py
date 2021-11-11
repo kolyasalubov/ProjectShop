@@ -8,7 +8,6 @@ from ProductApp.views import (
     CategoryDetailView,
     ProductOverviewPageView,
     ProductsByTagGroupView,
-    ProductJsonListView
 )
 
 
