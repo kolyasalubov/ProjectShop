@@ -78,7 +78,7 @@ class CategoriesView(generic.ListView):
 class CategoryDetailView(CategoryListMixin, generic.DetailView):
     model = ProductCategory
     context_object_name = "category_detail"
-    template_name = "ProductApp/ProductsPage.html"
+    template_name = "ProductApp/Products_by_category.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -176,7 +176,6 @@ def ProductOverviewPageView(request, product_id = 1):
         'product_media' : product_media,
         'product_media_video' : product_media_video,
         'product_all' : product_all,
-
         'comments': reviews,
         'new_comment': new_review,
         'comment_form': review_form
@@ -184,6 +183,4 @@ def ProductOverviewPageView(request, product_id = 1):
 
     return render(request, 'ProductApp/ProductOverviewPage.html', context)
 
-def ProductsByTagGroupView(request):
-    return render(request, 'ProductApp/ProductsPage.html')
 
