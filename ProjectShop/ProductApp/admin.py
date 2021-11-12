@@ -107,20 +107,20 @@ class ReviewAdmin(admin.ModelAdmin):
         return form
 
 
-class ProductCategoryAdmin(ForeignKeyAutocompleteAdmin):
+class ProductCategoryAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
 
 
-class ProductSubcategoryAdmin(ForeignKeyAutocompleteAdmin):
+class ProductSubcategoryAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
 
 
-class TagAdmin(ForeignKeyAutocompleteAdmin):
+class TagAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
     list_filter = ("group__name",)
 
 
-class TagGroupAdmin(admin.ModelAdmin):
+class TagGroupAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
 
