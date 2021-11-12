@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import json
 
 from django.views import generic, View
 
