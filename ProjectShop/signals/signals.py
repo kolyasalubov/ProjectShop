@@ -3,9 +3,11 @@ from django.dispatch import receiver
 from django.db import models
 
 from ProductApp.models import ProductImage
-from ProductApp.utils import delete_file_if_unused
+from UserApp.models import User
+from signals.utils import delete_file_if_unused
 
 
+@receiver(post_delete, sender=User)
 @receiver(post_delete, sender=ProductImage)
 def delete_image_when_row_deleted_from_db(sender, instance, **kwargs) -> None:
     """
@@ -23,6 +25,7 @@ def delete_image_when_row_deleted_from_db(sender, instance, **kwargs) -> None:
             delete_file_if_unused(sender, instance, field, instance_file_field)
 
 
+@receiver(pre_save, sender=User)
 @receiver(pre_save, sender=ProductImage)
 def delete_image_when_image_changed(sender, instance, **kwargs) -> None:
     """

@@ -116,31 +116,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             return self.is_superuser
         return self.role
 
-    def save(self, *args, **kwargs):
-        if self.pk:
-            for user in User.objects.filter(id=self.pk):
-                if (
-                    user.profile_pic.name != "default_profile_pictures/default_pic.svg"
-                    and user.profile_pic.name != self.profile_pic.name  # noqa: W503
-                ):  # 'and' cannot be replaced or restyled in the way it needs to be
-                    user.profile_pic.delete(save=False)
-
-        super().save(*args, **kwargs)
-
-        try:
-            # Need this try block because default image is .svg format
-            # Can be replaced with checking if self.profile_pic.name is not default
-            image_path = self.profile_pic.path
-
-            img = Image.open(image_path)
-
-            if img.height > 300 or img.width > 300:
-                new_img_size = (300, 300)
-                img.thumbnail(new_img_size)
-                img.save(image_path)
-        except UnidentifiedImageError:
-            pass
-
     @property
     def is_staff(self) -> int:
         return (not self.is_bot) and self.role
