@@ -15,6 +15,7 @@ from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
+import dj_database_url
 
 
 load_dotenv(".env.django")
@@ -33,7 +34,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "project-shop-627.herokuapp.com"]
 
 # Application definition
 
@@ -113,6 +115,10 @@ DATABASES = {
         "PORT": os.environ.get("SQL_PORT"),
     }
 }
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
+db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=500, ssl_require=True)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
