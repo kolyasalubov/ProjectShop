@@ -156,7 +156,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 DEPLOYMENT = os.getenv("DEPLOYMENT")
 
-if 1:
+if DEPLOYMENT:
     # aws settings
     AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
@@ -177,9 +177,6 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-
 
 CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
 # Default primary key field type
