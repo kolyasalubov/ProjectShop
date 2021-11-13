@@ -156,7 +156,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 DEPLOYMENT = os.getenv("DEPLOYMENT")
 
-if DEPLOYMENT:
+if 1:
     # aws settings
     AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
