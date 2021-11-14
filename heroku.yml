@@ -7,5 +7,6 @@ run:
   bot: python main.py
 release:
   image: web
-#  command:
-#    - python manage.py collectstatic --noinput
+  command:
+    - python manage.py migrate
+    - python manage.py collectstatic --noinput
