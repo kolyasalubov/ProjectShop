@@ -35,7 +35,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
 # ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "project-shop-627.herokuapp.com"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "project-shop-627.herokuapp.com", "0.0.0.0"]
 
 # Application definition
 
@@ -170,7 +170,7 @@ if DEPLOYMENT:
     STATICFILES_STORAGE = "ProjectShop.storage_backends.StaticStorage"
     # s3 public media settings
     PUBLIC_MEDIA_LOCATION = "media"
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
+    MEDIA_URL = f"https://project-shop-627-media.s3.eu-west-3.amazonaws.com/media/"
     DEFAULT_FILE_STORAGE = "ProjectShop.storage_backends.PublicMediaStorage"
 else:
     STATIC_URL = "/static/"
