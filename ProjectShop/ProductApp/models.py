@@ -204,7 +204,7 @@ class ProductImage(models.Model):
         product: reference to target product.
     """
 
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="images")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
 
     image = models.ImageField(
         upload_to="product_media_image", default="default_image/default_image.png"

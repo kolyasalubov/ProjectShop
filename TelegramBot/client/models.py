@@ -16,9 +16,9 @@ from typing import List, Tuple
 
 from client.status_check import bot_client
 
-USER_URL = os.environ.get("USER_URL")  # add url to obtain and manage user by phone number
+USER_URL = "api/v1/user/"  # add url to obtain and manage user by phone number
 USER_INIT_KEY = os.environ.get("USER_INIT_KEY")   # key for User.__init__  access, set None to switch off
-USER_BY_TELEGRAM_ID_URL = os.environ.get("USER_BY_TELEGRAM_ID_URL")  # add url to obtain user by telegram id
+USER_BY_TELEGRAM_ID_URL = "api/v1/get_user_by_telegram_id/"  # add url to obtain user by telegram id
 
 
 class PaginatedModel(BaseModel):

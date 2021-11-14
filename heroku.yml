@@ -1,0 +1,12 @@
+build:
+  docker:
+    web: ProjectShop/Dockerfile
+    bot: TelegramBot/Dockerfile
+run:
+  web: gunicorn ProjectShop.wsgi:application --bind 0.0.0.0:$PORT
+  bot: python main.py
+release:
+  image: web
+  command:
+    - python manage.py migrate
+    - python manage.py collectstatic --noinput
