@@ -5,7 +5,6 @@ WORKDIR /usr/src/ProjectShop
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV DEBUG 1
 
 RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 RUN apk add --no-cache jpeg-dev zlib-dev
