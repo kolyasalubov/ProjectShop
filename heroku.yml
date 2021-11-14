@@ -4,7 +4,7 @@ build:
     bot: TelegramBot/Dockerfile
 run:
   web: gunicorn ProjectShop.wsgi:application --bind 0.0.0.0:$PORT
-  bot: ./bot_devel.sh
+  bot: python main.py
 release:
   image: web
 #  command:
