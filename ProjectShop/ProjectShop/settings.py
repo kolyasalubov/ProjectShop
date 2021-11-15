@@ -169,7 +169,6 @@ if DEPLOYMENT:
     DEFAULT_FILE_STORAGE = "ProjectShop.storage_backends.PublicMediaStorage"
 else:
     STATIC_URL = "/static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     DATABASES['default'].update(
@@ -183,6 +182,7 @@ else:
         }
     )
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
