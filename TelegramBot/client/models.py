@@ -10,7 +10,6 @@ import os
 import datetime
 from enum import Enum
 
-import phonenumbers
 from pydantic import (
     BaseModel,
     constr,
@@ -24,6 +23,7 @@ from pydantic import (
 from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
 
+from client.exceptions import ClientError
 from client.status_check import bot_client
 
 USER_URL = os.environ.get(
@@ -80,6 +80,7 @@ class PaginatedModel(BaseModel):
         """
         Get first page of result. Will work only if path provided (in child classes)
         """
+
         response = bot_client.send_request("GET", cls._path)
         return cls.page(response.json())
 
@@ -121,6 +122,7 @@ class ShippingAddress(PaginatedModel):
         """
         Add new shipping address to user addresses list
         """
+
         bot_client.send_request("POST", f"user/shipping-address", data=self.__dict__)
 
     @staticmethod
@@ -128,6 +130,7 @@ class ShippingAddress(PaginatedModel):
         """
         Delete user's shipping address, specified by user's id and shipping address' id
         """
+
         bot_client.send_request(
             "DELETE", f"/user/shipping-address", params={"id": address_id}
         )
@@ -285,7 +288,7 @@ class User(BaseModel):
         cls, telegram_id, phone_number, email, first_name, last_name, birth_date=None
     ):
         """
-        Register user in djangoREST database and crete appropriate User instance.
+        Register user in djangoREST database and create appropriate User instance.
         :param telegram_id: str
         :param phone_number: str
         :param email: str
@@ -305,6 +308,19 @@ class User(BaseModel):
         User._validate_fields(**user_data)
         user_response = bot_client.send_request("POST", USER_URL, data=user_data)
         return cls._create_user(user_response)
+
+    def update(self, first_name=None, last_name=None, birth_date=None):
+        if not (first_name or last_name or birth_date):
+            raise ClientError
+        data = {}
+        if first_name:
+            data.update({"first_name": first_name})
+        if last_name:
+            data.update({"last_name": last_name})
+        if birth_date:
+            data.update({"birth_date": birth_date})
+        bot_client.send_request("PATCH", data=data)
+        return User.get_user_by_telegram_id(self.telegram_id)
 
     @staticmethod
     def _patch_user_telegram_id(phone_number, telegram_id):
@@ -354,6 +370,7 @@ class Category(PaginatedModel):
 
 
 class Tag(PaginatedModel):
+
     name: constr(max_length=100)
 
     _path = "/tags"
