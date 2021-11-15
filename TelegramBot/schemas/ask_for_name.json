@@ -1,0 +1,12 @@
+{
+  "message": {
+    "text": "Good, now we need your first\\- and lastname\\. Would you like to use the ones from your account or enter them yourself?"
+  },
+  "keyboard": {
+    "body": [
+      "Use telegram ones",
+      "Enter yourself"
+    ],
+    "columns": 2
+  }
+}
