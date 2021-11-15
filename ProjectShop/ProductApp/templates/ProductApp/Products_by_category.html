@@ -62,7 +62,7 @@
                             <img src=" \media\mini_photos\Layer27.png ">
                        </button>
                         {% if product.images.first %}
-                            <a href="{% url 'product_overview' product.id  %}" ></a>
+                            <a href="{% url 'product_overview' product.slug  %}" ></a>
                         {% endif %}
 
                    </div>

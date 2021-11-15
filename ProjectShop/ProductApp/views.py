@@ -150,11 +150,11 @@ class ReviewViewSet(NestedViewSetMixin, ModelViewSet):
     queryset = Review.objects.all()
 
 
-def ProductOverviewPageView(request, product_id = 1):
-    product__object = Product.get_product_by_id(product_id=product_id)
+def ProductOverviewPageView(request, slug):
+    product__object = Product.get_product_by_slug(slug = slug)
     product_media = ProductImage.get_media_by_product(product = product__object)
     product_media_video = ProductVideo.get_media_video_by_product(product = product__object)
-    product_all = ProductImage.objects.filter(~Q(product_id=product_id))
+    product_all = ProductImage.objects.filter(~Q(product = product__object))
 
     new_review = None
     reviews = Review.get_review_by_product(product = product__object)
@@ -166,7 +166,7 @@ def ProductOverviewPageView(request, product_id = 1):
             new_review.product = product__object
             new_review.save()
 
-            return redirect('product_overview', product_id=product_id )
+            return redirect('product_overview', slug=slug )
     else:
         review_form = ReviewForm()
 
