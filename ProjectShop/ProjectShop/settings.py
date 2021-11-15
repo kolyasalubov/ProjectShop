@@ -161,7 +161,7 @@ if DEPLOYMENT:
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     # s3 static settings
     STATIC_LOCATION = "static"
-    STATIC_URL = f"https://s3.console.aws.amazon.com/s3/buckets/project-shop-627-media?region=eu-west-3&prefix=static/&showversions=false"
+    STATIC_URL = f"https://s3.console.aws.amazon.com/s3/buckets/project-shop-627-media?region=eu-west-3&prefix=static/&showversions=false/"
     STATICFILES_STORAGE = "ProjectShop.storage_backends.StaticStorage"
     # s3 public media settings
     PUBLIC_MEDIA_LOCATION = "media"
