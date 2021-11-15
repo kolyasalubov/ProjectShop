@@ -50,9 +50,10 @@ class EditForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = (
-            "profile_pic",
-            "phone_number",
+            # "profile_pic",
             "first_name",
             "last_name",
             "birth_date",
+            "email",
+            "phone_number",
         )

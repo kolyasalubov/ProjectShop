@@ -1,3 +1,12 @@
+from django.shortcuts import render, redirect
+from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from django.views import generic, View
+
+from django.http import JsonResponse
+import json
+
 from django.views import generic
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -29,12 +38,16 @@ from ProductApp.serializers import (
     TagSerializer,
 )
 
+from ProductApp.forms import ReviewForm
+
+from django.db.models import Q
+
 
 class CategoryListMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        categories = ProductCategory.objects.order_by("name")[:20]
-        context["categories"] = categories
+        categories = ProductCategory.objects.order_by('name')[:20]
+        context['categories'] = categories
         return context
 
 
@@ -64,7 +77,7 @@ class CategoriesView(generic.ListView):
 class CategoryDetailView(CategoryListMixin, generic.DetailView):
     model = ProductCategory
     context_object_name = "category_detail"
-    template_name = "ProductApp/category_detail.html"
+    template_name = "ProductApp/Products_by_category.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -135,3 +148,38 @@ class ReviewViewSet(NestedViewSetMixin, ModelViewSet):
 
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
+
+def ProductOverviewPageView(request, product_id = 1):
+    product__object = Product.get_product_by_id(product_id=product_id)
+    product_media = ProductImage.get_media_by_product(product = product__object)
+    product_media_video = ProductVideo.get_media_video_by_product(product = product__object)
+    product_all = ProductImage.objects.filter(~Q(product_id=product_id))
+
+    new_review = None
+    reviews = Review.get_review_by_product(product = product__object)
+
+    if request.method == 'POST':
+        review_form = ReviewForm(user = request.user ,data=request.POST)
+        if review_form.is_valid():
+            new_review = review_form.save(commit=False)
+            new_review.product = product__object
+            new_review.save()
+
+            return redirect('product_overview', product_id=product_id )
+    else:
+        review_form = ReviewForm()
+
+    context = {
+        'product_object' : product__object,
+        'product_media' : product_media,
+        'product_media_video' : product_media_video,
+        'product_all' : product_all,
+        'comments': reviews,
+        'new_comment': new_review,
+        'comment_form': review_form
+    }
+
+    return render(request, 'ProductApp/ProductOverviewPage.html', context)
+
+

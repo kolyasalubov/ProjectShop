@@ -4,18 +4,27 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-  <title>{% translate "Profile" %}</title>
+  Profile info
 {% endblock title %}
 
 
 {% block content %}
-    <img src="{{ user.profile_pic.url }}" style="width:200px" alt="A user profile picture">
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <h2>{% translate "Profile Info" %}</h2>
-        {{ form|crispy }}
-
-        <button class="btn btn-outline-info" type="submit">{% translate "Update" %}</button>
-        <a href="{% url 'password_change' %}">{% translate "Change Password" %}</a>
-    </form>
+    <div class="main-profile-container">
+        <form  class="profile-container" method="POST" enctype="multipart/form-data">
+            <div class="left-profile-container">
+                <img class="profile-image" src="{{ user.profile_pic.url }}" alt="A user profile picture">
+                <button class="profile-link" type="submit" style="background-color: #C3CBCD;">{% translate "Update" %}</button>
+                <div class="profile-link">
+                    <a href="{% url 'password_change' %}">{% translate "Change Password" %}</a>
+                </div>
+                <div class="profile-link">
+                    <a href="{% url 'home' %}">{% translate "Back" %}</a>
+                </div>
+            </div>
+            <div class="right-profile-container">
+                {% csrf_token %}
+                {{ form|crispy }}
+            </div>
+        </form>
+    </div>
 {% endblock content %}

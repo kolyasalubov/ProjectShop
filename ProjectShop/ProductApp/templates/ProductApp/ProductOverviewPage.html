@@ -1,0 +1,155 @@
+{% extends 'UserApp/_base.html' %}
+{% block title %} Product Overview {% endblock title %}
+{% load static %}
+{% load shuffle %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static '/css/ProductOverviewPage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="wrapper" id='Anchor' >
+        <section class="top">
+            <div class="photo">
+                {% if product_media %}
+                    {% for x in product_media|slice:":1" %}
+                        {% if x.image %}
+                            <img id="myImg" height="100%" width="100%" src="{{ x.image.url }}" >
+
+                            <div id="myModal" class="modal">
+
+                              <!-- The Close Button -->
+                              <span class="close">&times;</span>
+
+                              <!-- Modal Content (The Image) -->
+                              <img class="modal-content" id="img01">
+
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <img height="100%" width="100%" src=" \media\default_image\default_image.png " >
+                {% endif %}
+            </div>
+
+            <script src="{% static 'js/ProductOverviewJS/Image.js' %}"></script>
+
+
+            {% if product_media|slice:"1:" %}
+            <div class="additional_photos">
+                {% for x in product_media|slice:"1:" %}
+                    <div class="additional_photos1">
+
+                        <img src="{{ x.image.url }}" style="width:100%;cursor:pointer; height:100%" onclick="onClick(this)" class="modal-hover-opacity">
+
+                    <div id="modal01" class="modal" onclick="this.style.display='none'">
+                      <span class="close">&times;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                      <div class="modal-content">
+                        <img id="img02" style="max-width:100%">
+                      </div>
+                    </div>
+
+                    </div>
+                {% endfor %}
+                 <script src="{% static 'js/ProductOverviewJS/pop-up_images.js' %}"></script>
+            </div>
+
+            {% else %}
+            {% endif %}
+
+            <div class="product_info">
+                <div class="product_title"><h2>{{ product_object.name }}</h2></div>
+                <div class="product_price"><h3>${{ product_object.price }}</h3></div>
+                <div class="product_rating_by_stars"><!--stars--></div>
+                <div class="add_to_cart_button">
+                    <input type="button" value="Add to cart" class="add_to_cart_button"/>
+                </div>
+            </div>
+            <div class="tags">
+                <h1>Tags</h1>
+                {% for tag in product_object.tags.all %}
+                    <hr>
+                    <h3 style="padding:5px;" >#{{tag}}</h3>
+                {% endfor %}
+
+            </div>
+
+
+
+        </section>
+
+            <div class="tab">
+              <button class="tablinks" onclick="openCity(event, 'Description')" id="defaultOpen">Description</button>
+              <button class="tablinks" onclick="openCity(event, 'Reviews')">Reviews</button>
+            </div>
+
+            <!-- Tab content -->
+            <div id="Description" class="tabcontent">
+             <section class="body1">
+                 <div class="description_text">
+                     {{ product_object.description|linebreaksbr }}
+                 </div>
+
+                    {% for x in product_media_video|slice:":1" %}
+                        {% if x.video_link %}
+                        <div class="product_video">
+                            <iframe id="prod_video" width="100%" height="100%" src="{{ x.video_link|slice:':24'|add:'embed/'}}{{ x.video_link|slice:'32:' }}">
+                            </iframe>
+                       </div>
+                       {%else%}
+                       {% endif %}
+                    {% endfor %}
+
+                 </div>
+             </section>
+            </div>
+
+            <div id="Reviews" class="tabcontent">
+
+             <section class="body2">
+                 {% for comment_data in comments %}
+                     <div class="reviews">
+                      <div class="name">{{ comment_data.user }}</div>
+                      <div class="points">{{ comment_data.rating }}</div>
+                      <div class="reply">
+<!--                          <div class="like"><input type="button" value="Like" /></div>-->
+<!--                          <div class="like_count">2</div>-->
+<!--                          <div class="dislike"><input type="button" value="Dislike" /></div>-->
+<!--                          <div class="dislike_count">1</div>-->
+                      </div>
+                      <div class="comment">{{ comment_data.comment }}</div>
+                      </div>
+                 {% endfor %}
+             </section>
+
+             {% if request.user.is_authenticated %}
+                <form method="post" style="margin-top: 1.3em;">
+                    {{ comment_form.as_p }}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                  </form>
+            {% else %}
+                <p> Please log in to leave a comment</p>
+            {% endif %}
+
+            </div>
+
+            <script src="{% static 'js/ProductOverviewJS/tab.js' %}"></script>
+
+            <h2 style="padding:10px; font-style: normal; font-weight: bold; font-size: 45px;">You might also like</h2>
+
+        <section class="might_interested">
+
+            {% for x in product_all|shuffle|slice:':4' %}
+                <div class="might_interested_item">
+                    <a href="{% url 'product_overview' x.product_id  %}" > <img id="mi_image" width="100%" height="100%" src="{{ x.image.url }}" > </a>
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+    </div>
+{% endblock content%}
+

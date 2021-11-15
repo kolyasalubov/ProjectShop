@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from import_export.admin import ImportExportActionModelAdmin
+
 from ProjectShop.custom_filters import DropdownChoicesFieldListFilter
 from Shipping.models import ShippingModel
 
 
-class ShippingModelAdmin(admin.ModelAdmin):
+class ShippingModelAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     fields = ("user", "postal_code", "country", "region", "city", "post_office")
     list_display = ("user", "country", "city", "post_office")
     list_editable = ("post_office",)

@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     "storages",
     "django.contrib.sites",
     "django.contrib.flatpages",
-  
+
     # 3rd-party apps
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     'debug_toolbar',
     "import_export",
-  
+
     # local apps
     'UserApp',
     'Shipping',
@@ -82,6 +82,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 ROOT_URLCONF = "ProjectShop.urls"
@@ -197,7 +198,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 10,
+    "PAGE_SIZE": 5,
 }
 
 SIMPLE_JWT = {
