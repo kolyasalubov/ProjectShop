@@ -17,6 +17,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
 
+from ProjectShop.env_variables_tools import get_environment_variable
+
 
 load_dotenv(".env.django")
 
@@ -28,14 +30,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = get_environment_variable("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = int(get_environment_variable("DEBUG"))
 
-# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = get_environment_variable("DJANGO_ALLOWED_HOSTS").split(" ")
+
 
 # Application definition
 
@@ -107,19 +109,14 @@ WSGI_APPLICATION = "ProjectShop.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE"),
-        "NAME": os.environ.get("SQL_DATABASE"),
-        "USER": os.environ.get("SQL_USER"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD"),
-        "HOST": os.environ.get("SQL_HOST"),
-        "PORT": os.environ.get("SQL_PORT"),
+        "ENGINE": get_environment_variable("SQL_ENGINE"),
+        "NAME": get_environment_variable("SQL_DATABASE"),
+        "USER": get_environment_variable("SQL_USER"),
+        "PASSWORD": get_environment_variable("SQL_PASSWORD"),
+        "HOST": get_environment_variable("SQL_HOST"),
+        "PORT": get_environment_variable("SQL_PORT"),
     }
 }
-
-DATABASE_URL = os.environ.get('DATABASE_URL')
-db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=500, ssl_require=True)
-DATABASES['default'].update(db_from_env)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -154,13 +151,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-DEPLOYMENT = os.getenv("DEPLOYMENT")
+DEPLOYMENT = int(get_environment_variable("DEPLOYMENT"))
 
 if DEPLOYMENT:
+    # database settings
+    DATABASE_URL = get_environment_variable("DATABASE_URL")
+    db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=500, ssl_require=True)
+    DATABASES['default'].update(db_from_env)
     # aws settings
-    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    AWS_ACCESS_KEY_ID = get_environment_variable("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = get_environment_variable("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = get_environment_variable("AWS_STORAGE_BUCKET_NAME")
     AWS_DEFAULT_ACL = None
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.eu-west-3.amazonaws.com"
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
@@ -206,7 +207,7 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
     "ALGORITHM": "HS256",
-    "SIGNING_KEY": os.environ.get("SIMPLE_JWT_SIGNING_KEY"),
+    "SIGNING_KEY": get_environment_variable("SIMPLE_JWT_SIGNING_KEY"),
     "VERIFYING_KEY": None,
     "AUDIENCE": None,
     "ISSUER": None,
@@ -239,8 +240,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
+EMAIL_HOST_USER = get_environment_variable("EMAIL_USER")
+EMAIL_HOST_PASSWORD = get_environment_variable("EMAIL_PASS")
 
 INTERNAL_IPS = [
     '127.0.0.1',

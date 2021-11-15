@@ -15,9 +15,10 @@ from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
 
 from client.status_check import bot_client
+from env_variables_tools import get_environment_variable
 
 USER_URL = "api/v1/user/"  # add url to obtain and manage user by phone number
-USER_INIT_KEY = os.environ.get("USER_INIT_KEY")   # key for User.__init__  access, set None to switch off
+USER_INIT_KEY = get_environment_variable("USER_INIT_KEY")   # key for User.__init__  access, set None to switch off
 USER_BY_TELEGRAM_ID_URL = "api/v1/get_user_by_telegram_id/"  # add url to obtain user by telegram id
 
 
