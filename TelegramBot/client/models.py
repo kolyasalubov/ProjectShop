@@ -11,15 +11,30 @@ import datetime
 from enum import Enum
 
 import phonenumbers
-from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator, AnyUrl
+from pydantic import (
+    BaseModel,
+    constr,
+    EmailStr,
+    PositiveInt,
+    conint,
+    condecimal,
+    validator,
+    AnyUrl,
+)
 from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
 
 from client.status_check import bot_client
 
-USER_URL = os.environ.get("USER_URL")  # add url to obtain and manage user by phone number
-USER_INIT_KEY = os.environ.get("USER_INIT_KEY")   # key for User.__init__  access, set None to switch off
-USER_BY_TELEGRAM_ID_URL = os.environ.get("USER_BY_TELEGRAM_ID_URL")  # add url to obtain user by telegram id
+USER_URL = os.environ.get(
+    "USER_URL"
+)  # add url to obtain and manage user by phone number
+USER_INIT_KEY = os.environ.get(
+    "USER_INIT_KEY"
+)  # key for User.__init__  access, set None to switch off
+USER_BY_TELEGRAM_ID_URL = os.environ.get(
+    "USER_BY_TELEGRAM_ID_URL"
+)  # add url to obtain user by telegram id
 
 
 class Page(BaseModel):
@@ -33,7 +48,12 @@ class Page(BaseModel):
     results: list
 
     def copy(self, *args, **kwargs) -> Page:
-        return Page(count=self.count, next=self.next, previous=self.previous, results=self.results.copy())
+        return Page(
+            count=self.count,
+            next=self.next,
+            previous=self.previous,
+            results=self.results.copy(),
+        )
 
 
 class PaginatedModel(BaseModel):
@@ -156,6 +176,7 @@ class User(BaseModel):
     """
     Pydantic model class for working with user model and relative djangoREST database user model.
     """
+
     id: PositiveInt
     telegram_id: constr(max_length=40)
     first_name: constr(max_length=40)
@@ -261,7 +282,9 @@ class User(BaseModel):
         return user
 
     @classmethod
-    def register_user(cls, telegram_id, phone_number, email, first_name, last_name, birth_date=None):
+    def register_user(
+        cls, telegram_id, phone_number, email, first_name, last_name, birth_date=None
+    ):
         """
         Register user in djangoREST database and crete appropriate User instance.
         :param telegram_id: str
@@ -278,7 +301,7 @@ class User(BaseModel):
             "email": email,
             "first_name": first_name,
             "last_name": last_name,
-            "birth_date": birth_date
+            "birth_date": birth_date,
         }
         User._validate_fields(**user_data)
         user_response = bot_client.send_request("POST", USER_URL, data=user_data)

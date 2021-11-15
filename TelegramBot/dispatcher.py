@@ -55,7 +55,9 @@ def setup_dispatcher(dp):
                         pattern=r"^http://.+/categories/.+$",
                     ),
                 ],
-                ProductStates.NAME: [MessageHandler(Filters.text, ProductCallbacks.first_page)],
+                ProductStates.NAME: [
+                    MessageHandler(Filters.text, ProductCallbacks.first_page)
+                ],
                 ProductStates.PRODUCTS: [
                     CallbackQueryHandler(ProductCallbacks.description, pattern=Product),
                     CallbackQueryHandler(

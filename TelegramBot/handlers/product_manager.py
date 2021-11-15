@@ -84,7 +84,8 @@ def name_search(update: Update, context: CallbackContext):
 
     context.bot.send_message(
         chat_id=update.callback_query.message.chat_id,
-        text="Enter your search query, please:")
+        text="Enter your search query, please:",
+    )
 
     return ProductStates.NAME
 
@@ -149,9 +150,7 @@ class ProductCallbacks:
 
         for product in page.results:
             keyboard_builder = InlineKeyboardBuilder(Page(results=[product]))
-            keyboard_builder.create_keyboard(
-                text="Description"
-            )
+            keyboard_builder.create_keyboard(text="Description")
 
             message = context.bot.send_photo(
                 chat_id=update.callback_query.message.chat_id,
@@ -166,9 +165,7 @@ class ProductCallbacks:
         page = page.copy()
         page.results = page.results[-1:]
         keyboard_builder = InlineKeyboardBuilder(page=page)
-        keyboard_builder.create_keyboard(
-            text="Description"
-        )
+        keyboard_builder.create_keyboard(text="Description")
         context.chat_data[Product][-1].edit_reply_markup(
             reply_markup=keyboard_builder.keyboard
         )
@@ -200,7 +197,11 @@ class ProductCallbacks:
 
         album_message = context.bot.send_media_group(
             chat_id=update.callback_query.message.chat_id,
-            media=[*map(lambda image: InputMediaPhoto(image), Image.get_list(product.images))]
+            media=[
+                *map(
+                    lambda image: InputMediaPhoto(image), Image.get_list(product.images)
+                )
+            ],
         )
 
         keyboard_builder = InlineKeyboardBuilder(
