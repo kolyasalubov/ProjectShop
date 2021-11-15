@@ -1,3 +1,5 @@
 import os
 
-TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+from env_variables_tools import get_environment_variable
+
+TELEGRAM_TOKEN = get_environment_variable("TELEGRAM_TOKEN")
