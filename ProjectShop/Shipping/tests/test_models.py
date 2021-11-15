@@ -22,14 +22,6 @@ class ShippingTestCase(TestCase):
         shipping = self.shipping
         self.assertEqual(shipping.city, shipping.__str__())
 
-    def test_region_str(self):
-        shipping = self.shipping
-        self.assertEqual(shipping.region, shipping.__str__())
-
-    def test_country_str(self):
-        shipping = self.shipping
-        self.assertEqual(shipping.country, shipping.__str__())
-
     def test_postal_code_max(self):
         shipping = self.shipping
         self.assertLessEqual(len(str(shipping.postal_code)), 10)

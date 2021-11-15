@@ -1,7 +1,7 @@
 import factory
 import datetime
 
-from order.models import OrderModel, OrderItemsModel
+from order.models import Order, OrderItems
 from UserApp.tests.factories import UserFactory
 from Shipping.tests.factories import ShippingFactory
 from ProductApp.tests.factories import ProductFactory
@@ -12,7 +12,7 @@ class OrderModelFactory(factory.django.DjangoModelFactory):
     using faker - a package that generates fake data for our tests"""
 
     class Meta:
-        model = OrderModel
+        model = Order
 
     user = factory.SubFactory(UserFactory)
     shippingAddress_id = factory.SubFactory(ShippingFactory)
@@ -28,7 +28,7 @@ class OrderItemsModelFactory(factory.django.DjangoModelFactory):
     using faker - a package that generates fake data for our tests"""
 
     class Meta:
-        model = OrderItemsModel
+        model = OrderItems
 
     order = factory.SubFactory(OrderModelFactory)
     product = factory.SubFactory(ProductFactory)
