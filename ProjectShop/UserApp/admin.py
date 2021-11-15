@@ -2,11 +2,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
+from import_export.admin import ImportExportActionModelAdmin
 
 from UserApp.models import User
 
 
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(ImportExportActionModelAdmin, BaseUserAdmin):
     def has_delete_permission(self, request, obj=None) -> bool:
         """Restrict self deletion and deletion for not superusers"""
 

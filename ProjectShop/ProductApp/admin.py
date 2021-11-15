@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from django_extensions.admin import ForeignKeyAutocompleteAdmin
+from import_export.admin import ImportExportActionModelAdmin
 
 
 from ProductApp.models import (
@@ -52,7 +53,7 @@ class AdvancedDescriptionAdmin(admin.ModelAdmin):
     form = AdvancedDescriptionForm
 
 
-class ProductAdmin(ForeignKeyAutocompleteAdmin):
+class ProductAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
     inlines = (ImageInline, VideoInline)
     fields = (
         "name",
@@ -106,20 +107,20 @@ class ReviewAdmin(admin.ModelAdmin):
         return form
 
 
-class ProductCategoryAdmin(ForeignKeyAutocompleteAdmin):
+class ProductCategoryAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
 
 
-class ProductSubcategoryAdmin(ForeignKeyAutocompleteAdmin):
+class ProductSubcategoryAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
 
 
-class TagAdmin(ForeignKeyAutocompleteAdmin):
+class TagAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
     list_filter = ("group__name",)
 
 
-class TagGroupAdmin(admin.ModelAdmin):
+class TagGroupAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
 
