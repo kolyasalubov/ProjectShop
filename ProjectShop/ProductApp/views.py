@@ -60,6 +60,7 @@ class ProductViewSet(ReadOnlyModelViewSet):
 
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+    lookup_field = "name"
 
 
 class ProductCategoryViewSet(ReadOnlyModelViewSet):
