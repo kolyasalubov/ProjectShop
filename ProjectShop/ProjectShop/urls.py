@@ -24,7 +24,6 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from .router import router
-from UserApp.views import TemporalHomePageView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -41,7 +40,12 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
+    path('users/', include('UserApp.urls')),
+    path('pages/', include('django.contrib.flatpages.urls')),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('api/v1/', include(router.urls)),
     path("users/", include("UserApp.urls")),
     path("pages/", include("django.contrib.flatpages.urls")),
     path("api/v1/", include(router.urls)),
@@ -51,8 +55,12 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("", TemporalHomePageView.as_view(), name="home"),
+    path('', include('ProductApp.urls')),
 ]
 
 if settings.DEBUG:
+    import debug_toolbar
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns = [
+                      path('__debug__/', include(debug_toolbar.urls)),
+                  ] + urlpatterns

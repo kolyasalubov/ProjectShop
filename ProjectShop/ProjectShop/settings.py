@@ -47,13 +47,17 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.flatpages",
+  
     # 3rd-party apps
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "django_countries",
+    'django_extensions',
     "phonenumber_field",
     "crispy_forms",
     "drf_yasg",
+    'debug_toolbar',
+  
     # local apps
     'UserApp',
     'Shipping',
@@ -69,6 +73,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = "ProjectShop.urls"
@@ -156,6 +161,8 @@ MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+SESSION_COOKIE_AGE = 1209601
+
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
@@ -209,3 +216,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
