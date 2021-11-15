@@ -25,7 +25,10 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from .router import router
-from .sitemaps import OrderSitemap, FlatPageSitemap, OrderItemsSitemap
+from ProjectShop.sitemaps import (OrderSitemap,
+                                  FlatPageSitemap,
+                                  OrderItemsSitemap,
+                                  ProductSitemap)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -44,6 +47,7 @@ sitemaps = {
     'order': OrderSitemap,
     'flatpages': FlatPageSitemap,
     'orderitems': OrderItemsSitemap,
+    'products': ProductSitemap,
 }
 
 urlpatterns = [
