@@ -161,7 +161,7 @@ if DEPLOYMENT:
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     # s3 static settings
     STATIC_LOCATION = "static"
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/"
+    STATIC_URL = f"https://s3.console.aws.amazon.com/s3/buckets/project-shop-627-media?region=eu-west-3&prefix=static/&showversions=false/"
     STATICFILES_STORAGE = "ProjectShop.storage_backends.StaticStorage"
     # s3 public media settings
     PUBLIC_MEDIA_LOCATION = "media"
@@ -169,7 +169,6 @@ if DEPLOYMENT:
     DEFAULT_FILE_STORAGE = "ProjectShop.storage_backends.PublicMediaStorage"
 else:
     STATIC_URL = "/static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     DATABASES['default'].update(
@@ -183,6 +182,7 @@ else:
         }
     )
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
