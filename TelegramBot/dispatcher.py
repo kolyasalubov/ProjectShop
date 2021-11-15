@@ -33,6 +33,7 @@ from handlers.profile_manager import (
     UPDATE,
     BIRTH_DATE,
     DateFilter,
+)
 from handlers.user_menu import get_base_reply_keyboard
 
 
@@ -105,8 +106,10 @@ def setup_dispatcher(dp):
                 ],
             },
             fallbacks=[MessageHandler(Filters.all, ProfileCallbacks.incorrect_value)],
+        )
+    )
     dp.add_handler(
-        ConersationHandler(
+        ConversationHandler(
             entry_points=[MessageHandler(Filters.text("Go to products"), search_type)],
             states={
                 ProductStates.SEARCH: [
