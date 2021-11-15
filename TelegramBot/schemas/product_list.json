@@ -1,0 +1,9 @@
+{
+  "message": {
+    "image": "{{ data.images.0 }}",
+    "caption": "* {{ data.name }} *"
+  },
+  "keyboard": {
+    "body": ["Description"]
+  }
+}

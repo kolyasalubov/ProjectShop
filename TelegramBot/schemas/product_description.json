@@ -1,0 +1,14 @@
+{
+      "message": {
+            "media": "{{ data.product.images }}",
+            "text": "*{{ data.product.name }}*\n\n{{ data.product.description }}\n\n_{{ data.product.tags }}_\n\n*${{ data.product.price }}*\n\n{{ data.product.video_links.0.video_link }}"
+      },
+      "keyboard": {
+            "name": "{{ data.product.name }}",
+            "body": [
+                  "Add to wishlist",
+                  "Add to cart",
+                  "Back"
+            ]
+      }
+}

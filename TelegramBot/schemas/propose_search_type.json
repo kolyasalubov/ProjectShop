@@ -1,0 +1,13 @@
+{
+  "message": {
+    "text" : "What type of search would you like?"
+  },
+  "keyboard": {
+    "name": "search",
+    "body": [
+      "Search by category",
+      "Search by name"
+    ],
+    "columns": 2
+  }
+}

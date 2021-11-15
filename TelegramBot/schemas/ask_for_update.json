@@ -1,0 +1,11 @@
+{
+  "message": {
+    "text": "Now, what information about yourself you would like to add/update?"
+  },
+  "keyboard": {
+    "body": [
+      "Name",
+      "Birth date"
+    ]
+  }
+}

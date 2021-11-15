@@ -1,0 +1,9 @@
+{
+  "message": {
+    "text" : "Please, select a category:"
+  },
+  "keyboard": {
+    "name": "category",
+    "page": "{{ data.category }}"
+  }
+}

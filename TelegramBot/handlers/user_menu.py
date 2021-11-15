@@ -12,7 +12,6 @@ def get_base_reply_keyboard():
     """
     Register keyboard buttons into the menu
     """
-
     keyboard = [
         [
             KeyboardButton(BUTTON_REGISTER),

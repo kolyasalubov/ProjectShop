@@ -1,0 +1,11 @@
+{
+  "message": {
+    "text": "Please, share your phone number:"
+  },
+  "keyboard": {
+    "body": [
+      "Share phone number"
+    ],
+    "request_contact": "Share phone number"
+  }
+}
