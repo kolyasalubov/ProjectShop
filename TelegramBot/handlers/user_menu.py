@@ -1,8 +1,6 @@
 from telegram import KeyboardButton
 from telegram import ReplyKeyboardMarkup
 
-from client.client import RestClient, bot_client
-
 
 BUTTON_REGISTER = "Register"
 BUTTON_SHOW_PRODUCTS = "Go to products"
