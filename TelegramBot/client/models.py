@@ -10,17 +10,33 @@ import datetime
 from enum import Enum
 
 import phonenumbers
-from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator, AnyUrl
+from pydantic import (
+    BaseModel,
+    constr,
+    EmailStr,
+    PositiveInt,
+    conint,
+    condecimal,
+    validator,
+    AnyUrl,
+    Field,
+)
 from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
 
+from client.exceptions import ClientError
 from client.status_check import bot_client
-from utils.Page import IPage
-from utils.image import IImage
+from interfaces.models import IPage, IImage, IPaginatedModel
 
-USER_URL = os.environ.get("USER_URL")  # add url to obtain and manage user by phone number
-USER_INIT_KEY = os.environ.get("USER_INIT_KEY")   # key for User.__init__  access, set None to switch off
-USER_BY_TELEGRAM_ID_URL = os.environ.get("USER_BY_TELEGRAM_ID_URL")  # add url to obtain user by telegram id
+USER_URL = os.environ.get(
+    "USER_URL"
+)  # add url to obtain and manage user by phone number
+USER_INIT_KEY = os.environ.get(
+    "USER_INIT_KEY"
+)  # key for User.__init__  access, set None to switch off
+USER_BY_TELEGRAM_ID_URL = os.environ.get(
+    "USER_BY_TELEGRAM_ID_URL"
+)  # add url to obtain user by telegram id
 
 
 class Page(BaseModel, IPage):
@@ -31,21 +47,18 @@ class Page(BaseModel, IPage):
     count: PositiveInt = 1
     next: AnyUrl = None
     previous: AnyUrl = None
-    results: list
+    body: list = Field(None, alias="results")
 
     def copy(self, *args, **kwargs):
-        return Page(count=self.count, next=self.next, previous=self.previous, results=self.results.copy())
-
-    @property
-    def body(self):
-        return self.results
-
-
-    def __str__(self):
+        return Page(
+            count=self.count,
+            next=self.next,
+            previous=self.previous,
+            results=self.body.copy(),
+        )
 
 
-
-class PaginatedModel(BaseModel):
+class PaginatedModel(BaseModel, IPaginatedModel):
     """
     Model for all models, that require pagination
     """
@@ -65,7 +78,7 @@ class PaginatedModel(BaseModel):
         return Page(**json)
 
     @classmethod
-    def get(cls) -> Page:
+    def get(cls, *args, **kwargs) -> Page:
         """
         Get first page of result. Will work only if path provided (in child classes)
         """
@@ -133,7 +146,7 @@ class Wishlist(PaginatedModel):
     product_name: constr(max_length=100)
 
     @classmethod
-    def get_wishlist(cls, user_id: int) -> Page:
+    def get(cls, user_id: int) -> Page:
         """
         Retrieve wishlist of certain user specified by user id
         """
@@ -165,6 +178,7 @@ class User(BaseModel):
     """
     Pydantic model class for working with user model and relative djangoREST database user model.
     """
+
     id: PositiveInt
     telegram_id: constr(max_length=40)
     first_name: constr(max_length=40)
@@ -183,7 +197,6 @@ class User(BaseModel):
 
     @classmethod
     def _validate_fields(cls, **kwargs):
-        print(kwargs)
         """
         Validate value for field. Raise ValidationError
         :param kwargs: dict
@@ -270,7 +283,9 @@ class User(BaseModel):
         return user
 
     @classmethod
-    def register_user(cls, telegram_id, phone_number, email, first_name, last_name, birth_date=None):
+    def register_user(
+        cls, telegram_id, phone_number, email, first_name, last_name, birth_date=None
+    ):
         """
         Register user in djangoREST database and crete appropriate User instance.
         :param telegram_id: str
@@ -287,7 +302,7 @@ class User(BaseModel):
             "email": email,
             "first_name": first_name,
             "last_name": last_name,
-            "birth_date": birth_date
+            "birth_date": birth_date,
         }
         User._validate_fields(**user_data)
         user_response = bot_client.send_request("POST", USER_URL, data=user_data)
@@ -331,6 +346,21 @@ class User(BaseModel):
         User._validate_fields(telegram_id=telegram_id)
         user_response = cls._patch_user_telegram_id(phone_number, telegram_id)
         return cls._create_user(user_response)
+
+    def update(self, first_name=None, last_name=None, birth_date=None):
+        if not (first_name or last_name or birth_date):
+            raise ClientError
+        data = {}
+        if first_name:
+            data.update({"first_name": first_name})
+        if last_name:
+            data.update({"last_name": last_name})
+        if birth_date:
+            data.update({"birth_date": birth_date})
+        bot_client.send_request("PATCH", data=data)
+        self.first_name = first_name or self.first_name
+        self.last_name = last_name or self.last_name
+        self.birth_date = birth_date or self.birth_date
 
 
 class Category(PaginatedModel):
@@ -412,11 +442,14 @@ class Product(PaginatedModel):
     images: List[Image]
     video_links: List[Video]
 
+    _path = "/products"
+    _name = "name"
+
     class Config:
         arbitrary_types_allowed = True
 
     @classmethod
-    def view_products(cls, category: str = None, query: list = None) -> Page:
+    def get(cls, category: str = None, query: list = None) -> Page:
         """
         Get paginated list of products by some filters.
         If filters aren't specified, list should be sorted by popularity
@@ -426,8 +459,13 @@ class Product(PaginatedModel):
             params = {"category": str(category)}
         if query:
             params = {"query": query}
-        response = bot_client.send_request("GET", f"/products", params=params)
+        response = bot_client.send_request("GET", cls._path, params=params)
         return cls.page(response.json())
+
+    @classmethod
+    def get_one(cls, product):
+        response = bot_client.send_request("GET", f"{cls._path}/{product}")
+        return cls(**response.json())
 
 
 class Order(BaseModel):

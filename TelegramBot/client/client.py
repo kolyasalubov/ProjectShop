@@ -180,6 +180,6 @@ bot_client = RestClient(
     token_url=TOKEN_URL,
     token_refresh_url=TOKEN_REFRESH_URL,
     logout_url=LOGOUT_URL,
-    )
+)
 
 # Use only next methods: logout, send_request
