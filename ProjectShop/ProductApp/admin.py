@@ -3,15 +3,19 @@ from django.utils.translation import gettext_lazy as _
 
 from django_extensions.admin import ForeignKeyAutocompleteAdmin
 
+
 from ProductApp.models import (
     Product,
     ProductCategory,
     ProductSubcategory,
     Tag,
+    TagGroup,
     Review,
     ProductImage,
     ProductVideo,
+    AdvancedProductDescription,
 )
+from ProductApp.forms import AdvancedDescriptionForm
 
 
 class IsAvailableProductFilter(admin.SimpleListFilter):
@@ -42,6 +46,10 @@ class VideoInline(admin.TabularInline):
     model = ProductVideo
     fields = ("video_link",)
     extra = 1
+
+
+class AdvancedDescriptionAdmin(admin.ModelAdmin):
+    form = AdvancedDescriptionForm
 
 
 class ProductAdmin(ForeignKeyAutocompleteAdmin):
@@ -108,6 +116,12 @@ class ProductSubcategoryAdmin(ForeignKeyAutocompleteAdmin):
 
 class TagAdmin(ForeignKeyAutocompleteAdmin):
     search_fields = ('name',)
+    list_filter = ("group__name",)
+
+
+class TagGroupAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
 
 
 admin.site.register(Product, ProductAdmin)
@@ -117,3 +131,5 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(ProductImage, ProductImageAdmin)
 admin.site.register(ProductVideo, ProductVideoAdmin)
+admin.site.register(AdvancedProductDescription, AdvancedDescriptionAdmin)
+admin.site.register(TagGroup, TagGroupAdmin)
