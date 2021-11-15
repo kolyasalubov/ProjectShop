@@ -109,14 +109,7 @@ WSGI_APPLICATION = "ProjectShop.wsgi.application"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": get_environment_variable("SQL_ENGINE"),
-        "NAME": get_environment_variable("SQL_DATABASE"),
-        "USER": get_environment_variable("SQL_USER"),
-        "PASSWORD": get_environment_variable("SQL_PASSWORD"),
-        "HOST": get_environment_variable("SQL_HOST"),
-        "PORT": get_environment_variable("SQL_PORT"),
-    }
+    "default": {}
 }
 
 # Password validation
@@ -179,6 +172,16 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+    DATABASES['default'].update(
+        {
+            "ENGINE": get_environment_variable("SQL_ENGINE"),
+            "NAME": get_environment_variable("SQL_DATABASE"),
+            "USER": get_environment_variable("SQL_USER"),
+            "PASSWORD": get_environment_variable("SQL_PASSWORD"),
+            "HOST": get_environment_variable("SQL_HOST"),
+            "PORT": get_environment_variable("SQL_PORT"),
+        }
+    )
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
