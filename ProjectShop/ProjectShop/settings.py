@@ -253,3 +253,5 @@ EMAIL_HOST_PASSWORD = get_environment_variable("EMAIL_PASS")
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+WHITENOISE_AUTOREFRESH = True
