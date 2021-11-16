@@ -182,4 +182,6 @@ def ProductOverviewPageView(request, product_id = 1):
 
     return render(request, 'ProductApp/ProductOverviewPage.html', context)
 
+def error_404(request, exception):
+    return render(request, '404.html')
 

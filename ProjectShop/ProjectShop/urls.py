@@ -80,3 +80,5 @@ if settings.DEBUG:
     urlpatterns = [
                       path('__debug__/', include(debug_toolbar.urls)),
                   ] + urlpatterns
+
+handler404 = "ProductApp.views.error_404"
