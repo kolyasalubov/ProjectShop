@@ -1,12 +1,11 @@
 {% extends 'UserApp/_base.html' %}
+{% load static %}
 {% block title %} Checkout {% endblock title %}
 
-{% block header %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/order/order-styles.css' %}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="{% static 'js/get_csrf.js' %}"></script>
-{% endblock header %}
+
+<!--    <link rel="stylesheet" href="{% static 'css/order/order-styles.css' %}">-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>-->
+<!--    <script src="{% static 'js/get_csrf.js' %}"></script>-->
 
 {% block content %}
      <div class="main-section">
@@ -37,7 +36,7 @@
                  {% if objects %}
                  {% for object in objects %}
                  <div class="product-one" id="{{ object.product.id }}">
-                     <img class="product-image" src="{{ object.media.image.url }}">
+                     <img class="product-image1" src="{{ object.media.image.url }}">
                      <h2 style="display: inline-block; position: absolute; margin-top: 3%; margin-left: 50px; color: #CDBCB5;">{{ object.product.name }}</h2>
                      <h2 style="display: inline-block; position: absolute; margin-top: 6%; margin-left: 50px;" class="order-item-info-price" id="price{{ object.product.id }}">{{ object.price }}$</h2>
                      <img style="display: inline-block; cursor: pointer; float: right; width: 60px; height: 30px; margin-top: 50px; margin-right: 50px;" src="{% static 'assets/cart/remove.svg' %}" data-id="{{ object.product.id }}" data-action="{% url 'order:cart-remove' %}" class="item-delete">
@@ -53,52 +52,14 @@
                  <h1 style="display: inline-block; float: right; margin-right: 30px; margin-top: 50px;" id="subtotal">{{cart.get_total_price}}$</h1>
                  <button type="button" id="button-go-to-contact" style="margin-top: 120px; margin-left: 20px">Contact details</button>
              </div>
+<!--             <script src="{% static 'js/order/cart/remove_from_cart.js' %}"></script>-->
+<!--             <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>-->
+<!--             <script src="{% static 'js/order/cart/subtract_quantity.js' %}"></script>-->
+<!--            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>-->
+<!--            <script src="{% static 'js/get_csrf.js' %}"></script>-->
 
 
 
-<!--             <div class="order">-->
-
-<!--                    &lt;!&ndash;-Order row-&ndash;&gt;-->
-<!--                    {% if objects %}-->
-<!--                    {% for object in objects %}-->
-<!--                    <div class="order-item" id="{{ object.product.id }}">-->
-
-<!--                        &lt;!&ndash;-Image of a product-&ndash;&gt;-->
-<!--                        <div class="order-item-image-div">-->
-<!--                            <img src="{{ object.media.image.url }}" class="order-item-image">-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash;- -&#45;&#45; -&ndash;&gt;-->
-
-<!--                        &lt;!&ndash;- Order item info(Product name, price) -&ndash;&gt;-->
-<!--                        <div class="order-item-info">-->
-<!--                            <div class="order-item-info-name">-->
-<!--                                    {{ object.product.name }}-->
-<!--                            </div>-->
-<!--                            <div class="order-item-info-price" id="price{{ object.product.id }}">-->
-<!--                                    {{ object.price }}$-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash;- -&#45;&#45; -&ndash;&gt;-->
-
-<!--                        <div class="order-item-count" style="display: flex">-->
-<!--                            <a data-id="{{ object.product.id }}" data-action="{% url 'order:cart-subtract' %}" class="subtract-from-cart">-->
-<!--                                <-->
-<!--                            </a>-->
-<!--                            <div id="order-item-count-num{{object.product.id}}">-->
-<!--                            {{ object.qty }}-->
-<!--                            </div>-->
-<!--                            <a data-id="{{ object.product.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart">-->
-<!--                                >-->
-<!--                            </a>-->
-<!--                        </div>-->
-
-<!--                        <div class="order-item-trash">-->
-<!--                            <img src="{% static 'assets/cart/remove.svg' %}" data-id="{{ object.product.id }}" data-action="{% url 'order:cart-remove' %}" class="item-delete">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    {% endfor %}-->
-<!--                    {% endif %}-->
-<!--             </div>-->
              <div id="delivery-and-payment" class="tabcontent">
                  <div class="delivery-payment-tab">
                      <h3 style="margin-bottom: 25px">Enter a new address for delivery</h3>
@@ -128,7 +89,12 @@
          </div>
          <div style="background: #fbf8f8;"></div>
      </div>
-    <script src="{% static 'js/order/cart/remove_from_cart.js' %}"></script>
-    <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>
-    <script src="{% static 'js/order/cart/subtract_quantity.js' %}"></script>
+     <script>
+         document.getElementById("defaultOpen").click();
+     </script>
+<!--    <script src="{% static 'js/order/cart/remove_from_cart.js' %}"></script>-->
+<!--    <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>-->
+<!--    <script src="{% static 'js/order/cart/subtract_quantity.js' %}"></script>-->
+    <script src="{% static 'js/main.js' %}"></script>
+
 {% endblock content%}

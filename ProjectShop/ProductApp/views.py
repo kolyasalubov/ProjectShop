@@ -1,4 +1,10 @@
+from django_filters.views import FilterView
+from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, redirect
+
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from ProductApp.models import (
     Product,
@@ -20,6 +26,7 @@ from ProductApp.serializers import (
 )
 
 from ProductApp.forms import ReviewForm
+from ProductApp.filters import ProductFilter
 
 from django.db.models import Q
 
@@ -168,10 +175,10 @@ def ProductOverviewPageView(request, slug):
 
 def category_detail_view(request):
     obj = Product.objects.get(id=1)
-    img = ProductMedia.objects.get(id=1)
+    # img = ProductMedia.objects.get(id=1)
     context = {
         "product": obj,
-        "product_img": img,
+        # "product_img": img,
     }
     return render(request, "order/make_order.html", context)
 
@@ -183,3 +190,12 @@ def product_detail_view(request):
     }
 
     return render(request, "order/test_products.html", context)
+
+
+def product_detail_view_new(request):
+    obj = Product.objects.all()
+    context = {
+        "obj": obj
+    }
+
+    return render(request, "ProductApp/homepage.html", context)

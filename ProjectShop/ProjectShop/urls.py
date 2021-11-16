@@ -24,7 +24,6 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from .router import router
-from UserApp.views import TemporalHomePageView
 from ProductApp.views import product_detail_view, category_detail_view
 from order.views import MakeAnOrder, OrderConfirmation
 

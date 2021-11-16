@@ -14,10 +14,11 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 
-load_dotenv(".env.django")
+# load_dotenv(".env.django")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,13 +28,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = '082396cb7cae23cb5f89d78f370a67c15445c11eb7b000c5'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -158,11 +159,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# STATIC_URL = "/static/"
+# STATICFILES_DIR = [str(BASE_DIR) + "/static"]
+# STATICFILES_DIRS = [
+#     str(BASE_DIR) + '/static'
+# ]
+
+STATIC_ROOT = ''
+# STATICFILES_DIRS = ( os.path.join('static'), )
+
 STATIC_URL = "/static/"
-STATICFILES_DIR = [str(BASE_DIR) + "/static"]
 STATICFILES_DIRS = [
-    str(BASE_DIR) + '/static'
+   os.path.join(BASE_DIR, 'static')
 ]
+
+
+
 # media files will be stored in 'media' folder
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR) + "/media"

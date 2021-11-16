@@ -1,4 +1,5 @@
-from ProductApp.models import Product, ProductMedia
+# from ProductApp.models import Product, ProductMedia
+from ProductApp.models import Product
 
 
 class SessionCart:
@@ -65,7 +66,7 @@ class SessionCart:
 
             cart[product_id]['product'] = product
             cart[product_id]['price'] = self.count_sum_price(product.id)
-            cart[product_id]['media'] = ProductMedia.objects.get(product=product)
+            # cart[product_id]['media'] = ProductMedia.objects.get(product=product)
 
         return cart.values()
 

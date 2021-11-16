@@ -4,6 +4,11 @@
   {% load static %}
   {% load pagination_tags %}
   {% load i18n %}
+   {% block header %}
+    <link rel="stylesheet" href="{% static 'css/order/cart-styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/get_csrf.js' %}"></script>
+{% endblock header %}
     <div class="categories-scroller">
 {#        <div class="left-button-container" id="btnLeft">#}
 {#            <button class="scroll-left-button"> < </button>#}
@@ -35,12 +40,10 @@
                     <a href="/product/overview/{{product.slug}}" class="product-image" >
 
                     </a>
-                    <button class="add-to-cart-button" type="button" onclick="
-                            // add to cart functionality
-                            console.log({{ product.id }})
-                        ">
+                    <button data-id="{{ product.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart" id="add-to-cart_id">
 
                     </button>
+<!--                    <a data-id="{{ product.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart"></a>-->
                 </div>
                 <div class="product-quarter-bottom">
                     <div class="product-quarter-bottom-left">
@@ -54,6 +57,8 @@
             </div>
         {% endfor %}
       </div>
+<script src="{% static 'js/order/cart/add_quantity.js' %}"></script>
+
 
 
       <div class="product-navigation-container">
@@ -152,3 +157,4 @@
 {#    {% endif %}#}
 {##}
 {#{% endblock content %}#}
+

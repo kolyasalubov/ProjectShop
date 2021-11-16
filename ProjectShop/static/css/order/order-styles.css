@@ -2,8 +2,15 @@
     background: #fbf8f8;
     margin-top: 40px;
     margin-left: 0;
+    padding-top: 10px;
+    padding-left: 2%;
     margin-right: auto;
     width: 920px;
+}
+
+body {
+    background: #fbf8f8;
+
 }
 
 .tab button {
@@ -35,8 +42,9 @@
     /*width: 920px;*/
     height: auto;
     /*margin-left: auto;*/
-    margin-right: 12px;
-    margin-top: 100px;
+    margin-right: 2%;
+    margin-left: 2%;
+    /*margin-top: 100px;*/
     padding: 60px 0 60px 0;
 
     background: #FFFFFF;
@@ -93,7 +101,7 @@
     border-radius: 50px;
 }
 
-.product-image {
+.product-image1 {
     display: inline-block;
     width: 150px;
     height: 120px;
