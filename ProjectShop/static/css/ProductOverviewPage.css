@@ -42,7 +42,7 @@
   .product_info > div{
   }
 
-  .add_to_cart_button{
+  #add_to_cart_button{
       background-color: transparent;
       width: 100%;
       height: 100%;

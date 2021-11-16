@@ -12,6 +12,9 @@
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+      <script src="{% static 'js/get_csrf.js' %}"></script>
+
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
@@ -35,7 +38,7 @@
                 {% endif %}
                 <div class="burger-profile_items">
                     <a href="{% url 'profile' %}" class="item-link">Profile</a>
-                    <a href="#" class="item-link">Cart</a>
+                    <a href="{% url 'order:cart' %}" class="item-link">Cart</a>
                     <a href="#" class="item-link">Order history</a>
                     <a href="#" class="item-link">Filter history</a>
                     <a href="#" class="item-link">My reviews</a>
@@ -57,7 +60,7 @@
                 </form>
             </div>
             <div class="links-container">
-                 <a href="" class="nav-link">
+                 <a href="{% url 'order:cart' %}" class="nav-link">
                     <img class="nav-image" src={% static 'assets/EmptyCart.svg' %}>
                 </a>
 
@@ -108,10 +111,10 @@
                 <p class="footer-main-text-first">Contact Us</p>
 
                 <div class="footer-second-text-first">
-                    <span>test<br>
-                        test <br>
-                        test<br>
-                        test
+                    <span>LVIV<br>
+                        57 ProjectShop Street, Lviv 79018 <br>
+                        +380-32-240-9999<br>
+                        Toll free: 0-8006-0-8006
                     </span>
                 </div>
             </div>
@@ -133,77 +136,10 @@
     </footer>
     <!--Custom JS-->
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/order/cart/remove_from_cart.js' %}"></script>
+    <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>
+    <script src="{% static 'js/order/cart/subtract_quantity.js' %}"></script>
   </body>
 </html>
 
 
-{#{% load i18n %}#}
-{#{% load flatpages %}#}
-{##}
-{#<!doctype html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <meta name="viewport"#}
-{#          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">#}
-{#    <meta http-equiv="X-UA-Compatible" content="ie=edge">#}
-{#    <title>{% translate "Shop" %}</title>#}
-{##}
-{#</head>#}
-{#<body>#}
-{##}
-{##}
-{#    <!--  Messages start here  -->#}
-{#    {% if messages %}#}
-{#      <ul class="messages">#}
-{#        {% for message in messages %}#}
-{#          <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}>#}
-{#              {% blocktranslate %} {{ message }} {% endblocktranslate %}#}
-{#          </li>#}
-{#        {% endfor %}#}
-{#      </ul>#}
-{#    {% endif %}#}
-{#    <!--  Messages end here  -->#}
-{##}
-{#    <!--  First Navbar starts here  -->#}
-{#    <h3> Navbar: </h3>#}
-{#    <a href="{% url 'home' %}">{% translate "Home page" %}</a>#}
-{##}
-{#    {% if user.is_authenticated %}#}
-{#        <a href="{% url 'profile' %}">{% translate "Profile" %}</a>#}
-{#        <a href="{% url 'logout' %}">{% translate "Logout" %}</a>#}
-{#      {% else %}#}
-{#        <a href="{% url 'login' %}">{% translate "Login" %}</a>#}
-{#        <a href="{% url 'register' %}">{% translate "Register" %}</a>#}
-{#    {% endif %}#}
-{##}
-{#    <a href="{% url 'categories' %}">{% translate "Categories" %}</a>#}
-{##}
-{#    <!--  Flatpages  -->#}
-{#    {% get_flatpages as flatpages %}#}
-{#    <ul>#}
-{#      {% for page in flatpages %}#}
-{#        <li>#}
-{#            <a href="/pages{{ page.url }}">#}
-{#                {% blocktranslate with flatpage_title=page.title %} {{ flatpage_title }} {% endblocktranslate %}#}
-{#            </a>#}
-{#        </li>#}
-{#      {% endfor %}#}
-{#    </ul>#}
-{#    <!--  First Navbar ends here  -->#}
-{##}
-{#    <!--  Second Navbar starts here  -->#}
-
-{#    <!--  Second Navbar ends here  -->#}
-{##}
-{#    <hr>#}
-{#    <form action="{% url 'home' %}" method="get">#}
-{#        <input name="name__icontains" type="text" placeholder="Search" aria-label="Search">#}
-{#        <button type="submit" id="submit">{% translate "Search" %}</button>#}
-{#    </form>#}
-{##}
-{#    {% block content %}{% endblock content %}#}
-{##}
-{##}
-{#</body>#}
-{#</html>#}

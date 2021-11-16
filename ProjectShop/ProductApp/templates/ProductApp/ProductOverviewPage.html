@@ -62,9 +62,13 @@
                 <div class="product_title"><h2>{{ product_object.name }}</h2></div>
                 <div class="product_price"><h3>${{ product_object.price }}</h3></div>
                 <div class="product_rating_by_stars"><!--stars--></div>
-                <div class="add_to_cart_button">
-                    <input type="button" value="Add to cart" class="add_to_cart_button"/>
-                </div>
+<!--                <div class="add_to_cart_button">-->
+<!--                    <input type="button" value="Add to cart" data-id="{{ product.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart"/>-->
+<!--                </div>-->
+                <button data-id="{{ product_object.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart" id="add_to_cart_button">
+                    Add to cart
+                </button>
+<!--                <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>-->
             </div>
             <div class="tags">
                 <h1>Tags</h1>
@@ -74,7 +78,7 @@
                 {% endfor %}
 
             </div>
-
+        <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>
 
 
         </section>
@@ -152,4 +156,5 @@
 
     </div>
 {% endblock content%}
+
 
