@@ -1,0 +1,67 @@
+.main-register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30rem;
+}
+
+.register-container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    width: 50%;
+    height: 28rem;
+    border: black solid;
+    border-radius: 5rem;
+}
+
+.register-container label{
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.register-container h1{
+    font-weight: bold;
+}
+
+.register-container button{
+    background-color: #F6E37B;
+    width: 8rem;
+    height: 3rem;
+    border: none;
+    border-radius: 3rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.register-form {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+
+}
+
+.left-register-form {
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.right-register-form {
+    display: flex;
+    flex-flow: column wrap;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    visibility: hidden;
+    margin: 0;
+}
+
+li :first-child{
+    visibility: visible;
+}
