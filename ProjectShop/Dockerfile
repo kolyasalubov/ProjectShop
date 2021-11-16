@@ -13,6 +13,7 @@ RUN apk add --no-cache --virtual .build-deps build-base linux-headers
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
+RUN python manage.py collectstatic --noinput
 
 COPY . .
 
