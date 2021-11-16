@@ -1,23 +1,10 @@
+from django_filters.views import FilterView
+from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
-from django.views import generic
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from django.views import generic, View
-
-from django.http import JsonResponse
-import json
-
-from django.views import generic
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
-
-from django_filters.views import FilterView
-
-from ProductApp.models import Review, Product, ProductCategory
-from ProductApp.serializers import ReviewSerializer
-from ProductApp.filters import ProductFilter
 
 from ProductApp.models import (
     Product,
@@ -39,6 +26,7 @@ from ProductApp.serializers import (
 )
 
 from ProductApp.forms import ReviewForm
+from ProductApp.filters import ProductFilter
 
 from django.db.models import Q
 
@@ -150,11 +138,11 @@ class ReviewViewSet(NestedViewSetMixin, ModelViewSet):
     queryset = Review.objects.all()
 
 
-def ProductOverviewPageView(request, product_id = 1):
-    product__object = Product.get_product_by_id(product_id=product_id)
+def ProductOverviewPageView(request, slug):
+    product__object = Product.get_product_by_slug(slug = slug)
     product_media = ProductImage.get_media_by_product(product = product__object)
     product_media_video = ProductVideo.get_media_video_by_product(product = product__object)
-    product_all = ProductImage.objects.filter(~Q(product_id=product_id))
+    product_all = ProductImage.objects.filter(~Q(product = product__object))
 
     new_review = None
     reviews = Review.get_review_by_product(product = product__object)
@@ -166,7 +154,7 @@ def ProductOverviewPageView(request, product_id = 1):
             new_review.product = product__object
             new_review.save()
 
-            return redirect('product_overview', product_id=product_id )
+            return redirect('product_overview', slug=slug )
     else:
         review_form = ReviewForm()
 
@@ -183,3 +171,31 @@ def ProductOverviewPageView(request, product_id = 1):
     return render(request, 'ProductApp/ProductOverviewPage.html', context)
 
 
+
+
+def category_detail_view(request):
+    obj = Product.objects.get(id=1)
+    # img = ProductMedia.objects.get(id=1)
+    context = {
+        "product": obj,
+        # "product_img": img,
+    }
+    return render(request, "order/make_order.html", context)
+
+
+def product_detail_view(request):
+    obj = Product.objects.all()
+    context = {
+        "obj": obj
+    }
+
+    return render(request, "order/test_products.html", context)
+
+
+def product_detail_view_new(request):
+    obj = Product.objects.all()
+    context = {
+        "obj": obj
+    }
+
+    return render(request, "ProductApp/homepage.html", context)

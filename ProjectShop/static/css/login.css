@@ -1,0 +1,46 @@
+.main-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34rem;
+}
+
+.login-container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    width: 60%;
+    height: 24rem;
+    border: black solid;
+    border-radius: 5rem;
+}
+
+.login-container form{
+    display: flex;
+    align-items: center;
+    flex-flow: column wrap;
+}
+
+.login-container button{
+    background-color: #F6E37B;
+    width: 5rem;
+    height: 3rem;
+    border: none;
+    border-radius: 3rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.login-container form label{
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.login-container a {
+    color: black;
+}
+
+.login-container h1{
+    font-weight: bold;
+}

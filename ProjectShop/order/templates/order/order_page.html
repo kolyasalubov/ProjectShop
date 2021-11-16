@@ -1,0 +1,93 @@
+{% extends "UserApp/_base.html" %}
+{% block title %} Cart {% endblock title %}
+
+
+
+<!--{% block header %}-->
+<!--    {% load static %}-->
+<!--    <link rel="stylesheet" href="{% static 'css/order/cart-styles.css' %}">-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>-->
+<!--&lt;!&ndash;    <script src="{% static 'js/get_csrf.js' %}"></script>&ndash;&gt;-->
+<!--{% endblock header %}-->
+
+{% block content %}
+    <div style="height: 100%;">
+        <!---General div--->
+        <div class="order">
+
+            <!---Order row--->
+            {% if objects %}
+            {% for object in objects %}
+            <div class="order-item" id="{{ object.product.id }}">
+
+                <!---Image of a product--->
+                <div class="order-item-image-div">
+                    <img src="{{ object.product.images.first.image.url }}" class="order-item-image">
+                </div>
+                <!--- --- --->
+
+                <!--- Order item info(Product name, price) --->
+                <div class="order-item-info">
+                    <div class="order-item-info-name">
+                            {{ object.product.name }}
+                    </div>
+                    <div class="order-item-info-price" id="price{{ object.product.id }}">
+                            {{ object.price }}$
+                    </div>
+                </div>
+                <!--- --- --->
+
+                <div class="order-item-count" style="display: flex">
+                    <a data-id="{{ object.product.id }}" data-action="{% url 'order:cart-subtract' %}" class="subtract-from-cart">
+                        <
+                    </a>
+                    <div id="order-item-count-num{{object.product.id}}">
+                    {{ object.qty }}
+                    </div>
+                    <a data-id="{{ object.product.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart">
+                        >
+                    </a>
+                </div>
+
+                <div class="order-item-trash">
+                    <img src="{% static 'assets/cart/remove.svg' %}" data-id="{{ object.product.id }}" data-action="{% url 'order:cart-remove' %}" class="item-delete">
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+                <h1>You have no products in your cart
+                </h1>
+
+                <h1>
+                    Add some please
+                </h1><h1>
+                    And visit this page again :)
+                </h1>
+
+            {% endif %}
+            <div class="buttons">
+                <div class="continue-button">
+                    <a href="{% url 'home' %}">
+                        <div class="button-link" style="color: black">
+                            Continue
+                        </div>
+                    </a>
+                </div>
+                <div class="order-button">
+                    <div class="button-link">
+                        <a style="color: black; text-decoration: none;" href="{% url 'checkout' %}">Order</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+<!--    <script src="{% static 'js/order/cart/remove_from_cart.js' %}"></script>-->
+<!--    <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>-->
+<!--    <script src="{% static 'js/order/cart/subtract_quantity.js' %}"></script>-->
+
+
+
+{% endblock content %}
+

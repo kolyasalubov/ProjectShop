@@ -125,8 +125,8 @@ class Product(models.Model):
         return reverse("product-detail", kwargs={"slug": self.slug})
 
     @classmethod
-    def get_product_by_id(cls, product_id=1):
-        return cls.objects.get(id=product_id)
+    def get_product_by_slug(cls, slug):
+        return cls.objects.get(slug = slug)
 
     @property
     def short_description(self):
@@ -231,11 +231,6 @@ class ProductImage(models.Model):
     def get_media_by_product(cls, product):
         objects = cls.objects.filter(product=product)
         return objects
-
-    # @classmethod
-    # def get_all_products(cls, product_id = 1):
-    #     objects = cls.objects.get(id != product_id)
-    #     return objects
 
     small_image_tag.allow_tags = True
     small_image_tag.short_description = _("Image")
