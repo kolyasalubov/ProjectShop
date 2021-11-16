@@ -4,11 +4,6 @@
   {% load static %}
   {% load pagination_tags %}
   {% load i18n %}
-   {% block header %}
-    <link rel="stylesheet" href="{% static 'css/order/cart-styles.css' %}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="{% static 'js/get_csrf.js' %}"></script>
-{% endblock header %}
     <div class="categories-scroller">
         {% for category in categories %}
             <div class="category-section" >
@@ -69,7 +64,6 @@
                 {% if page_obj.has_next %}
                     <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> > </a>
                 {% endif %}
-
             {% endif %}
         </div>
       </div>

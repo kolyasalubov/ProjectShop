@@ -63,14 +63,18 @@
                  <a href="{% url 'order:cart' %}" class="nav-link">
                     <img class="nav-image" src={% static 'assets/EmptyCart.svg' %}>
                 </a>
-                <a href="{% url 'profile' %}" class="nav-link">
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="nav-link">
                     <img class="nav-image" src={% static 'assets/MaleAccountOrangePurple.svg' %}>
                 </a>
-                {% if user.is_authenticated %}
                     <a href="{% url 'logout' %}" class="nav-link">
                         <img class="nav-image" src={% static 'assets/Logout.svg' %}>
                     </a>
                 {% else %}
+                    <a href="{% url 'register' %}" class="nav-link">
+                    <img class="nav-image" src={% static 'assets/MaleAccountOrangePurple.svg' %}>
+                </a>
                     <a href="{% url 'login' %}" class="nav-link">
                         <img class="nav-image" src={% static 'assets/Login.svg' %}>
                     </a>

@@ -9,6 +9,10 @@
 @import 'ProductOverviewPage.css';
 @import "order/cart-styles.css";
 @import "order/order-styles.css";
+@import 'password_reset.css';
+@import 'login.css';
+@import 'register.css';
+@import 'password_reset_confirm.css';
 
 
 * {
@@ -120,7 +124,8 @@ body {
     border-radius: 12%;
 }
 
-#add-to-cart_id {
+#add-to-cart_id,
+.add-to-cart-button {
     display:flex;
     /*align-self:center;*/
     /*justify-self: center;*/
