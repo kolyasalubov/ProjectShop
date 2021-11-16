@@ -8,7 +8,6 @@ from rest_framework import viewsets
 
 from order.context_processors import SessionCart
 from order.models import Order, OrderItems
-from ProductApp.models import Product
 from order.serializers import OrderDetailSerializer, OrderItemsSerializer
 from ProductApp.models import Product
 
@@ -47,7 +46,9 @@ class CartAddView(JSONResponseMixin, AjaxResponseMixin, View):
         product = get_object_or_404(Product, id=product_id)
 
         qty, price = cart.add(product=product)
-        response = {'qty': str(qty), 'price': str(price)}
+        totalprice = cart.get_all_price()
+
+        response = {'qty': str(qty), 'price': str(price), 'subtotal': str(totalprice)}
 
         return self.render_json_response(response)
 
@@ -59,9 +60,17 @@ class CartRemoveView(JSONResponseMixin, AjaxResponseMixin, View):
         cart = SessionCart(request)
 
         product_id = request.POST.get('productId')
+
         cart.remove(product_id)
 
-        return self.render_json_response({})
+        product = get_object_or_404(Product, id=product_id)
+
+        qty = cart.subtract(product)
+        totalprice = cart.get_all_price()
+
+        response = {'qty': str(qty), 'subtotal': str(totalprice)}
+
+        return self.render_json_response(response)
 
 
 class CartSubtractView(JSONResponseMixin, AjaxResponseMixin, View):
@@ -74,8 +83,9 @@ class CartSubtractView(JSONResponseMixin, AjaxResponseMixin, View):
         product = get_object_or_404(Product, id=product_id)
 
         qty, price = cart.subtract(product)
+        totalprice = cart.get_all_price()
 
-        response = {'qty': str(qty), 'price': str(price)}
+        response = {'qty': str(qty), 'price': str(price), 'subtotal': str(totalprice)}
 
         return self.render_json_response(response)
 

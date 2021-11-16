@@ -18,6 +18,7 @@ for(i=0; i<add_urls.length; i++){
             success: function (json){
                 document.getElementById("order-item-count-num" + productId).innerHTML = json.qty
                 document.getElementById("price" + productId).innerHTML = json.price + "$"
+                document.getElementById("subtotal").innerHTML = json.subtotal;
             },
             error: function (xhr, errmsg, err) {
             }

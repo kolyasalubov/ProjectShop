@@ -10,6 +10,7 @@
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <title>{% block title %}{% endblock title %}</title>
+      {% block header %}{% endblock header %}
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
   </head>
@@ -53,7 +54,7 @@
 {#                </form>#}
             </div>
             <div class="links-container">
-                 <a href="" class="nav-link">
+                 <a href="/order/cart" class="nav-link">
                     <img class="nav-image" src={% static 'assets/EmptyCart.svg' %}>
                 </a>
                 <a href="{% url 'profile' %}" class="nav-link">

@@ -21,6 +21,8 @@ var subtract_hrefs = document.getElementsByClassName('subtract-from-cart');
                  } else{
                   document.getElementById("order-item-count-num" + productId).innerHTML = json.qty;
                   document.getElementById("price" + productId).innerHTML = json.price + "$";
+                  document.getElementById("subtotal").innerHTML = json.subtotal;
+
                  }
              },
              error: function (xhr, errmsg, err) {

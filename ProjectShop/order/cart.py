@@ -68,3 +68,9 @@ class SessionCart:
             cart[product_id]['media'] = ProductMedia.objects.get(product=product)
 
         return cart.values()
+
+    def get_total_price(self):
+        return sum(float(item['price']) for item in self.cart.values())
+
+    def get_all_price(self):
+        return sum(float(item['price']) * item['qty'] for item in self.cart.values())

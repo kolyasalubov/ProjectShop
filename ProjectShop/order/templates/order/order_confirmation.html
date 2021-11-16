@@ -1,7 +1,12 @@
 {% extends 'UserApp/_base.html' %}
 {% block title %} Order Confirmation {% endblock title %}
 
-{% load static %}
+{% block header %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/order/order-styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/get_csrf.js' %}"></script>
+{% endblock header %}
 
 {% block content %}
     <div class="main-section">
@@ -11,7 +16,7 @@
                  <p style="text-align: center; font-size: 45px; font-weight: 800; line-height: 60px;">Order Confirmation</p>
                  <img src="{% static 'assets/green_tick.png' %}" style="display: inline-block; float: left; width: 150px; height: 150px; margin-left: 10%;">
                  <p style="display: inline-block; float: right; margin-right: 50%; margin-top: 3%; font-size: 35px; font-weight: 600; line-height: 49px;">Thank you!</p>
-                 <p style="display: inline-block; float: right; margin-right: 10%; margin-top: 3%; font-size: 30px; font-weight: 600; line-height: 49px;">Your order #BE12345 has been placed.</p>
+                 <p style="display: inline-block; float: right; margin-right: 25%; font-size: 30px; font-weight: 600; line-height: 49px;">Your order has been placed.</p>
              </div>
         </div>
         <div style="background: #fbf8f8;"></div>

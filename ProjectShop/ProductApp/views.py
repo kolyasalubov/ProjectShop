@@ -81,11 +81,11 @@ def category_detail_view(request):
     }
     return render(request, "order/make_order.html", context)
 
+
 def product_detail_view(request):
-    obj = Product.objects.get(id=1)
-    img = ProductMedia.objects.get(id=1)
+    obj = Product.objects.all()
     context = {
-        "product": obj,
-        "product_img": img,
+        "obj": obj
     }
+
     return render(request, "order/test_products.html", context)

@@ -1,0 +1,193 @@
+.tab {
+    background: #fbf8f8;
+    margin-top: 40px;
+    margin-left: 0;
+    margin-right: auto;
+    width: 920px;
+}
+
+.tab button {
+    background-color: inherit;
+    line-height: 99%;
+    width: 150px;
+    height: 60px;
+    margin-right: 7px;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    letter-spacing: 1px;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border-radius: 25px 25px 0 0;
+    box-shadow: -4px -4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.tab button:hover {
+    background-color: #C3CBCD;
+}
+
+.tab button.active {
+    background-color: #F9F3E5;
+}
+
+.tabcontent {
+    /*width: 920px;*/
+    height: auto;
+    /*margin-left: auto;*/
+    margin-right: 12px;
+    margin-top: 100px;
+    padding: 60px 0 60px 0;
+
+    background: #FFFFFF;
+    box-shadow: -4px -4px 10px rgba(0, 0, 0, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 0 50px 0 0;
+}
+
+.tabcontent2 {
+    /*width: 920px;*/
+    height: 550px;
+    /*margin-left: auto;*/
+    margin-right: 12px;
+    margin-top: 100px;
+    padding: 60px 0 60px 0;
+
+    background: #FFFFFF;
+    box-shadow: -4px -4px 10px rgba(0, 0, 0, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px 50px 0 0;
+}
+
+.tablinks {
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.contact-tab {
+    background: #FFFFFF;
+    /*width: auto;*/
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px 50px 20px 50px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+
+.product-one {
+    background: #FFFFFF;
+    /*width: auto;*/
+    margin-right: auto;
+    margin-left: auto;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+
+.product-two {
+    background: #FFFFFF;
+    /*width: auto;*/
+    margin-right: auto;
+    margin-left: auto;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+
+.product-image {
+    display: inline-block;
+    width: 150px;
+    height: 120px;
+    border-radius: 50px;
+}
+
+.trash-icon {
+    display: inline-block;
+    float: right;
+    width: 60px;
+    height: 30px;
+    margin-top: 50px;
+    margin-right: 50px;
+}
+
+.h4-tabs {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.input-tabs {
+    line-height: 24px;
+    min-height: 40px;
+    box-sizing: border-box;
+    border: 1px solid #fbf8f8;
+    padding: 0 16px;
+    width: 100%;
+    background: #fbf8f8;
+    border-radius: 3px;
+}
+
+#button-go-to-delivery {
+    background: #FFFFFF;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    max-width: 314px;
+    margin-top: 50px;
+    padding: 0;
+    text-align: center;
+    transition: color .3s ease;
+    width: 100%;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+#button-go-to-contact {
+    background: #FFFFFF;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    max-width: 214px;
+    margin-top: 50px;
+    padding: 0;
+    text-align: center;
+    transition: color .3s ease;
+    width: 100%;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+#button-checkout {
+    background: #FFFFFF;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    max-width: 214px;
+    padding: 0;
+    text-align: center;
+    transition: color .3s ease;
+    width: 100%;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 40px;
+}
+
+.delivery-payment-tab {
+    background: #FFFFFF;
+    /*width: auto;*/
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px 50px 20px 50px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+
+.main-section {
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
+}

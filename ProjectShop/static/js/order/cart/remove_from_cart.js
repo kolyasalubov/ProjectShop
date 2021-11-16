@@ -18,6 +18,7 @@ for (let element of deleteIcons){
             },
             success: function (json){
                 $("#" + productId).remove();
+                document.getElementById("subtotal").innerHTML = json.subtotal;
             },
             error: function (xhr, errmsg, err) {
             }
