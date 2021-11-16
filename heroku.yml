@@ -3,7 +3,7 @@ build:
     web: ProjectShop/Dockerfile
 #    bot: TelegramBot/Dockerfile
 run:
-  web: gunicorn ProjectShop.wsgi:application --bind 0.0.0.0:$PORT
+  web: sh -c "python manage.py collectstatic --noinput && gunicorn ProjectShop.wsgi:application --bind 0.0.0.0:$PORT"
 #  bot: python main.py
 release:
   image: web
