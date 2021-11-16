@@ -61,9 +61,7 @@
 
                    <div class="product_photo" style="background-size: 100% 100%;
                              background-image: url({{ product.images.first.image.url }});">
-                       <button class="add_to_cart_button_here" type="button" >
-                            <img src=" \media\mini_photos\Layer27.png ">
-                       </button>
+
                         {% if product.images.first %}
                             <a href="{% url 'product_overview' product.slug  %}" ></a>
                         {% endif %}

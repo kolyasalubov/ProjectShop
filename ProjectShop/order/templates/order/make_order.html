@@ -36,7 +36,7 @@
                  {% if objects %}
                  {% for object in objects %}
                  <div class="product-one" id="{{ object.product.id }}">
-                     <img class="product-image1" src="{{ object.media.image.url }}">
+                     <img class="product-image1" src="{{ object.product.images.first.image.url }}">
                      <h2 style="display: inline-block; position: absolute; margin-top: 3%; margin-left: 50px; color: #CDBCB5;">{{ object.product.name }}</h2>
                      <h2 style="display: inline-block; position: absolute; margin-top: 6%; margin-left: 50px;" class="order-item-info-price" id="price{{ object.product.id }}">{{ object.price }}$</h2>
                      <img style="display: inline-block; cursor: pointer; float: right; width: 60px; height: 30px; margin-top: 50px; margin-right: 50px;" src="{% static 'assets/cart/remove.svg' %}" data-id="{{ object.product.id }}" data-action="{% url 'order:cart-remove' %}" class="item-delete">

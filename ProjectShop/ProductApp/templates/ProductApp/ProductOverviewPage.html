@@ -65,8 +65,8 @@
 <!--                <div class="add_to_cart_button">-->
 <!--                    <input type="button" value="Add to cart" data-id="{{ product.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart"/>-->
 <!--                </div>-->
-                <button data-id="{{ product_object.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart">
-
+                <button data-id="{{ product_object.id }}" data-action="{% url 'order:cart-add' %}" class="add-to-cart" id="add_to_cart_button">
+                    Add to cart
                 </button>
 <!--                <script src="{% static 'js/order/cart/add_quantity.js' %}"></script>-->
             </div>
