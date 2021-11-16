@@ -1,6 +1,9 @@
 import os
 
 import requests
+from dotenv import load_dotenv
+
+load_dotenv("../.env")
 
 PHONE_NUMBER = os.environ.get(
     "BOT_PHONE_NUMBER"
@@ -11,9 +14,10 @@ PASSWORD = os.environ.get(
 SERVER_HOST = os.environ.get(
     "SERVER_HOST"
 )  # "http://localhost:8000/" insert for local testing
-TOKEN_URL = "users/token/"
-TOKEN_REFRESH_URL = "users/token/refresh/"
-LOGOUT_URL = "users/token/logout/"
+API_ROOT = os.environ.get("API_ROOT")
+TOKEN_URL = os.environ.get("TOKEN_URL")
+TOKEN_REFRESH_URL = os.environ.get("TOKEN_REFRESH_URL")
+LOGOUT_URL = os.environ.get("LOGOUT_URL")
 
 
 class RestClient:
@@ -28,6 +32,8 @@ class RestClient:
         self.token_url (str): The url for obtaining tokens
         self.token_refresh_url (str): The url for refreshing tokens
         self.logout_url (str): The url for log out
+        self.get_user_ib_by_telegram_id_url (str): The url for retrieving user id by user telegram id
+        self.get_user_ib_by_phone_number_url (str): The url for retrieving user id by user phone number
         self.access (str): access token
         self.refresh (str): refresh token
     """
@@ -45,6 +51,7 @@ class RestClient:
         phone_number,
         password,
         server_host,
+        api_root,
         token_url,
         token_refresh_url,
         logout_url,
@@ -52,6 +59,7 @@ class RestClient:
         self.phone_number = phone_number
         self.password = password
         self.server_host = server_host
+        self.api_root = api_root
         self.token_url = token_url
         self.token_refresh_url = token_refresh_url
         self.logout_url = logout_url
@@ -125,10 +133,10 @@ class RestClient:
         Provide sending request.
 
         Parameters:
-            method (str): request's method
-            url (str): request's url
-            headers (dict, None): additional request's headers
-            data (dict, None): request's body
+            method (str): request method
+            url (str): request url
+            headers (dict, None): additional request headers
+            data (dict, None): request body
             params (dict, None): additional data to send via URL
 
         Return: request.Response object
@@ -145,7 +153,9 @@ class RestClient:
             response.status_code = 405
             return response
 
-        url = self.server_host + url
+        if self.server_host not in url:
+            url = self.server_host + self.api_root + url
+
         response = request_method(url, headers=headers, data=data, params=params)
 
         if response.status_code == 401:
@@ -163,6 +173,13 @@ class RestClient:
 
 
 bot_client = RestClient(
-    PHONE_NUMBER, PASSWORD, SERVER_HOST, TOKEN_URL, TOKEN_REFRESH_URL, LOGOUT_URL
+    phone_number=PHONE_NUMBER,
+    password=PASSWORD,
+    server_host=SERVER_HOST,
+    api_root=API_ROOT,
+    token_url=TOKEN_URL,
+    token_refresh_url=TOKEN_REFRESH_URL,
+    logout_url=LOGOUT_URL,
 )
+
 # Use only next methods: logout, send_request

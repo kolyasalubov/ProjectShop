@@ -45,21 +45,26 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("order/", include("order.urls")),
+    path('product/', include('ProductApp.urls')),
+    path('pages/', include('django.contrib.flatpages.urls')),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('api/v1/', include(router.urls)),
     path("users/", include("UserApp.urls")),
-    path("pages/", include("django.contrib.flatpages.urls")),
-    path("api/v1/", include(router.urls)),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("", TemporalHomePageView.as_view(), name="home"),
     path('checkout/', MakeAnOrder.as_view(), name='checkout'),
     path('order-confirmation/', OrderConfirmation.as_view(), name="order-confirmation"),
     path("test/", product_detail_view),
+    path('', include('ProductApp.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 if settings.DEBUG:
+    import debug_toolbar
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns = [
+                      path('__debug__/', include(debug_toolbar.urls)),
+                  ] + urlpatterns

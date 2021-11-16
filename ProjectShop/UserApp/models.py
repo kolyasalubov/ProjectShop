@@ -49,7 +49,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     role: Describes user`s role, admin(1) is an administrator
     type: int, default value = 0, required field
     """
-
+    
+    telegram_id = models.CharField(
+        verbose_name=_('telegram id'), null=True, unique=True, max_length=40, default=None
+    )
     first_name = models.CharField(
         verbose_name=_("first name"), blank=False, null=False, max_length=40
     )
@@ -90,6 +93,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.IntegerField(verbose_name=_("role"), default=0, choices=ROLE_CHOICES)
     is_active = models.BooleanField(verbose_name=_("is active"), default=True)
     is_bot = models.BooleanField(verbose_name=_("is bot"), default=False)
+
+    wishlist = models.ManyToManyField('ProductApp.Product', related_name='wishlist', blank=True)
 
     objects = UserManager()
 

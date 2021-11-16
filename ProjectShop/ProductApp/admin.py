@@ -1,14 +1,22 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
+from django_extensions.admin import ForeignKeyAutocompleteAdmin
+from import_export.admin import ImportExportActionModelAdmin
+
+
 from ProductApp.models import (
     Product,
     ProductCategory,
     ProductSubcategory,
     Tag,
+    TagGroup,
     Review,
-    ProductMedia,
+    ProductImage,
+    ProductVideo,
+    AdvancedProductDescription,
 )
+from ProductApp.forms import AdvancedDescriptionForm
 
 
 class IsAvailableProductFilter(admin.SimpleListFilter):
@@ -28,18 +36,30 @@ class IsAvailableProductFilter(admin.SimpleListFilter):
             return queryset.filter(stock_quantity__lte=0)
 
 
-class MediaInline(admin.TabularInline):
-    model = ProductMedia
-    fields = ("media_type", "video_link", "image", "image_tag")
+class ImageInline(admin.TabularInline):
+    model = ProductImage
+    fields = ("image", "image_tag")
     readonly_fields = ("image_tag",)
+    extra = 1
+    
+    
+class VideoInline(admin.TabularInline):
+    model = ProductVideo
+    fields = ("video_link",)
     extra = 1
 
 
-class ProductAdmin(admin.ModelAdmin):
-    inlines = (MediaInline,)
+class AdvancedDescriptionAdmin(admin.ModelAdmin):
+    form = AdvancedDescriptionForm
+
+
+class ProductAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
+    inlines = (ImageInline, VideoInline)
     fields = (
         "name",
-        ("price", "stock_quantity"),
+        "slug",
+        "price",
+        "stock_quantity",
         "description",
         "categories",
         "subcategories",
@@ -51,11 +71,17 @@ class ProductAdmin(admin.ModelAdmin):
     filter_horizontal = ("categories", "subcategories", "tags")
 
 
-class ProductMediaAdmin(admin.ModelAdmin):
-    fields = ("product", "media_type", "video_link", "image", "image_tag")
+class ProductImageAdmin(admin.ModelAdmin):
+    fields = ("product", "image", "image_tag")
     readonly_fields = ("image_tag",)
-    list_display = ("name", "media_type", "video_link", "image", "small_image_tag")
-    list_filter = ("media_type",)
+    list_display = ("name", "image", "small_image_tag")
+    search_fields = ("product__name",)
+    raw_id_fields = ("product",)
+
+
+class ProductVideoAdmin(admin.ModelAdmin):
+    fields = ("product", "video_link")
+    list_display = ("name", "video_link")
     search_fields = ("product__name",)
     raw_id_fields = ("product",)
 
@@ -81,15 +107,21 @@ class ReviewAdmin(admin.ModelAdmin):
         return form
 
 
-class ProductCategoryAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
+class ProductCategoryAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
+    search_fields = ('name',)
 
 
-class ProductSubcategoryAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
+class ProductSubcategoryAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
+    search_fields = ('name',)
 
 
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(ImportExportActionModelAdmin, ForeignKeyAutocompleteAdmin):
+    search_fields = ('name',)
+    list_filter = ("group__name",)
+
+
+class TagGroupAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
+    list_display = ("name",)
     search_fields = ("name",)
 
 
@@ -98,4 +130,7 @@ admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(ProductSubcategory, ProductSubcategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Review, ReviewAdmin)
-admin.site.register(ProductMedia, ProductMediaAdmin)
+admin.site.register(ProductImage, ProductImageAdmin)
+admin.site.register(ProductVideo, ProductVideoAdmin)
+admin.site.register(AdvancedProductDescription, AdvancedDescriptionAdmin)
+admin.site.register(TagGroup, TagGroupAdmin)

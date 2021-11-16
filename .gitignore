@@ -103,6 +103,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.django
 .venv
 env/
 venv/
@@ -131,6 +132,10 @@ dmypy.json
 # .idea, and macOS buffer files
 .idea/
 .DS_Store
+
+# media files
+ProjectShop/media/
+!*default_pic.svg
 .vscode/
 .vscode/settings.json
 
@@ -138,5 +143,3 @@ dmypy.json
 .scannerwork/
 sonar-project.properties
 
-# mediafiles
-/ProjectShop/media/product_media_image/*

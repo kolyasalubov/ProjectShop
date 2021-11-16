@@ -2,6 +2,9 @@
 <html>
   <head>
     {% load static %}
+    {% load i18n %}
+    {% load flatpages %}
+    {% load pagination_tags %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <!-- Bootstrap CSS -->
@@ -10,11 +13,11 @@
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <title>{% block title %}{% endblock title %}</title>
-      {% block header %}{% endblock header %}
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
   </head>
   <body>
+
   <header id="header">
         <!-- burger menu -->
       <div class="left-container">
@@ -46,15 +49,15 @@
 
         <div class="right-container">
             <div class="search-container">
-{#                <form action="">#}
-                    <button class="search-button" type="submit">
+                <form action="{% url 'home' %}" method="get">
+                    <button class="search-button" type="submit" id="submit">
                         <i class="fa fa-search"></i>
                     </button>
-                    <input type="text" name="search" class="search-box">
-{#                </form>#}
+                    <input class="search-box" name="name__icontains" type="text" placeholder="Search" aria-label="Search" >
+                </form>
             </div>
             <div class="links-container">
-                 <a href="/order/cart" class="nav-link">
+                 <a href="" class="nav-link">
                     <img class="nav-image" src={% static 'assets/EmptyCart.svg' %}>
                 </a>
                 <a href="{% url 'profile' %}" class="nav-link">
@@ -73,6 +76,20 @@
         </div>
     </header>
 
+      <!--  Flatpages  -->
+    {% get_flatpages as flatpages %}
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+              {% blocktranslate %} {{ message }} {% endblocktranslate %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+
+    {# {% block category %}{% endblock category %} #}
     {% block content %}
 
     {% endblock content%}
@@ -83,23 +100,27 @@
             <a class="footer-main-text" href="{% url 'home' %}" style="color:#F6E37B">Project<br>Shop</a>
         </div>
         <div class="footer-right">
-<!--            <div class="footer-first-container">-->
-<!--                <p class="footer-main-text-first">Contact Us</p>-->
-<!--{#                <br>#}-->
-<!--                <div class="footer-second-text-first">-->
-<!--                    <span>LVIV - OFFICE 9 <br>-->
-<!--                        57 Fedkovycha Street, Lviv 79018 <br>-->
-<!--                        +380-32-240-9999<br>-->
-<!--                        Toll free: 0-8006-0-8006-->
-<!--                    </span>-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="footer-first-container">
+                <p class="footer-main-text-first">Contact Us</p>
+
+                <div class="footer-second-text-first">
+                    <span>test<br>
+                        test <br>
+                        test<br>
+                        test
+                    </span>
+                </div>
+            </div>
             <div class="footer-second-container">
                 <br><br>
-                    <span><a href="#" style="color:#F6E37B">Conditions of use</a><br>
-                        <a href="#" style="color:#F6E37B">Privacy policy</a><br>
-                        <a href="#" style="color:#F6E37B">Payment&Delivery info</a><br>
-                        <a href="#" style="color:#F6E37B">Sitemap</a>
+                    <span>
+                    <div class="flatpages-container">
+                      {% for page in flatpages %}
+                            <a href="/pages{{ page.url }}" class=flatpage-link" style="color:#F6E37B;">
+                                {% blocktranslate with flatpage_title=page.title %} {{ flatpage_title }} {% endblocktranslate %}
+                            </a>
+                      {% endfor %}
+                    </div>
                     </span>
 
             </div>
@@ -111,3 +132,74 @@
   </body>
 </html>
 
+
+{#{% load i18n %}#}
+{#{% load flatpages %}#}
+{##}
+{#<!doctype html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta name="viewport"#}
+{#          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">#}
+{#    <meta http-equiv="X-UA-Compatible" content="ie=edge">#}
+{#    <title>{% translate "Shop" %}</title>#}
+{##}
+{#</head>#}
+{#<body>#}
+{##}
+{##}
+{#    <!--  Messages start here  -->#}
+{#    {% if messages %}#}
+{#      <ul class="messages">#}
+{#        {% for message in messages %}#}
+{#          <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}>#}
+{#              {% blocktranslate %} {{ message }} {% endblocktranslate %}#}
+{#          </li>#}
+{#        {% endfor %}#}
+{#      </ul>#}
+{#    {% endif %}#}
+{#    <!--  Messages end here  -->#}
+{##}
+{#    <!--  First Navbar starts here  -->#}
+{#    <h3> Navbar: </h3>#}
+{#    <a href="{% url 'home' %}">{% translate "Home page" %}</a>#}
+{##}
+{#    {% if user.is_authenticated %}#}
+{#        <a href="{% url 'profile' %}">{% translate "Profile" %}</a>#}
+{#        <a href="{% url 'logout' %}">{% translate "Logout" %}</a>#}
+{#      {% else %}#}
+{#        <a href="{% url 'login' %}">{% translate "Login" %}</a>#}
+{#        <a href="{% url 'register' %}">{% translate "Register" %}</a>#}
+{#    {% endif %}#}
+{##}
+{#    <a href="{% url 'categories' %}">{% translate "Categories" %}</a>#}
+{##}
+{#    <!--  Flatpages  -->#}
+{#    {% get_flatpages as flatpages %}#}
+{#    <ul>#}
+{#      {% for page in flatpages %}#}
+{#        <li>#}
+{#            <a href="/pages{{ page.url }}">#}
+{#                {% blocktranslate with flatpage_title=page.title %} {{ flatpage_title }} {% endblocktranslate %}#}
+{#            </a>#}
+{#        </li>#}
+{#      {% endfor %}#}
+{#    </ul>#}
+{#    <!--  First Navbar ends here  -->#}
+{##}
+{#    <!--  Second Navbar starts here  -->#}
+
+{#    <!--  Second Navbar ends here  -->#}
+{##}
+{#    <hr>#}
+{#    <form action="{% url 'home' %}" method="get">#}
+{#        <input name="name__icontains" type="text" placeholder="Search" aria-label="Search">#}
+{#        <button type="submit" id="submit">{% translate "Search" %}</button>#}
+{#    </form>#}
+{##}
+{#    {% block content %}{% endblock content %}#}
+{##}
+{##}
+{#</body>#}
+{#</html>#}

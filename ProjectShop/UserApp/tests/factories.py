@@ -1,5 +1,6 @@
 import factory
 from faker import Faker
+
 from UserApp.models import User
 from UserApp.tests.custom_providers import CustomPhoneProvider
 
@@ -9,6 +10,7 @@ fake.add_provider(CustomPhoneProvider)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
+  
     class Meta:
         model = User
 

@@ -29,6 +29,7 @@ class RegisterForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label=_("Email / Phone Number"))
+    remember_me = forms.BooleanField(required=False)
     error_messages = {
         "invalid_login": _(
             "Please enter a correct email / phone number and password. "
@@ -49,9 +50,10 @@ class EditForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = (
-            "profile_pic",
-            "phone_number",
+            # "profile_pic",
             "first_name",
             "last_name",
             "birth_date",
+            "email",
+            "phone_number",
         )

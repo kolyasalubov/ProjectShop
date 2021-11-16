@@ -4,6 +4,7 @@ footer {
     bottom: 0;
     width: 100%;
     overflow: hidden;
+    /*position: fixed;*/
 }
 
 .footer-main {
@@ -43,8 +44,6 @@ footer {
     color: #F6E37B;
     justify-content: center;
     padding-top: 1rem;
-    /*width: 50%;*/
-    /*align-items: center;*/
 }
 
 .footer-right .footer-first-container .footer-main-text-first{
@@ -59,27 +58,29 @@ footer {
 
 .footer-right .footer-second-container {
     display: flex;
+    flex-flow: column wrap;
     justify-content: flex-end;
-    align-self: flex-end;
+    align-self: center;
     padding-right: 2rem;
     padding-bottom: 0.9rem;
-    /*width: 50%;*/
+}
+
+.flatpages-container {
+    display: flex;
+    flex-flow: column wrap;
 }
 
 @media only screen and (max-width:650px) {
     .footer-right .footer-first-container .footer-main-text-first{
-    /*font-weight: bold;*/
         font-size: 1.1rem;
     }
 
     .footer-right .footer-first-container .footer-second-text-first{
         font-size: 0.7rem;
-        /*padding-bottom: 1rem;*/
     }
 
     .footer-left {
         font-size: 2rem;
-        /*padding-left: 0.5rem;*/
     }
 
     .footer-second-container {
@@ -97,7 +98,6 @@ footer {
     }
 
     .footer-left .footer-main-text{
-        /*width: 20%;*/
         font-size: 1.0rem;
         padding-left: 0.5rem;
     }
