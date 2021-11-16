@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "storages",
     "django.contrib.sites",
     "django.contrib.flatpages",
+    "django.contrib.sitemaps",
 
     # 3rd-party apps
     "rest_framework",
