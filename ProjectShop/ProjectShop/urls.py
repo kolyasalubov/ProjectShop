@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.sitemaps.views import sitemap
+from django.contrib.flatpages import views
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -70,6 +71,10 @@ urlpatterns = [
     path('', include('ProductApp.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+]
+
+urlpatterns += [
+    path(r'^(?P<url>.*/)$', views.flatpage),
 ]
 
 if settings.DEBUG:
