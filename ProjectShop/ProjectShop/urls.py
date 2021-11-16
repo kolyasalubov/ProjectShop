@@ -73,10 +73,6 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
-urlpatterns += [
-    path(r'^(?P<url>.*/)$', views.flatpage),
-]
-
 if settings.DEBUG:
     import debug_toolbar
 
