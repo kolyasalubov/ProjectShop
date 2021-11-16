@@ -162,7 +162,12 @@ if DEPLOYMENT:
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     # s3 static settings
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    # STATIC_LOCATION = "static" # for aws
+    # STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/"  # for aws
+    # STATICFILES_STORAGE = "ProjectShop.storage_backends.StaticStorage"  # for aws
+    STATIC_URL = "/staticfiles/"  # for whitenoise
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"  # for whitenoise
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # for whitenoise
     # s3 public media settings
     PUBLIC_MEDIA_LOCATION = "media"
     MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
@@ -178,12 +183,11 @@ else:
             "PORT": get_environment_variable("SQL_PORT"),
         }
     )
-
+    STATIC_URL = "/staticfiles/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-STATIC_URL = "/staticfiles/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
