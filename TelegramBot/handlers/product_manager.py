@@ -4,7 +4,7 @@ from telegram import Update, InputMediaPhoto
 from telegram.ext import CallbackContext, ConversationHandler
 from telegram.utils.helpers import escape_markdown
 
-from client.models import Category, Page, Product, Image
+from client.models import Category, Product
 from handlers.utils import InlineKeyboardBuilder
 
 
