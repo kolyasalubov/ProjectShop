@@ -9,18 +9,21 @@
 
 {% block content %}
     <div id="wrapper">
-        <section id="word_cloud">
 
-            <div id="word_cloud_div">
-                <div class="tag_name">
-                     Samsung
-                </div>
-                <div class="tag_delete">
-                    <img id="delete_image" src=" \media\mini_photos\Layer2.png ">
-                </div>
-            </div>
+<!--        Section for Selected filters -->
 
-        </section>
+<!--        <section id="word_cloud">-->
+
+<!--            <div id="word_cloud_div">-->
+<!--                <div class="tag_name">-->
+<!--                     Samsung-->
+<!--                </div>-->
+<!--                <div class="tag_delete">-->
+<!--                    <img id="delete_image" src=" \media\mini_photos\Layer2.png ">-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </section>-->
 
 
         <section id="top">
@@ -62,7 +65,7 @@
                             <img src=" \media\mini_photos\Layer27.png ">
                        </button>
                         {% if product.images.first %}
-                            <a href="{% url 'product_overview' product.id  %}" ></a>
+                            <a href="{% url 'product_overview' product.slug  %}" ></a>
                         {% endif %}
 
                    </div>
