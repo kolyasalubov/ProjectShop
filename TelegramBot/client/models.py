@@ -5,46 +5,87 @@ For more info, read https://pydantic-docs.helpmanual.io
 Methods in models are facades for all api requests required by telegram bot
 """
 
+from __future__ import annotations
 import os
 import datetime
-import phonenumbers
 from enum import Enum
 
-from pydantic import BaseModel, constr, EmailStr, PositiveInt, conint, condecimal, validator
+from pydantic import (
+    BaseModel,
+    constr,
+    EmailStr,
+    PositiveInt,
+    conint,
+    condecimal,
+    validator,
+    AnyUrl,
+)
 from pydantic.error_wrappers import ValidationError
 from typing import List, Tuple
 
+from client.exceptions import ClientError
 from client.status_check import bot_client
 
-USER_URL = os.environ.get("USER_URL")  # add url to obtain and manage user by phone number
-USER_INIT_KEY = os.environ.get("USER_INIT_KEY")   # key for User.__init__  access, set None to switch off
-USER_BY_TELEGRAM_ID_URL = os.environ.get("USER_BY_TELEGRAM_ID_URL")  # add url to obtain user by telegram id
+USER_URL = os.environ.get(
+    "USER_URL"
+)  # add url to obtain and manage user by phone number
+USER_INIT_KEY = os.environ.get(
+    "USER_INIT_KEY"
+)  # key for User.__init__  access, set None to switch off
+USER_BY_TELEGRAM_ID_URL = os.environ.get(
+    "USER_BY_TELEGRAM_ID_URL"
+)  # add url to obtain user by telegram id
+
+
+class Page(BaseModel):
+    """
+    This model is used to transform gathered data into object
+    """
+
+    count: PositiveInt = 1
+    next: AnyUrl = None
+    previous: AnyUrl = None
+    results: list
+
+    def copy(self, *args, **kwargs) -> Page:
+        return Page(
+            count=self.count,
+            next=self.next,
+            previous=self.previous,
+            results=self.results.copy(),
+        )
 
 
 class PaginatedModel(BaseModel):
     """
     Model for all models, that require pagination
     """
+
     _path = None
+    _name = None
+
+    def __str__(self):
+        return getattr(self, self._name)
 
     @classmethod
-    def get(cls):
+    def page(cls, json: dict) -> Page:
+        """
+        Turn our results into objects of respective class
+        """
+        json["results"] = [cls(**item) for item in json["results"]]
+        return Page(**json)
+
+    @classmethod
+    def get(cls) -> Page:
         """
         Get first page of result. Will work only if path provided (in child classes)
         """
+
         response = bot_client.send_request("GET", cls._path)
         return cls.page(response.json())
 
     @classmethod
-    def page(cls, json: dict) -> dict:
-        """
-        Turn our results into objects of respective class
-        """
-        json['results'] = [cls(**item) for item in json['results']]
-        return json
-
-    @classmethod
-    def turn_page(cls, url: str) -> dict:
+    def turn_page(cls, url: str) -> Page:
         """
         Change page using given url
         """
@@ -66,27 +107,33 @@ class ShippingAddress(PaginatedModel):
     post_office: PositiveInt
 
     @classmethod
-    def get_shipping_addresses(cls, user_id: int) -> dict:
+    def get_shipping_addresses(cls, user_id: int) -> Page:
         """
         Retrieve shipping addresses for user specified by user id
 
         Return: List[ShippingAddress]
         """
-        response = bot_client.send_request("GET", f"user/shipping-address", params={"userId": user_id})
+        response = bot_client.send_request(
+            "GET", f"user/shipping-address", params={"userId": user_id}
+        )
         return cls.page(response.json())
 
-    def add_shipping_address(self) -> bool:
+    def add_shipping_address(self):
         """
         Add new shipping address to user addresses list
         """
-        response = bot_client.send_request("POST", f"user/shipping-address", data=self.__dict__)
+
+        bot_client.send_request("POST", f"user/shipping-address", data=self.__dict__)
 
     @staticmethod
-    def delete(address_id: int) -> bool:
+    def delete(address_id: int):
         """
         Delete user's shipping address, specified by user's id and shipping address' id
         """
-        response = bot_client.send_request("DELETE", f"/user/shipping-address", params={"id": address_id})
+
+        bot_client.send_request(
+            "DELETE", f"/user/shipping-address", params={"id": address_id}
+        )
 
 
 class Wishlist(PaginatedModel):
@@ -100,7 +147,7 @@ class Wishlist(PaginatedModel):
     product_name: constr(max_length=100)
 
     @classmethod
-    def get_wishlist(cls, user_id: int) -> dict:
+    def get_wishlist(cls, user_id: int) -> Page:
         """
         Retrieve wishlist of certain user specified by user id
         """
@@ -108,25 +155,31 @@ class Wishlist(PaginatedModel):
         response = bot_client.send_request("GET", f"user/{user_id}/wishlist")
         return cls.page(response.json())
 
-    def add_wishlist(self) -> bool:
+    def add_wishlist(self):
         """
         Add item to user's wishlist
         """
-        response = bot_client.send_request("POST", f"user/{self.user_id}/wishlist", data=self.product_id)
+        bot_client.send_request(
+            "POST", f"user/{self.user_id}/wishlist", data=self.product_id
+        )
 
     @staticmethod
-    def delete(user_id: int, product_id: int) -> bool:
+    def delete(user_id: int, product_id: int):
         """
         Delete item from user's wishlist
         """
-        response = bot_client.send_request("DELETE", f"/user/wishlist", params={"userId": user_id,
-                                                                                "productId": product_id})
+        bot_client.send_request(
+            "DELETE",
+            f"/user/wishlist",
+            params={"userId": user_id, "productId": product_id},
+        )
 
 
 class User(BaseModel):
     """
     Pydantic model class for working with user model and relative djangoREST database user model.
     """
+
     id: PositiveInt
     telegram_id: constr(max_length=40)
     first_name: constr(max_length=40)
@@ -145,7 +198,6 @@ class User(BaseModel):
 
     @classmethod
     def _validate_fields(cls, **kwargs):
-        print(kwargs)
         """
         Validate value for field. Raise ValidationError
         :param kwargs: dict
@@ -197,7 +249,7 @@ class User(BaseModel):
         super().__setattr__(key, value)
 
     @validator("phone_number")
-    def name_must_contain_space(cls, value):
+    def phone_number_must_be_valid(cls, value):
         """
         Validate phone number field. Raise ValidationError if not valid.
         :param value: str
@@ -232,9 +284,11 @@ class User(BaseModel):
         return user
 
     @classmethod
-    def register_user(cls, telegram_id, phone_number, email, first_name, last_name, birth_date=None):
+    def register_user(
+        cls, telegram_id, phone_number, email, first_name, last_name, birth_date=None
+    ):
         """
-        Register user in djangoREST database and crete appropriate User instance.
+        Register user in djangoREST database and create appropriate User instance.
         :param telegram_id: str
         :param phone_number: str
         :param email: str
@@ -249,11 +303,24 @@ class User(BaseModel):
             "email": email,
             "first_name": first_name,
             "last_name": last_name,
-            "birth_date": birth_date
+            "birth_date": birth_date,
         }
         User._validate_fields(**user_data)
         user_response = bot_client.send_request("POST", USER_URL, data=user_data)
         return cls._create_user(user_response)
+
+    def update(self, first_name=None, last_name=None, birth_date=None):
+        if not (first_name or last_name or birth_date):
+            raise ClientError
+        data = {}
+        if first_name:
+            data.update({"first_name": first_name})
+        if last_name:
+            data.update({"last_name": last_name})
+        if birth_date:
+            data.update({"birth_date": birth_date})
+        bot_client.send_request("PATCH", data=data)
+        return User.get_user_by_telegram_id(self.telegram_id)
 
     @staticmethod
     def _patch_user_telegram_id(phone_number, telegram_id):
@@ -296,24 +363,18 @@ class User(BaseModel):
 
 
 class Category(PaginatedModel):
-    id: PositiveInt
     name: constr(max_length=100)
 
-    _path = "/products/categories"
+    _path = "/categories"
+    _name = "name"
 
 
-class Subcategory(BaseModel):
-    id: PositiveInt
-    name: constr(max_length=100)
-      
-    _path = "/products/subcategories"
+class Tag(PaginatedModel):
 
-
-class Tag(BaseModel):
-    id: PositiveInt
     name: constr(max_length=100)
 
-    _path = "/products/tags"
+    _path = "/tags"
+    _name = "name"
 
 
 class Review(PaginatedModel):
@@ -329,7 +390,7 @@ class Review(PaginatedModel):
     dislikes: PositiveInt = None
 
     @classmethod
-    def view_reviews(cls, product_id: int) -> dict:
+    def view_reviews(cls, product_id: int) -> Page:
         """
         Here we need to dynamically set our path, so we don`t use base get method
         """
@@ -341,7 +402,9 @@ class Review(PaginatedModel):
         """
         Create new review for product specified by product_id
         """
-        response = bot_client.send_request("POST", f"/products/{product_id}/reviews", data=self.__dict__)
+        bot_client.send_request(
+            "POST", f"/products/{product_id}/reviews", data=self.__dict__
+        )
 
     def like(self, user_id, like=True):
         """
@@ -351,8 +414,25 @@ class Review(PaginatedModel):
         """
 
         data = {"userId": user_id, "reply": like}
-        response = bot_client.send_request("PUT", f"/products/reviews/{self.id}/replies", data=data)
+        response = bot_client.send_request(
+            "PUT", f"/products/reviews/{self.id}/replies", data=data
+        )
         return response.json()
+
+
+class Image(BaseModel):
+    image: str
+
+    def get(self) -> bytes:
+        return bot_client.send_request("GET", url=self.image).content
+
+    @staticmethod
+    def get_list(image_list: List[Image]) -> map:
+        return map(lambda image: image.get(), image_list)
+
+
+class Video(BaseModel):
+    video_link: str
 
 
 class Product(PaginatedModel):
@@ -362,23 +442,24 @@ class Product(PaginatedModel):
     description: constr(max_length=5000)
     stock_quantity: PositiveInt
     categories: List[Category]
-    subcategories: List[Subcategory]
     tags: List[Tag]
+    images: List[Image]
+    video_links: List[Video]
 
     class Config:
         arbitrary_types_allowed = True
 
     @classmethod
-    def view_products(cls, category_id: int, subcategories: list = None, tags: list = None) -> dict:
+    def view_products(cls, category: str = None, query: list = None) -> Page:
         """
         Get paginated list of products by some filters.
         If filters aren't specified, list should be sorted by popularity
         """
-        params = {"category": category_id}
-        if subcategories:
-            params.update({"subcategories": subcategories})
-        if tags:
-            params.update({"tags": tags})
+        params = {}
+        if category:
+            params = {"category": str(category)}
+        if query:
+            params = {"query": query}
         response = bot_client.send_request("GET", f"/products", params=params)
         return cls.page(response.json())
 
@@ -409,4 +490,4 @@ class Order(BaseModel):
         Post order to api
         """
 
-        response = bot_client.send_request("POST", "/orders", data=self.__dict__)
+        bot_client.send_request("POST", "/orders", data=self.__dict__)

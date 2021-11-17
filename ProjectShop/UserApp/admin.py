@@ -2,11 +2,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
+from import_export.admin import ImportExportActionModelAdmin
 
 from UserApp.models import User
 
 
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(ImportExportActionModelAdmin, BaseUserAdmin):
     def has_delete_permission(self, request, obj=None) -> bool:
         """Restrict self deletion and deletion for not superusers"""
 
@@ -32,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
         if is_superuser:
             enabled_fields |= set(
                 form.base_fields.keys()
-            )  # going to enable all fields except 'role'
+            )  # going to enable all fields except "role"
             if obj:
                 enabled_fields.remove(
                     "role"
@@ -80,7 +81,7 @@ class UserAdmin(BaseUserAdmin):
     )
     list_filter = ("is_superuser", "is_active", "role")
     fieldsets = (
-        (None, {"fields": ("phone_number",)}),
+        (None, {"fields": ("phone_number", "wishlist", )}),
         (
             "Personal info",
             {
@@ -117,9 +118,9 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-    search_fields = ('phone_number',)
-    ordering = ('phone_number',)
-    filter_horizontal = ('wishlist',)
+    search_fields = ("phone_number",)
+    ordering = ("phone_number",)
+    filter_horizontal = ("wishlist",)
 
 
 # registering new django admin...
