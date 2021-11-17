@@ -28,17 +28,17 @@ class ShippingModel(models.Model):
     # )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     postal_code = models.CharField(
-        verbose_name=_("postal code"), null=False, blank=False, max_length=20
+        verbose_name=_("postal code"), max_length=10
     )
     country = CountryField()
     region = models.CharField(
-        verbose_name=_("region"), null=False, blank=False, max_length=50
+        verbose_name=_("region"), max_length=50
     )
     city = models.CharField(
-        verbose_name=_("city"), null=False, blank=False, max_length=50
+        verbose_name=_("city"), max_length=50
     )
     post_office = models.IntegerField(
-        verbose_name=_("post office"), null=False, blank=False
+        verbose_name=_("post office")
     )
 
     class Meta:
